@@ -46,9 +46,13 @@ No processo de aprendizagem de algo novo, é importante memorizar um roteiro de 
 
 O JavaScript possui um importante papel no processo de desenvolvimento de páginas para internet, junto com o HTML e CSS. O HTML serve para descrever o conteúdo de uma página web e definir a marcação semântica dos elementos que compõem a página. O CSS define a aparência do site – cores, bordas, espaçamentos etc. Já o JavaScript é utilizado para definir o comportamento dos elementos da página. Com JavaScript podemos interagir com os visitantes de uma página a partir de campos de formulário, acessar e modificar o conteúdo e as características de uma página, salvar informações no navegador do usuário, etc. JavaScript é utilizado principalmente para rodar scripts no lado do cliente, embora também seja crescente o número de aplicações desenvolvidas com a linguagem para rodar no lado do servidor. Ela também é uma linguagem orientada a objetos. Esse paradigma é essencial para o desenvolvimento de aplicações profissionais já há algum tempo.
 
+---
+
 ### 1.4 EDITORES DE CÓDIGO JAVASCRIPT
 
 Para criar programas JavaScript, podemos utilizar editores simples que já estão instalados no computador,esses editores simples como o bloco de notas, não são muito recomendados pela ausência de recursos de auxílio ao programador. Também há os editores online que contém alguns recursos extras e a vantagem de poder acessar e compartilhar os códigos na internet. Existem também os editores profissionais que contém diversos recursos que facilitam o desenvolvimento dos programas. Os editores online possibilitam testar diretamente os programas em um navegador web. Sites como w3schools.com, js.do e jsbin.com, são exemplos de classes de editores JavaScript. No caso do site da w3schools.com, há uma descrição dos recursos da linguagem e de seus comandos (em inglês). Os editores profissionais nos apresenta recursos que nos auxiliam no desenvolvimento de aplicações. Autocompletar os comandos, alertas de erros de sintaxe, formatação de código (itendação), cores diferente para comando e integração com GitHub são alguns exemplos.
+
+---
 
 ### 1.5 SAÍDA DE DADOS COM ALERT()
 
@@ -86,3 +90,5 @@ As novas versões do JavaScript e dos navegadores já suportam o uso de constant
 ```js
 const POLTRONAS = 240
 ```
+
+---
