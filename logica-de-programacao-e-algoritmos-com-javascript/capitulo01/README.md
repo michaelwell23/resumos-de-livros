@@ -222,7 +222,7 @@ alert('Total de Horas: ' + total)
 
 ### 1.11 EXERCÍCIOS
 
-Os exercícios do capitulo estão no arquivo de exemplo, você pode ir até eles clicando [Aqui](/capitulo01/exemplos/exercicios1_11/)
+Os exercícios do capitulo estão no arquivo de exemplo, você pode ir até eles clicando [Aqui](/capitulo01/exercicios1_11/)
 
 ---
 
