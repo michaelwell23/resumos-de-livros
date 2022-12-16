@@ -227,21 +227,29 @@ No exemplo, podemos notar que o valor das variáveis não são o mesmo. Na prime
 
 Observe os exemplos de dados de entrada e saída de cada programa, que utiliza funções matemáticas e o operador módulo:
 
-a) Elaborar um programa para uma Vídeo Locadora, que leia o título e a duração de um lme em minutos. Exiba o título do lme e converta a duração para horas e minutos.
+**a) Elaborar um programa para uma Vídeo Locadora, que leia o título e a duração de um lme em minutos. Exiba o título do lme e converta a duração para horas e minutos.**
 
 ![exemplo 2.9.a](/.github/cap02/exe2_9.1.png)
 
-b) Elaborar um programa para uma revenda de veículos. O programa deve ler modelo e preço do veículo. Apresentar como resposta o valor da entrada (50%) e o saldo em 12x.
+Você pode ver os arquivos [AQUI](/capitulo02/exemplo/ex2_9/ex2_9.a/);
+
+**b) Elaborar um programa para uma revenda de veículos. O programa deve ler modelo e preço do veículo. Apresentar como resposta o valor da entrada (50%) e o saldo em 12x.**
 
 ![exemplo 2.9.b](/.github/cap02/exe2_9.2.png)
 
-) Elaborar um programa para um restaurante que leia o preço por kg e o consumo (em gramas) de um cliente. Exiba o valor a ser pago.
+Você pode ver os arquivos [AQUI](/capitulo02/exemplo/ex2_9/ex2_9.b/);
+
+**c) Elaborar um programa para um restaurante que leia o preço por kg e o consumo (em gramas) de um cliente. Exiba o valor a ser pago.**
 
 ![exemplo 2.9.b](/.github/cap02/exe2_9.3.png)
+
+Você pode ver os arquivos [AQUI](/capitulo02/exemplo/ex2_9/ex2_9.c/);
 
 ---
 
 ## 2.10 EXERCÍCIOS
+
+Os exercícios do capitulo estão no arquivo de exemplo, você pode ir até eles clicando [Aqui](/capitulo02/exemplo/ex2_10/)
 
 ---
 
