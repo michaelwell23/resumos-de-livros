@@ -156,3 +156,37 @@ Outra estrutura condicional é o `switch… case`. Ele é útil quando temos vá
 
 O comando `switch` inicia pela definição da variável que escolhe a condição a ser executada.
 Cada instrução `case`deve conter um valor de comparação. Os comandos devem ser finalizados por `break`. Caso nenhuma das condições seja atendida nas instruções `case`, o fluxo do programa direciona para a execução dos comandos inseridos na instrução `default`.
+
+## 3.5 OPERADORES TERNÁRIOS
+
+Existe ainda uma forma abreviada para criar as instruções `if… else` conhecidas como `operadores ternários`. Eles consistem em realizar uma atribuição para uma variável com base na análise de uma condição.
+A condição deve ser inserida após o sinal de atribuição (=). O primeiro valor após a interrogação (?) é atribuído à variável caso a condição seja verdadeira. E o segundo, após os dois pontos (:), caso a condição seja falsa.
+
+---
+
+## 3.6 EXEMPLOS
+
+Podemo contruir exemplos para discutir sobre a aplicação de condições em um programa.
+Abaixo podemos ver a resolução de exemplos simples, que utilizam apenas o `if`, depois
+com `if... else` e também `else if`.
+
+a) [Programa de Fusio Horário](/capitulo03/exemplos/ex3_6/exe3_6.a/)
+![exemplo 3.6.a](/.github/cap03/exe3_6.a.png)
+
+b) [Programa de Fusio Horário](/capitulo03/exemplos/ex3_6/exe3_6.b/)
+![exemplo 3.6.a](/.github/cap03/exe3_6.c.png)
+
+c) [Programa de Fusio Horário](/capitulo03/exemplos/ex3_6/exe3_6.b/)
+![exemplo 3.6.a](/.github/cap03/exe3_6.c.png)
+
+---
+
+## 3.7 EXERCÍCIOS
+
+Os exercícios do capitulo estão no arquivo de exemplo, você pode ir até eles clicando [Aqui](/capitulo03/exemplos/ex3_7/)
+
+---
+
+## 3.8 CONSIDERAÇÕES FINAIS
+
+As estruturas condicionais cumprem um importante papel no processo de construção de programas. Para definir uma condição, podemos utilizar os comandos `if… else` ou `switch… case`. As condições são definidas a partir do uso dos operadores relacionais: `igual (==)`, `diferente (!=)`, `maior (>)`, `menor (<)`, `maior ou igual (>=)` e `menor ou igual (<=)`. Algumas situações nos programas exigem que várias comparações sejam definidas, nesse caso é necessário utilizar os operadores lógicos, `not (!)`, `and (&&)` e `or (||)`.
