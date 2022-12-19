@@ -134,23 +134,23 @@ Outra estrutura condicional é o `switch… case`. Ele é útil quando temos vá
 
 ```html
 <script>
-  var bairro = prompt('Bairro de Entrega: ')
-  var taxaEntrega
+  var bairro = prompt('Bairro de Entrega: ');
+  var taxaEntrega;
   switch (bairro) {
     case 'Centro':
-      taxaEntrega = 5.0
-      break
+      taxaEntrega = 5.0;
+      break;
     case 'Fragata':
     case 'Três Vendas':
-      taxaEntrega = 7.0
-      break
+      taxaEntrega = 7.0;
+      break;
     case 'Laranjal':
-      taxaEntrega = 10.0
-      break
+      taxaEntrega = 10.0;
+      break;
     default:
-      taxaEntrega = 8.0
+      taxaEntrega = 8.0;
   }
-  alert('Taxa R$: ' + taxaEntrega.toFixed(2))
+  alert('Taxa R$: ' + taxaEntrega.toFixed(2));
 </script>
 ```
 
@@ -160,6 +160,11 @@ Cada instrução `case`deve conter um valor de comparação. Os comandos devem s
 ## 3.5 OPERADORES TERNÁRIOS
 
 Existe ainda uma forma abreviada para criar as instruções `if… else` conhecidas como `operadores ternários`. Eles consistem em realizar uma atribuição para uma variável com base na análise de uma condição.
+
+```js
+var categoria = idade >= 18 ? 'Alduto' : 'Juvenil';
+```
+
 A condição deve ser inserida após o sinal de atribuição (=). O primeiro valor após a interrogação (?) é atribuído à variável caso a condição seja verdadeira. E o segundo, após os dois pontos (:), caso a condição seja falsa.
 
 ---
