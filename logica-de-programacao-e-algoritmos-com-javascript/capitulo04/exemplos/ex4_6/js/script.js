@@ -25,3 +25,5 @@ function preencherEstrelas() {
 // cria referência ao botão e após associa function ao evento click
 var btPreencher = document.getElementById('btPreencher');
 btPreencher.addEventListener('click', preencherEstrelas);
+
+
