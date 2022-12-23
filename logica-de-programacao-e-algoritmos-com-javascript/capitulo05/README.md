@@ -126,7 +126,6 @@ Outra forma de exibir o conteúdo do vetor é usando métodos `toString()` e `jo
         alert(cidades.toString() + "\n\n" + cidades.join(" - "))
     }
 </script>
-
 ```
 
 Resultado
@@ -138,3 +137,43 @@ Para ilustrar a aplicação dos métodos de inclusão e exclusão de elemento no
 ![exemplo 5.2.c](/.github/cap05/exe5_2.c.png)
 
 ---
+
+## 5.3 LOCALIZAR CONTEÚDO
+
+Linguagens de programação dispõem de alguns métodos para auxiliar no controle de seu conteúdo. Um desses controles refere-se à verificação da existência ou não de um conteúdo do vetor. Os métodos `indexOf()` e `lastIndexOf()` cumprem esse papel. No `indexOf()`, a busca ocorre a partir do início do vetor. Já no `lastIndexOf()`, a busca é do final para o início. Caso o conteúdo exista, o número do índice da primeira ocorrência do conteúdo será retornado. Caso não exista no vetor, o retorno será o valor -1.
+
+```html
+<script>
+    var cidades = [5, 6, 8, 3, 6, 9,]
+
+    alert('indexOf - ' + idade.indexOf(6), '\n')
+    alert('lastIndexOf - ' + idade.lastIndexOf(6), '\n')
+    alert('indexOf - ' + idade.indexOf(7), '\n')
+
+</script>
+```
+
+No exemplo acima o  `indexOf()` exibido no `alert()` verifica a existência do número 6, retornando a posição a posição 1 da ocorrência desse conteúdo. Já no método `lastIndexOf()` age da mesma forma, retornando a posição 4. Na última busca, um valor inexistente é passado, assim o valor -1 é retornado pelo método. Um segundo exemplo que pode ser utilizado para fixar o aprendizado do `indexOf()` e `lastIndexOf()`, trata-se do do [Jogo Descubra o Número](/capitulo05/exemplos/ex5_4/), que como o nome sugere é um programa em que o usuário tem qye adivinhar o número sorteado entre 1 e 100.
+
+![Exemplo 5.2.b](/.github/cap05/exe5_3.b.png)
+
+---
+
+5.4 VETORES DE OBJETOS
+
+Definir um vetor de objetos nos permite realizar operações sobre esse vetor, como classificar os elementos por um dos seus atributos. Um vetor de objetos é declarado da mesma forma que um vetor simples. Na inserção de itens no vetor, contudo, devem-se indicar os atributos que o compõem. 
+
+```html
+<script>
+    var carros = []
+
+    carros.push({ modelo: "Supra", preco: 250000});
+    carros.push({ modelo: "Silvia", preco: 350000});
+
+    for( var i = 0; i < carros.length; i++){
+        alert(carros[i].modelo+ ' - R$: ' + carros[i].preco)
+    }
+<script>
+```
+
+No script [exemplo 5.4](/capitulo05/exemplos/ex5_4/index.html) , o vetor é inicialmente declarado. Em seguida, são realizadas duas inclusões de veículos. Na sequência, o comando `for` é utilizado para percorrer os elementos do vetor e apresentar o conteúdo de cada um dos seus atributos. 
