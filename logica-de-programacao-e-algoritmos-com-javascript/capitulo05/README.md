@@ -176,4 +176,25 @@ Definir um vetor de objetos nos permite realizar operações sobre esse vetor, c
 <script>
 ```
 
-No script [exemplo 5.4](/capitulo05/exemplos/ex5_4/index.html) , o vetor é inicialmente declarado. Em seguida, são realizadas duas inclusões de veículos. Na sequência, o comando `for` é utilizado para percorrer os elementos do vetor e apresentar o conteúdo de cada um dos seus atributos. 
+No script [exemplo 5.4](/capitulo05/exemplos/ex5_4/index.html) , o vetor é inicialmente declarado. Em seguida, são realizadas duas inclusões de veículos. Na sequência, o comando `for` é utilizado para percorrer os elementos do vetor e apresentar o conteúdo de cada um dos seus atributos.
+
+---
+
+## 5.5 PESQUISAR E FILTRAR DADOS
+
+Podemos explorar como percorrer os elementos do vetor para extrair algumas informações sobre o seu conteúdo. É muito importante ter um cuidado extra de informar ao usuário quando uma pesquisa não encontrou um resultado. O código [exemplo 5.5.a](/capitulo05/exe5_5/exe5_5.a) apresenta as idades que possuem valor maior ou igual a 18 armazenadas em um vetor. A solução para apresentar uma mensagem que indica que não há idades maiores que 18 na lista, é utilizar uma variável de controle. Essa variável recebe um valor inicial antes da repetição. Caso a condição dentro do laço seja verdadeira, então, modifica-se o valor da variável. Após o laço, deve-se verificar, então, se a variável mantém o valor inicial. Isso significa que a condição testada no laço não ocorreu e que, portanto, a mensagem indicativa deve ser exibida.
+O código do exemplo [5.5.b](/capitulo05/exe5_5/exe5_5.b) explora um recurso de filtragem de dados em uma lista, o programa ‘Revenda Herbie’,armazena um valor de objetos, o modelo e o preço dos carros disponíveis na revenda.
+
+![Exemplo 5.5.b](/.github/cap05/exe5_5.b.png)
+
+---
+
+## 5.6 CLASSIFICAR OS ITENS DO VETOR
+
+Javascript dispões do método `sort()` para classificar os itens de um vetor em ordem alfabética crescente. Ao exibir os dados de uma lista em ordem, conseguimos facilmente localizar algum de seus elementos. Caso seja necessário manter a lista na ordem original e apresentar em uma função os dados ordenados, é possível fazer uma cópia a partir do método `slice()`, ele obtém uma cópia com todos os elementos do vetor original quando é usado sem parâmetros. Caso necessário classificar os dados em ordem decrescente, podemos utilizar em conjunto os métodos `sort()` e `reverse()`. O método reverse() inverte a ordem dos elementos de um vetor.
+
+Ordenar os dados de uma lista, além de ser útil para exibir os dados de uma forma organizada, também auxilia no processo de obtenção de algumas respostas em um programa. O exemplo 5.6.b [Programa Brinquedoteca](/capitulo05/exe5_6) é um programa que lê o nome e a idade de uma criança e exibe o número e o percentual de crianças em cada idade, a fim de que os brinquedos sejam comprados de acordo com a faixa etária delas.
+
+![Exemplo 5.2.a](/.github/cap05/exe5_6.a.png)
+
+---
