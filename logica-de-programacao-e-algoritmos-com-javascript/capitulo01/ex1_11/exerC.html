@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Capitulo 01 - Exercicio 1.11</title>
+  </head>
+  <body>
+    <script>
+      // c) Elaborar um programa para uma loja, o qual leia o preço de um produto e
+      // informe as opções de pagamento da loja. Calcule e informe o valor para
+      // pagamento à vista com 10% de desconto e o valor em 3x.
+      // Exemplo:
+      // Preço R$: 60.00
+      // À Vista R$: 54.00
+      // Ou 3x de R$: 20.00
+
+      const preco = Number(prompt("Digite o valor do produto"));
+      const desconto = preco * 0.1;
+      const precoAvista = preco - desconto;
+      const valorPrazo = preco / 3;
+
+      alert(
+        "Preco: " +
+          preco +
+          "\nÀ vista: " +
+          precoAvista.toFixed(2) +
+          "\nOu 3x de: " +
+          valorPrazo.toFixed(2)
+      );
+    </script>
+  </body>
+</html>

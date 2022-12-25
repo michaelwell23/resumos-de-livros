@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -10,23 +10,23 @@
     <script>
       //Solicita o número e repete a leitura enquanto inválido
       do {
-        var num = Number(prompt('Numero: '));
+        var num = Number(prompt("Numero: "));
         if (num == 0 || isNaN(num)) {
-          alert('Digite um número inválido...');
+          alert("Digite um número inválido...");
         }
       } while (num == 0 || isNaN(num));
 
       //declara e inicializa variável que irá exibir pares
-      var pares = 'Pares entre 1 e ' + num + ': ';
+      var pares = "Pares entre 1 e " + num + ": ";
 
       // isola o primeiro par(para evtar última vírgula)
       if (num > 1) {
-        pares = pares + '2';
+        pares = pares + "2";
       }
 
       //laço para acumular pares (inicia em 4, pois 2 já foi atribuido)
       for (var i = 4; i <= num; i = i + 2) {
-        pares = pares + ', ' + i;
+        pares = pares + ", " + i;
       }
 
       // exibe lista dos números pares

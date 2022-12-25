@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Capitulo 01 - Exercicio 1.11</title>
+  </head>
+  <body>
+    <script>
+      // d) Elaborar um programa que leia 2 notas de um aluno em uma disciplina.
+      // Calcule e informe a média das notas.
+      // Exemplo:
+      // 1ª Nota: 7.0
+      // 2ª Nota: 8.0
+      // Média: 7.5
+
+      const nota1 = Number(prompt("Digite a primeira nota: "));
+      const nota2 = Number(prompt("Digite a segunda nota: "));
+      const media = (nota1 + nota2) / 2;
+
+      alert(
+        "1º Nota: " +
+          nota1 +
+          "\n2º Nota: " +
+          nota2 +
+          "\nmedia: " +
+          media.toFixed(1)
+      );
+    </script>
+  </body>
+</html>

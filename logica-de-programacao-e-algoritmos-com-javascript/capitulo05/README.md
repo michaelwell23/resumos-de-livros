@@ -198,3 +198,25 @@ Ordenar os dados de uma lista, além de ser útil para exibir os dados de uma fo
 ![Exemplo 5.2.a](/.github/cap05/exe5_6.a.png)
 
 ---
+
+## 5.7 EXERCÍCIOS
+
+Os exercícios do capitulo estão no arquivo de exemplo, você pode ir até eles clicando [Aqui](/capitulo05/exemplos/ex5_7/)
+
+![Exercício a](/.github/cap05/exe5_7.a.png)
+![Exercício b](/.github/cap05/exe5_7.b.png)
+![Exercício c](/.github/cap05/exe5_7.c.png)
+![Exercício d](/.github/cap05/exe5_7.d.png)
+
+---
+
+## 5.8 CONSIDERAÇÕES FINAIS DO CAPÍTULO
+
+Os vetores armazem listas de dados em um programa. Cada vetor contém um nome e um índice que se inicia na posição zero. O JavaScript dispõe de diversos métodos para trabalhar com vetores, dentre os principais ações realizadas, destaca-se:
+
+- Inserir e remover elementos no inicio e no final do vetor
+- Exbir o conteúdo do vetor
+- Localizar um item no vetor
+- Manipular um vetor de objetos, com diferentes atributos
+- Filtrar os dados da lista
+- Classificar os elementos do vetor

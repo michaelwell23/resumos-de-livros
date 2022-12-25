@@ -119,7 +119,7 @@ Existem vários outros recursos que podem ser investigados no depurador de progr
 
 ## 4.7 EXERCÍCIOS
 
-Os exercícios do capitulo estão no arquivo de exemplo, você pode ir até eles clicando [Aqui](/capitulo04/exemplos/ex4_7-exercicio/)
+Os exercícios do capitulo estão no arquivo de exemplo, você pode ir até eles clicando [Aqui](/capitulo04/exemplos/ex4_7/)
 
 ![Exercício a](/.github/cap04/exe4_7.a.png)
 ![Exercício b](/.github/cap04/exe4_7.b.png)
