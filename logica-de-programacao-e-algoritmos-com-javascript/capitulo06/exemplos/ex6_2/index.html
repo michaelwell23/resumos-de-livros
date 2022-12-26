@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exemplo 6.2</title>
+  </head>
+  <body>
+    <script>
+      var palavra = prompt("Palavra: ");
+      var tam = palavra.length;
+
+      var inverso = palavra.charAt(tam - 1).toUpperCase();
+
+      for (var i = tam - 2; i >= 0; i--) {
+        inverso += palavra.charAt(i).toLocaleLowerCase();
+      }
+      alert("Palavra: " + palavra + "\nInvertida: " + inverso);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,4 @@
+img { float: left; height: 300px; width: 300px; }
+h1 { border-bottom-style: inset; }
+.entreLetras { letter-spacing: 0.5em; }
+.aDireita { text-align: right; }

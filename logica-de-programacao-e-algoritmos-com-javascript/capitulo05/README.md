@@ -161,7 +161,7 @@ No exemplo acima o  `indexOf()` exibido no `alert()` verifica a existência do n
 
 5.4 VETORES DE OBJETOS
 
-Definir um vetor de objetos nos permite realizar operações sobre esse vetor, como classificar os elementos por um dos seus atributos. Um vetor de objetos é declarado da mesma forma que um vetor simples. Na inserção de itens no vetor, contudo, devem-se indicar os atributos que o compõem. 
+Definir um vetor de objetos nos permite realizar operações sobre esse vetor, como classificar os elementos por um dos seus atributos. Um vetor de objetos é declarado da mesma forma que um vetor simples. Na inserção de itens no vetor, contudo, devem-se indicar os atributos que o compõem.
 
 ```html
 <script>
