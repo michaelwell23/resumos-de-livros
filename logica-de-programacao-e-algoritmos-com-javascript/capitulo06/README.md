@@ -85,3 +85,82 @@ O [Exemplo 6.6](/capitulo06/exemplos/ex6_6/) é um programa de validação de se
 ![Exemplo 6.4](/.github/cap06/ex6_6.a.png)
 
 ![Exemplo 6.4](/.github/cap06/ex6_6.b.png)
+
+---
+
+## 6.7 SUBSTITUIÇÃO DE CARACTERES
+
+As expressões regulares também são utilizadas como parâmetro do método `replace()`, para substituir caracteres por outro em uma string. Por padrão, a substituição incide sobre a primeira ocorrência, utilizando a opção `g` das expressões regulares, a troca ocorre em toda a string.
+
+```js
+var senha = 'ABACAD'
+
+var senha1 = senha.replace('A', 'X') // XBACAD
+var senha1 = senha.replace('/A/g', 'X') // XBXCXD
+```
+
+Também podemos utilizar o método `replace()` para retirar um caractere de uma string.
+
+```js
+var app = "App Controle Financeiro";
+
+var app2 = app.replace(" ", ""); // AppControle Financeiro
+var app3 = app.replace(/ /g, ""); // AppControleFinanceiro
+var app4 = app.replace(/ /g, "").toLowerCase(); //appcontrolefinanceiro
+```
+
+---
+
+## 6.8 MANIPULAÇÃO DE DATAS
+
+Para trabalhar com datas em JavaScript,podemos declarar um objeto que recebe uma instância do objeto Date. 
+
+```js
+var hoje = new Date(); 
+```
+
+Há diversos métodos para a manipulação de datas.Os métodos `getDate()`, 'getMonth()' e `getFullYear()` são utilizados para obter, respectivamente, o dia, o mês e o ano. Os métodos `setDate()`, `setMonth()` e `setFullYear()` permitem alterar o dia, o mês e o ano da data.  O programa  exibe a data atual e o dia seguinte a essa data:
+
+```html
+    <script>
+      var hoje = new Date();
+      var amanha = new Date();
+      var dia = amanha.getDate();
+      amanha.setDate(dia + 1);
+      alert("Hoje: " + hoje + "\nAmanhã: " + amanha);
+    </script>
+```
+
+![Exemplo 6.8.a](/.github/cap06/ex6_8.a.png)
+
+Com os métodos `toDateString()` e `toTimeString()', podemos dividir a exibição completa da data em dados da data e da hora.
+
+```html
+<script>
+  var hoje = new Date();
+  alert("Dia: " + hoje.toDateString() + "\nHora: " +
+  hoje.toTimeString());
+</script>
+```
+
+![Exemplo 6.8.b](/.github/cap06/ex6_8.b.png)
+
+Como o valor retornado pelos `getDate()`, `getMonth()` e `getFullYear()` é um número , podemos executar operações matemáticas sobre os dados extraídos de uma data.
+
+```html
+<script>
+  var anoAtual = new Date().getFullYear();
+  var idade = prompt("Quantos anos você comemora em " + anoAtual + "?");
+  var anoNasc = anoAtual - idade;
+  alert("Ah... Então você nasceu em " + anoNasc);
+</script>
+```
+
+O [Exemplo 6.8.c](/capitulo06/exemplos/ex6_8/ex6_8.c/) deve ler a data de vencimento e o valor de uma conta. Caso a conta esteja em atraso,o programa deve calcular o valor da multa e dos juros a serem acrescentados ao valor total.
+
+![Exemplo 6.8.c](/.github/cap06/ex6_8.c1.png)
+![Exemplo 6.8.d](/.github/cap06/ex6_8.c2.png)
+
+Por fim para destacar as vantagens de trabalhar com datas em JavaScript, o [Exemplo 6.8.d](/capitulo06/exemplos/ex6_8/ex6_8.d/) é um programa que solicita o número de parcelas que devem ser geradas e calcula a data de cada uma dessas parcelas, uma para cada mês. Com os métodos vistos nesta seção, é possível definir uma data, modificar partes dela e realizar operações.
+
+![Exemplo 6.8.a](/.github/cap06/ex6_8.d.png)
