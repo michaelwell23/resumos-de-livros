@@ -164,3 +164,36 @@ O [Exemplo 6.8.c](/capitulo06/exemplos/ex6_8/ex6_8.c/) deve ler a data de vencim
 Por fim para destacar as vantagens de trabalhar com datas em JavaScript, o [Exemplo 6.8.d](/capitulo06/exemplos/ex6_8/ex6_8.d/) é um programa que solicita o número de parcelas que devem ser geradas e calcula a data de cada uma dessas parcelas, uma para cada mês. Com os métodos vistos nesta seção, é possível definir uma data, modificar partes dela e realizar operações.
 
 ![Exemplo 6.8.a](/.github/cap06/ex6_8.d.png)
+
+---
+
+## 6.9 EXERCÍCIOS
+
+Os exercícios do capitulo estão no arquivo de exemplo, você pode ir até eles clicando [Aqui](/capitulo06/exemplos/ex6_9)
+
+Exercício 6.9.a
+![exemplo 6.1.a](/.github/cap06/ex6_9.a.png)
+![exemplo 6.1.a2](/.github/cap06/ex6_9.a2.png)
+
+Exercício 6.9.b
+![exemplo 6.1.b](/.github/cap06/ex6_9.b.png)
+
+Exercício 6.9.c
+![exemplo 6.1.c](/.github/cap06/ex6_9.c.png)
+
+Exercício 6.9.d
+![exemplo 6.1.d](/.github/cap06/ex6_9.d.png)
+
+---
+
+## 6.10 CONSIDERAÇÕES FINAIS DO CAPÍTULO
+
+A manipulação de strings e as operações envolvendo datas são tarefas importantes e frequentemente requeridas no desenvolvimento de sistemas. Neste capítulo, discutimos sobre os métodos que permite realizar operaçĩes sobre strings e datas. Para strings, as seguintes ações podem ser executadas:
+
+- `Extrair cada um dos caracteres que compõem a string`;
+- `Converter os caracteres de uma palavra para letras maiúsculas ou minúsculas`;
+- `Copiar e localizar caracteres na string`;
+- `Dividir a string em elementos de vetor a partir da ocorrência de um caractere`;
+- `Pesquisar caracteres e substituir um ou mais caracteres na palavra`;
+
+Já para datas existem outro conjunto particular de métodos que recuperam, respectivamente dia, mês e ano de um data, esse métodos são: `getDate()` , `getMonth()` e `getFullYear()`. Por sua vez, temos os que altera cada uma das partes que compõem uma data e permite realizar cálculos como somar ou subtrair dias, meses e anos na data, esses métodos são: `setDate()` , `setMonth()` e `setFullYear()`. E para criar um objeto do tipo Date, podemos utilizar o `new Date()`.
