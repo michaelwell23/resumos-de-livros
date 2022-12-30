@@ -1,6 +1,8 @@
 # CAPÍTULO 01: INTRODUÇÃO
 
-Para começar a pensar como um programa funciona, podemos ilustrar as etapas e os fluxos básicos do sistema de um caixa eletrônico de um banco. Podemos observar que temos três etapas neste fluxo: entrada, processamento e saída. Ao estruturar os passos de um programa, estamos montando um algoritmo. Algoritmo é uma sequência de passos (combinados) a serem executados para a realização de uma tarefa, em um tempo finito. Organizar essa sequência de passos de forma lógica e a nossa atribuição enquanto programadores de sistemas.
+No processo de contrução de um sistema,é necessário ter conhecimento em lógica. Esse conhecimento aplicado a uma linguagem de programação vai produzir um sistema. Para construir um sistema em qualquer linguagem, é essencial dominar as técnicas trabalhadas em lógica de programação.  
+
+Para começar a pensar como um programa funciona, podemos ilustrar as etapas e os fluxos básicos do sistema de um caixa eletrônico de um banco. Podemos observar que temos três etapas neste fluxo: `entrada`, `processamento` e `saída`. Ao estruturar os passos de um programa, estamos montando um algoritmo. Algoritmo é uma sequência de passos (combinados) a serem executados para a realização de uma tarefa, em um tempo finito. Organizar essa sequência de passos de forma lógica e a nossa atribuição enquanto programadores de sistemas.
 
 ---
 
@@ -22,7 +24,7 @@ Algumas ações realizadas em um programa seguem uma lógica sequencial, ou seja
 
 ### 1.1.4 ANALISAR OUTRAS POSSIBILIDADES DE SOLUÇÃO
 
-Quando deparar com um problema que você tem dificuldades para resolver de uma forma, respire um pouco… Tome uma água… Tente pensar se poderia existir outra forma de solucioná-lo.
+Quando deparar com um problema que você tem dificuldades para resolver de uma forma, respire um pouco. Tome uma água… Tente pensar se poderia existir outra forma de solucioná-lo.
 
 ### 1.1.5 ENSINAR AO COPUTADOR UMA SOLUÇÃO
 
@@ -42,13 +44,13 @@ No processo de aprendizagem de algo novo, é importante memorizar um roteiro de 
 
 ## 1.3 JAVASCRIPT
 
-O JavaScript possui um importante papel no processo de desenvolvimento de páginas para internet, junto com o HTML e CSS. O HTML serve para descrever o conteúdo de uma página web e definir a marcação semântica dos elementos que compõem a página. O CSS define a aparência do site – cores, bordas, espaçamentos etc. Já o JavaScript é utilizado para definir o comportamento dos elementos da página. Com JavaScript podemos interagir com os visitantes de uma página a partir de campos de formulário, acessar e modificar o conteúdo e as características de uma página, salvar informações no navegador do usuário, etc. JavaScript é utilizado principalmente para rodar scripts no lado do cliente, embora também seja crescente o número de aplicações desenvolvidas com a linguagem para rodar no lado do servidor. Ela também é uma linguagem orientada a objetos. Esse paradigma é essencial para o desenvolvimento de aplicações profissionais já há algum tempo.
+O `JavaScript` possui um importante papel no processo de desenvolvimento de páginas para internet, junto com o `HTML` e `CSS`. O `HTML` serve para descrever o conteúdo de uma página web e definir a marcação semântica dos elementos que compõem a página. O `CSS` define a aparência do site – cores, bordas, espaçamentos etc. Já o `JavaScript` é utilizado para definir o comportamento dos elementos da página. Com JavaScript podemos interagir com os visitantes de uma página a partir de campos de formulário, acessar e modificar o conteúdo e as características de uma página, salvar informações no navegador do usuário, etc. `JavaScript` é utilizado principalmente para rodar scripts no lado do cliente, embora também seja crescente o número de aplicações desenvolvidas com a linguagem para rodar no lado do servidor. Ela também é uma linguagem orientada a objetos. Esse paradigma é essencial para o desenvolvimento de aplicações profissionais já há algum tempo.
 
 ---
 
 ## 1.4 EDITORES DE CÓDIGO JAVASCRIPT
 
-Para criar programas JavaScript, podemos utilizar editores simples que já estão instalados no computador,esses editores simples como o bloco de notas, não são muito recomendados pela ausência de recursos de auxílio ao programador. Também há os editores online que contém alguns recursos extras e a vantagem de poder acessar e compartilhar os códigos na internet. Existem também os editores profissionais que contém diversos recursos que facilitam o desenvolvimento dos programas. Os editores online possibilitam testar diretamente os programas em um navegador web. Sites como w3schools.com, js.do e jsbin.com, são exemplos de classes de editores JavaScript. No caso do site da w3schools.com, há uma descrição dos recursos da linguagem e de seus comandos (em inglês). Os editores profissionais nos apresenta recursos que nos auxiliam no desenvolvimento de aplicações. Autocompletar os comandos, alertas de erros de sintaxe, formatação de código (itendação), cores diferente para comando e integração com GitHub são alguns exemplos.
+Para criar programas JavaScript, podemos utilizar editores simples que já estão instalados no computador,esses editores simples como o bloco de notas, não são muito recomendados pela ausência de recursos de auxílio ao programador. Também há os editores online que contém alguns recursos extras e a vantagem de poder acessar e compartilhar os códigos na internet. Existem também os editores profissionais que contém diversos recursos que facilitam o desenvolvimento dos programas. Os editores online possibilitam testar diretamente os programas em um navegador web. Sites como [w3schools.com](w3schools.com), [js.do](js.do) e [jsbin.com](jsbin.com), são exemplos de classes de editores JavaScript. No caso do site da w3schools.com, há uma descrição dos recursos da linguagem e de seus comandos (em inglês). Os editores profissionais nos apresenta recursos que nos auxiliam no desenvolvimento de aplicações. Autocompletar os comandos, alertas de erros de sintaxe, formatação de código (itendação), cores diferente para comando e integração com GitHub são alguns exemplos.
 
 ---
 
@@ -75,15 +77,15 @@ Uma das principais funções de um programa é interagir com os usuários, e uma
 - Conter espaços
 - Começar com números
 - Conter caracteres especiais, como +,-,\*,/,%, (,),{,},!,@, #
-- Utilizar nomes de palavras reservadas da linguagem, como function, var, new, for ou return.
+- Utilizar nomes de palavras reservadas da linguagem, como `function`, `var`, `new`, `for` ou `return`.
 
-Para fazer um variável receber um valor, utilizamos o conceito de atribuição. A atribuição de um valor para uma variável é feita com o sinal "=". Épossível declar uma váriavel utilizando a palavra reservada `var` e atribuir diretamento um valor com o sinal de atribuição da seguinte forma:
+Para fazer um variável receber um valor, utilizamos o conceito de atribuição. A atribuição de um valor para uma variável é feita com o sinal "=". É possível declar uma váriavel utilizando a palavra reservada `var` e atribuir diretamento um valor com o sinal de atribuição da seguinte forma:
 
 ```js
 var idade = 32
 ```
 
-As novas versões do JavaScript e dos navegadores já suportam o uso de constantes. Para declar uma constante, podemos fazer da mesma forma que foi utilizada para criar uma variável, mas em vez de utilizar a palavra reservada var, utilizamos a `const`. É um padrão utilizar letras maiúsculas para nomer as constantes.
+As novas versões do JavaScript e dos navegadores já suportam o uso de constantes. Para declarar uma constante, podemos fazer da mesma forma que foi utilizada para criar uma variável, mas em vez de utilizar a palavra reservada `var`, utilizamos a `const`. É um padrão utilizar letras maiúsculas para nomer as constantes.
 
 ```js
 const POLTRONAS = 240
@@ -108,7 +110,7 @@ var nome = prompt('Digite o seu nome')
 
 ![exemplo 1.7.1](/.github/cap01/exe1_7.1.png)
 
-O método `alert()` contém um textmo entre aspas que é um texto fixo a ser exibido na execução do comando, o sinal mais (+) representa a concatenação com a variável nome. O fato de o nome estar sem aspas indica que naquele local deve ser apresentado o conteúdo da variável, e não um texto fixo
+O método `alert()` contém um texto entre aspas que é um texto fixo a ser exibido na execução do comando, o sinal mais (+) representa a concatenação com a variável nome. O fato de o nome estar sem aspas indica que naquele local deve ser apresentado o conteúdo da variável, e não um texto fixo
 
 ```js
 alert('Olá ' + nome)
@@ -132,7 +134,7 @@ Um comentário é uma observação inserida pelo programador no código, com o o
 
 ## 1.9 TIPOS DE DADOS E CONVERSÕES DE TIPOS
 
-Em JavaScript, os tipos principais de dados são Strings, Números e valores Booleanos. Saber o tipo de uma variável nos permite identificar quais operações são possíveis para essa variável. Ou, então, qual o comportamento dessa variável nas fórmulas em que elas estão inseridas. Nesse contexto, podemos apresentar uma dessas particularidades no exemplo, no qual o resultado do cálculo é exibido.
+Em JavaScript, os tipos principais de dados são `Strings`, `Números` e valores `Booleanos`. Saber o tipo de uma variável nos permite identificar quais operações são possíveis para essa variável. Ou, então, qual o comportamento dessa variável nas fórmulas em que elas estão inseridas. Nesse contexto, podemos apresentar uma dessas particularidades no exemplo, no qual o resultado do cálculo é exibido.
 
 ```js
 var a = '20'
@@ -142,7 +144,7 @@ var d = a - 2 // d = 18
 var e = a + 2 // e = 202 ???
 ```
 
-No exemplo, temos uma variável do tipo String que recebe “20”. Nas operações de multiplicação, divisão e subtração, a linguagem converte esse texto em número e o valor retornado está de acordo com o esperado. Contudo, quando realizamos adição, o valor de retorno é diferente do padrão, pois a linguagem concatena (+) o texto com o número. Podemos resolver esse problema convertendo o texto em número utilizando métodos em JavaScript como Number(), parseInt() e parseDouble(), mas nesse caso o Number() será utilizado para facilitar o processo de aprendizagem.
+No exemplo, temos uma variável do tipo String que recebe “20”. Nas operações de `multiplicação`, `divisão` e `subtração`, a linguagem converte esse texto em número e o valor retornado está de acordo com o esperado. Contudo, quando realizamos adição, o valor de retorno é diferente do padrão, pois a linguagem concatena (+) o texto com o número. Podemos resolver esse problema convertendo o texto em número utilizando métodos em JavaScript como `Number()`, `parseInt()` e `parseDouble()`, mas nesse caso o `Number()` será utilizado para facilitar o processo de aprendizagem.
 
 ```js
 var a = '20'
@@ -150,13 +152,14 @@ var f = Number(a) // convert uma String em Numero.
 var g = f + 2 // g = 22
 ```
 
-Em JavaScript não é necessário definir o tipo da variável na sua declaração. Ela assume um tipo no momento da atribuição de valor. A atribuição de um conteúdo entre aspas cria uma variável do tipo String. Para variáveis numéricas, não devem utilizar aspas. As Booleanas podem conter os valores true ou false. As entradas de dados realizadas com método prompt() criam variáveis do tipo String, exceto se houver uma função de conversão de dados como Number(). Exibir uma variável que não recebeu uma atribuição (sem um valor), vai gerar uma saída `undefined`.
+Em JavaScript não é necessário definir o tipo da variável na sua declaração. Ela assume um tipo no momento da atribuição de valor. A atribuição de um conteúdo entre aspas cria uma variável do tipo String. Para variáveis numéricas, não devem utilizar aspas. As Booleanas podem conter os valores `true` ou `false`. As entradas de dados realizadas com método `prompt()` criam variáveis do tipo String, exceto se houver uma função de conversão de dados como Number(). Exibir uma variável que não recebeu uma atribuição (sem um valor), vai gerar uma saída `undefined`.
 
 ```js
 var fruta = 'Manga'
 var preco = 350.0
 var maiorDeIdade = true
 var novoValor
+
 alert(fruta + ' ' + preco + ' ' + maiorDeIdade + ' ' + novoValor)
 ```
 
@@ -166,61 +169,13 @@ alert(fruta + ' ' + preco + ' ' + maiorDeIdade + ' ' + novoValor)
 
 ## 1.10 EXEMPLOS DE ENTRADA, PROCESSAMENTO E SAÍDA
 
-Vimos que, no geral, para elaborar um programa simples, é necessário realizar três etapas: entrada, processamento e saída. Agora podemos implementar alguns exemplos de algoritmos de programa sequencial, os quais realizam essa etapa:
-
-a) Elaborar um programa que leia um número. Calcule e informe o dobro desse número.
-
-```js
-var num = prompt('Numero: ')
-var dobro = num * 2
-alert('Dobro é: ' + dobro)
-```
-
-![exemplo 1.10.1](/.github/cap01/)
-![exemplo 1.10.2](/.github/cap01/)
-
-Como a operação realizada é de multiplicação, não é necessário converter a entrada de dados realizada pelo método `prompt()`. Contudo, para calcular o dobro do número a partir de uma operação de adição, a conversão é necessária.
-
-```js
-var num = Number(prompt('Numero: '))
-var dobro = num + num
-alert('Dobro é: ' + dobro)
-```
-
-b) Elaborar um programa que leia dois números. Calcule e informe a soma desses números
-
-```js
-var num1 = Number(prompt('1º Número: '))
-var num2 = Number(prompt('2º Número: '))
-var soma = num1 + num2
-alert('Soma é: ' + soma)
-```
-
-c) Elaborar um programa que leia o valor de um jantar. Calcule e informe o valor da taxa do garçom (10%) e o valor total a ser pago.
-
-```js
-var num1 = Number(prompt('Valor do Jantar R$: '))
-var garcom = jantar * 0.1
-var total = jantar + garcom
-alert(
-  'Taxa Garçom R$: ' + garcom.toFixed(2) + '\nTotal R$: ' + total.toFixed(2)
-)
-```
-
-d) Elaborar um programa que leia a duração de uma viagem em dias e horas. Calcule e informe a duração total da viagem em número de horas.
-
-```js
-var dias = Number(prompt('Nº Dias: '))
-var horas = Number(prompt('Nº Horas: '))
-var total = dias * 24 + horas
-alert('Total de Horas: ' + total)
-```
+Vimos que, no geral, para elaborar um programa simples, é necessário realizar três etapas: `entrada`, `processamento` e `saída`. O [Ex_10](/capitulo01/exemplos/ex1_10/) contém exemplos de algoritmo de programa sequencial.
 
 ---
 
 ## 1.11 EXERCÍCIOS
 
-Os exercícios do capitulo estão no arquivo de exemplo, você pode ir até eles clicando [Aqui](/capitulo01/exercicios1_11/)
+Os exercícios do capitulo estão no arquivo de exemplo, você pode ir na solução deles, clicando [Aqui](/capitulo01/)
 
 ---
 
@@ -233,7 +188,7 @@ Este capítulo destacou os pontos essenciais necessários para o aprendizado de 
 - Uma boa regra a seguir para resolver os primeiros exercícios de programação é que todo o programa tem três etapas: entrada, processamento e saída.
 - JavaScript é uma linguagem de destaque no cenário atual.
 - Existem diversas opções de editores de código JavaScript.
-- A linguagem JavaScript dispõe dos comando prompt() e alert() para realizar pequenas interações com o usuários.
+- A linguagem JavaScript dispõe dos comando `prompt()` e `alert()` para realizar pequenas interações com o usuários.
 - Variáveis é um conceito fundamental para a criação de programas. São as - variáveis que permitem guardar os dados de entrada, armazenar um cálculo ou outro processamento e, a partir delas, exibir dados de saída personalizados para cada interação de um usuário do sistema;
 
 Para nos tornarmos desenvolvedores de sistemas, é preciso construir um conhecimento sólido sobre a base, assim como na construção de um grande edifício, em que o alicerce é fundamental para as demais estruturas.

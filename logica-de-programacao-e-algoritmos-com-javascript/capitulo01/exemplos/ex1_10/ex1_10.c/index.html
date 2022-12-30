@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Capitulo 01 - Exemplo 1.10</title>
+  </head>
+  <body>
+    <script>
+      // c) Elaborar um programa que leia o valor de um jantar. Calcule e informe o valor da taxa do garçom (10%) e o valor total a ser pago.
+      var num1 = Number(prompt("Valor do Jantar R$: "));
+      var garcom = jantar * 0.1;
+      var total = jantar + garcom;
+      alert(
+        "Taxa Garçom R$: " +
+          garcom.toFixed(2) +
+          "\nTotal R$: " +
+          total.toFixed(2)
+      );
+    </script>
+  </body>
+</html>
