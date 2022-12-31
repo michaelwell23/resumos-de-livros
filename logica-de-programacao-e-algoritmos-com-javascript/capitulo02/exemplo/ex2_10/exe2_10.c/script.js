@@ -5,22 +5,22 @@
 // de um produto. Após, apresente as mensagens indicando a promoção –
 // conforme o exemplo ilustrado na Figura 2.13.
 
-function calcularDesconto() {
-  var inPruduto = document.getElementById('inProduto')
-  var inPreco = document.getElementById('inPreco')
-  var outValorPromocao = document.getElementById('outValorPromocao')
-  var outValorProduto = document.getElementById('outValorProduto')
+function calcularPromocao() {
+  var inProduto = document.getElementById("inProduto");
+  var inPreco = document.getElementById("inPreco");
+  var outValorDaPromocao = document.getElementById("outValorDaPromocao");
+  var outValorDoProduto = document.getElementById("outValorDoProduto");
 
-  var produto = inProduto.value
-  var precoProduto = Number(inPreco.value * 2)
-  var descontoProduto = Math.sqrt(Number(inPreco.value))
-  var produtoMaisDesconto = precoProduto + descontoProduto
+  var produto = inProduto.value;
+  var preco = Number(inPreco.value * 2);
+  var descontoNoTerceiroproduto = Math.sqrt(Number(inPreco.value));
+  var valordDosTresProdutos = (preco + descontoNoTerceiroproduto).toFixed(2);
 
-  outValorPromocao.textContent =
-    produto + ' - Promoção: Leve 3 por ' + produtoMaisDesconto.toFixed(2)
-  outValorProduto.textContent =
-    'O 3º produto custa apenas R$:' + descontoProduto.toFixed(2)
+  outValorDaPromocao.textContent =
+    produto + " - Promoção: Leve 3 por R$: " + valordDosTresProdutos;
+  outValorDoProduto.textContent =
+    "O 3º produto custa apenas R$: " + descontoNoTerceiroproduto.toFixed(2);
 }
 
-var btCalcularPromocao = document.getElementById('btCalcularPromocao')
-btCalcularPromocao.addEventListener('click', calcularDesconto)
+var btExibir = document.getElementById("btExibir");
+btExibir.addEventListener("click", calcularPromocao);

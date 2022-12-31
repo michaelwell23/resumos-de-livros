@@ -5,18 +5,18 @@
 // forma integral. A Figura 2.12 exibe um exemplo com dados do
 // programa.
 
-function calculaValorAPagar() {
-  var inValorPorMinuto = document.getElementById('inValorPorMinuto').value
-  var inTempoDeUso = document.getElementById('inTempoDeUso').value
-  var outValor = document.getElementById('outValor')
+function calcularValorDePagamento() {
+  var inValorPorMinuto = document.getElementById("inValorPorMinuto");
+  var inTempoDeUso = document.getElementById("inTempoDeUso");
+  var outValor = document.getElementById("outValor");
 
-  var calcularTempo = Number(Math.ceil(inTempoDeUso / 15))
-  var valor = Number(inValorPorMinuto)
+  var valorPorMinuto = Number(inValorPorMinuto.value);
+  var TempoDeUso = Number(Math.ceil(inTempoDeUso.value / 15));
 
-  var valorTotal = valor * calcularTempo
+  var valor = valorPorMinuto * TempoDeUso;
 
-  outValor.textContent = 'Valor a Pagar: R$' + valorTotal.toFixed(2)
+  outValor.innerHTML = "Valor a pagar R$: " + valor.toFixed(2);
 }
 
-var btCalcular = document.getElementById('btCalcular')
-btCalcular.addEventListener('click', calcularValorAPagar)
+var btCalcular = document.getElementById("btCalcular");
+btCalcular.addEventListener("click", calcularValorDePagamento);

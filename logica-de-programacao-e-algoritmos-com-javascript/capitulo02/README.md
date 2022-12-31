@@ -1,6 +1,10 @@
 # CAPITULO 02 - INTEGRAÇÃI COM HTML
 
-Para desenvolver uma página web, devemos criar um arquivo HTML que contém tags que definem o conteúdo e a semântica dos elementos que constituem a página. Os códigos de programas JavaScript são desenvolvidos para adicionar um comportamento à página.Igualmente, não é preciso compilar o programa ou outra ação adicional. O próprio navegador contém um interpretador para os programas JavaScript. Eles são inseridos nas páginas web em uma seção delimitada pelas tags `<script></script>` ou em um arquivo .js que deve ser referenciado pelo documento HTML.
+Para desenvolver uma página web, devemos criar um arquivo HTML que contém tags que definem o conteúdo e a semântica dos elementos que constituem a página. Os códigos de programas JavaScript são desenvolvidos para adicionar um comportamento à página. Igualmente, não é preciso compilar o programa ou outra ação adicional. O próprio navegador contém um interpretador para os programas JavaScript. Eles são inseridos nas páginas web em uma seção delimitada pelas tags `<script></script>` ou em um arquivo .js que deve ser referenciado pelo documento HTML utilizando a mesma tag, só que com adição do atributo `src` para referenciar o caminho até ao arquivo.
+
+```html
+<script src="script.js"></script> 
+```
 
 ---
 
@@ -21,7 +25,7 @@ Para criar um novo arquivo HTML, podemos inserir algumas tags que definem as se�
 </html>
 ```
 
-Depois de inserir a estrutura básica, podemos trocar o “en” para “pt-BR”. Definindo corretamente o idioma do documento é importante para uma melhor pronúncia por softwares de leitura de tela, além de indicar ao browser o dicionário a ser utilizado para a correção gramatical de textos digitados em campos de formulários.
+Depois de inserir a estrutura básica, podemos trocar o “en” para “pt-BR”. Definir corretamente o idioma do documento é importante para uma melhor pronúncia por softwares de leitura de tela, além de indicar ao browser o dicionário a ser utilizado para a correção gramatical de textos digitados em campos de formulários.
 
 ```html
 <html lang="pt-BR"></html>
@@ -44,7 +48,7 @@ Podemos acrescentar algumas tags ao corpo do documento:
 <p id="resposta"></p>
 ```
 
-A tag h1 serve para destacar um texto com um conteúdo relevante no site. A tag input é a tag que cria um formulário para digitação de dados. Cada campo deve possuir um identificador (id) a ser utilizado no código JavaScript para obter o conteúdo do campo. E a tag `<input type=”button” …>`, cria um botão geralmente para acionar um programa JavaScript. Esses dois últimos comandos estão dentro de um parágrafo criado com as tags `p`. A última linha cria um novo parágrafo no documento, que será utilizado para exibir a mensagem de resposta do programa.
+A tag `h1` serve para destacar um texto com um conteúdo relevante no site. A tag `input` é a tag que cria um formulário para digitação de dados. Cada campo deve possuir um identificador (id) a ser utilizado no código JavaScript para obter o conteúdo do campo. E a tag `<input type=”button” …>`, cria um botão geralmente para acionar um programa JavaScript. Esses dois últimos comandos estão dentro de um parágrafo criado com as tags `p`. A última linha cria um novo parágrafo no documento, que será utilizado para exibir a mensagem de resposta do programa.
 
 ```html
 <!DOCTYPE html>
@@ -102,7 +106,7 @@ Ou, então, utilizar um único comando, acessando diretamente a propriedade que 
 var inputNome = document.getElementById('nome').value
 ```
 
-Se o programa trabalhar com o mesmo elemento mais de uma vez é recomendado armazenar a localização dele em uma variável. Caso contrário, você pode fazer uma referência em uma única linha. Neste capítulo, termos novos foram introduzidos, como objetos, métodos e propriedade, a seguir há uma forma resumida do que cada um deles representa:
+Se o programa trabalhar com o mesmo elemento mais de uma vez é recomendado armazenar a localização dele em uma variável. Caso contrário, você pode fazer uma referência em uma única linha. Abaixo podemos ver uma forma resumida do que cada de cada termo visto nesse módulo:
 
 - `Objeto` – representa uma instância de uma classe.
 - `Método` – representa uma instrução ou um conjunto de instruções que executam uma tarefa
@@ -112,7 +116,7 @@ Se o programa trabalhar com o mesmo elemento mais de uma vez é recomendado arma
 
 ## 2.5 PROPRIEDADE textContent, innerHTML e value
 
-A propriedade `value` obtém ou altera o conteúdo de um campo de formulário HTML. Portanto, para obter o nome do usuário, é preciso utilizar essa propriedade junto com o método `getElementById()` que faz uma referência a um campo de formulário identificado no código HTML. Já a propriedade `textContent` serve para alterar ou obter o conteúdo de elementos de texto do documento identificados no código HTML. É possível, portanto, alterar o texto de qualquer parágrafo ou texto de cabeçalho em uma página web utilizando essa propriedade. Há também a propriedade innerHTML, semelhante a textContent quando aos elemento em que atua, porém renderiza os códigos HTML existentes no seu conteúdo.
+A propriedade `value` obtém ou altera o conteúdo de um campo de formulário HTML. Portanto, para obter o nome do usuário, é preciso utilizar essa propriedade junto com o método `getElementById()` que faz uma referência a um campo de formulário identificado no código HTML. Já a propriedade `textContent` serve para alterar ou obter o conteúdo de elementos de texto do documento identificados no código HTML. É possível, portanto, alterar o texto de qualquer parágrafo ou texto de cabeçalho em uma página web utilizando essa propriedade. Há também a propriedade `innerHTML`, semelhante a textContent quando aos elemento em que atua, porém renderiza os códigos HTML existentes no seu conteúdo.
 
 ---
 
@@ -160,6 +164,11 @@ Essa abordagem é conhecida como rotina de tratamento de eventos `DOM`. A `DOM` 
 ### 2.6.3 USO DOS LISTENERS (OUVINTES) DE EVENTOS
 
 Para criar um listener , deve-se utilizar o método `addEventListener`, cuja sintaxe é:
+
+```js
+elemento.addEventListerner('evento', função);
+```
+
 Após o nome da função, pode ainda ser informado um terceiro parâmetro. Ele é opcional e indica a forma de propagação do evento.
 
 ```js
@@ -185,7 +194,7 @@ Depois de salvar os arquivos, é importante testar o programa. Na execução do 
 
 ## 2.7 NOMENCLATURA E ESCOPO DE VARIÁVEIS
 
-Podemos definir nomes dos elementos HTML precedidos por letras que nos indicam o seu uso nos programas. E nos programas JavaScript, ao referenciar os elementos, podemos manter o mesmo nome. Já as variáveis que recebem o conteúdo de um campo não utilizam esses caracteres iniciais. Esse padrão visa facilitar o processo de aprendizagem. Outro detalhe importante sobre variáveis é que elas têm um `escopo` de abrangência. As variáveis declaradas dentro de uma função ou de um bloco {} são denominadas variáveis locais, isso significa que só tem validada no local onde ela é declarada. Já as variáveis declaradas fora das funções de fora de um bloco, são consideradas globais, e valem para todo o programa. Sempre que possível, de preferência por utilizar variáveis locais, pois o espaço alocado por uma variável local é liberado após a conclusão da função. Além disso, diversos outros problemas podem ser evitados, como a redefinição de valor de uma variável global já existente. Um outro coisado é com relação a declaração das variáveis, não se esqueça de utilizar a palavra `var`. Declarar uma variável sem a palavra var faz com que ela seja interpretada como global, mesmo se declarada dentro de um escopo.
+Podemos definir nomes dos elementos HTML precedidos por letras que nos indicam o seu uso nos programas. E nos programas JavaScript, ao referenciar os elementos, podemos manter o mesmo nome. Já as variáveis que recebem o conteúdo de um campo não utilizam esses caracteres iniciais. Esse padrão visa facilitar o processo de aprendizagem. Outro detalhe importante sobre variáveis é que elas têm um `escopo` de abrangência. As variáveis declaradas dentro de uma função ou de um bloco {} são denominadas variáveis locais, isso significa que só tem validada no local onde ela é declarada. Já as variáveis declaradas fora das funções de fora de um bloco, são consideradas globais, e valem para todo o programa. Sempre que possível, de preferência por utilizar variáveis locais, pois o espaço alocado por uma variável local é liberado após a conclusão da função. Além disso, diversos outros problemas podem ser evitados, como a redefinição de valor de uma variável global já existente. Um outro cuidado, é com relação a declaração das variáveis, não se esqueça de utilizar a palavra `var`. Declarar uma variável sem a palavra var faz com que ela seja interpretada como global, mesmo se declarada dentro de um escopo.
 
 ---
 
@@ -197,8 +206,6 @@ Além dos operadores básicos de matemática as linguagens de programação disp
 var valor1 = 5 % 2 // valor1 = 1
 var valor2 = 7 % 4 // valor2 = 3
 ```
-
-Na primeira expressão, a variável `valor1` recebe 1 porque 5 dividido por 2 é 2 e o resto é 1. Na segunda expressão, a variável `valor2` recebe 3 porque 7 dividido por 4 é 1 e o resto da divisão é 3.
 
 Outros cálculos como raiz quadrada, seno, cosseno podem ser obtidos em JavaScript com o uso das funções matemáticas da classe `Math`.
 
