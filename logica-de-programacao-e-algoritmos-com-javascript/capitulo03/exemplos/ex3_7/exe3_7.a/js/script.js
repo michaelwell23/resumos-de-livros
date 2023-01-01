@@ -1,15 +1,18 @@
-function calcularSeParOuImpar() {
-  var inNumero = document.getElementById('inNumero')
-  var outResposta = document.getElementById('outResposta')
+// a) Elaborar um programa que leia um número. Informe se ele é par ou
+// ímpar.
 
-  var numero = Number(inNumero.value)
+function calcularSeParOuImpar() {
+  var inNumero = document.getElementById('inNumero');
+  var outResposta = document.getElementById('outResposta');
+
+  var numero = Number(inNumero.value);
 
   if (numero % 2 === 0) {
-    outResposta.textContent = 'Resposta: ' + numero + ' é Par'
+    outResposta.textContent = 'Resposta: ' + numero + ' é Par';
   } else {
-    outResposta.textContent = 'Resposta: ' + numero + ' é Ímpar'
+    outResposta.textContent = 'Resposta: ' + numero + ' é Ímpar';
   }
 }
 
-var btVerificar = document.getElementById('btVerificar')
-btVerificar.addEventListener('click', calcularSeParOuImpar)
+var btVerificar = document.getElementById('btVerificar');
+btVerificar.addEventListener('click', calcularSeParOuImpar);

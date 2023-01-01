@@ -52,7 +52,7 @@ Para definir as condições utilizadas nas estruturas condicionais, deve-se faze
 | `>=`    | Maior ou igual |
 | `<=`    | Menor ou igual |
 
-Quando inseridas em um programa cada comparação deve retornar `true` ou `false`.Existe ainda os símbolos de `=== (estritamente igual)` e `!== (estritamente diferente)` que comparam o tipo do dado em análise. Assim, “5” === 5 retorna, falso e “5” !== 5 retorna verdadeiro.
+Quando inseridas em um programa cada comparação deve retornar `true` ou `false`. Existe ainda os símbolos de `=== (estritamente igual)` e `!== (estritamente diferente)` que comparam o tipo do dado em análise. Assim, “5” === 5 retorna, falso e “5” !== 5 retorna verdadeiro.
 
 Para fixar o conceito do uso das condições e operadores relacionais, o [exemplo 3.2](/capitulo03/exemplos/ex3_2/) apresenta uma página que faz a leitura do nome e das notas de um aluno, apresenando a média, onde uma menssagem em azul é exibida caso o aluno seja aprovado, e outra em vermelhor, caso o aluno seja reprovado.
 
@@ -70,16 +70,16 @@ Para definir mais de uma condição em um programa, devemos utilizar os operador
 | &&           | And. Indica conjunção |
 | &#124;&#124; | Or. Indica disjunção  |
 
-Essas tabelas são chamadas de `tabela verdade` que contem todas possíveis combinações dos valores lógicos (verdadeiro ou falso) das proposições e dos conectivos (operadores lógicos) utilizados.
+Essas tabelas são chamadas de `tabela verdade` que contém todas possíveis combinações dos valores lógicos (verdadeiro ou falso) das proposições e dos conectivos (operadores lógicos) utilizados.
 
-A `negação (!)` é o mais simples, ela inverte o resultado de uma condisções.
+A `negação (!)` é o mais simples, ela inverte o resultado das condições.
 
 | p   | !p  |
 | --- | --- |
 | v   | f   |
 | f   | v   |
 
-exemplos de condições:
+exemplos de condições `NOT`:
 
 ```js
 if( !cor == 'azul'){ ... }
@@ -95,7 +95,7 @@ A conjução `&&` reflete a ideia da simultaneidade. A expressão só retorna ve
 | f   | v   | f      |
 | f   | f   | f      |
 
-exemplos de condições:
+exemplos de condições `AND` :
 
 ```js
 if (cor == "Azul" && ano == 2017) { ... }
@@ -104,7 +104,7 @@ if (ano >= 2012 && ano <= 2017) { ... }
 if (cor != "Azul" && cor != "Vermelho") { ... }
 ```
 
-Já a `disjunçções (||)` reflete uma noção de que pelo menos uma das condições deve ser verdadeiras, para que o resultado seja verdadeiro.
+Já a `disjunções (||)` reflete uma noção de que pelo menos uma das condições deve ser verdadeira, para que o resultado seja verdadeiro.
 
 | p   | q   | p &#124;&#124; q |
 | --- | --- | ---------------- |
@@ -113,7 +113,7 @@ Já a `disjunçções (||)` reflete uma noção de que pelo menos uma das condi�
 | f   | v   | v                |
 | f   | f   | f                |
 
-exemplos de condições:
+exemplos de condições `OR`:
 
 ```js
 if (cor == "Azul" || ano == 2017) { ... }
@@ -162,7 +162,7 @@ Cada instrução `case`deve conter um valor de comparação. Os comandos devem s
 Existe ainda uma forma abreviada para criar as instruções `if… else` conhecidas como `operadores ternários`. Eles consistem em realizar uma atribuição para uma variável com base na análise de uma condição.
 
 ```js
-var categoria = idade >= 18 ? 'Alduto' : 'Juvenil';
+var categoria = idade >= 18 ? 'Adulto' : 'Juvenil';
 ```
 
 A condição deve ser inserida após o sinal de atribuição (=). O primeiro valor após a interrogação (?) é atribuído à variável caso a condição seja verdadeira. E o segundo, após os dois pontos (:), caso a condição seja falsa.
@@ -188,7 +188,24 @@ c) [Programa de Fusio Horário](/capitulo03/exemplos/ex3_6/exe3_6.b/)
 
 ## 3.7 EXERCÍCIOS
 
-Os exercícios do capitulo estão no arquivo de exemplo, você pode ir até eles clicando [Aqui](/capitulo03/exemplos/ex3_7/)
+Os exercícios do capitulo estão no arquivo de exemplo, você pode ir até eles clicando no link abaixo:
+
+[a) Programa Par ou Ímpar](/capitulo03/exemplos/ex3_7/exe3_7.a/)
+
+![exercicio 3.7.a](/.github/cap03/exe3_7.a.png)
+
+[b) Programa Verifica Velocidade]((/capitulo03/exemplos/ex3_7/exe3_7.b/))
+
+![exercicio 3.7.b](/.github/cap03/exe3_7.b.png)
+
+[c) Programa Parquímetro]((/capitulo03/exemplos/ex3_7/exe3_7.c/))
+
+![exercicio 3.7.c](/.github/cap03/exe3_7.c.png)
+
+[d) Programa Lados de um Triângulo]((/capitulo03/exemplos/ex3_7/exe3_7.d/))
+
+![exercicio 3.7.d](/.github/cap03/exe3_7.d.png)
+
 
 ---
 
