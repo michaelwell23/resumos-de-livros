@@ -1,28 +1,30 @@
-var pacientes = []; // declara vetor global
-function adicionarPaciente() {
-  // cria referência aos elementos de entrada e saída de dados da
-  página;
-  var inPaciente = document.getElementById("inPaciente");
-  var outLista = document.getElementById("outLista");
-  var nome = inPaciente.value; // obtém nome do paciente
+var pacientes = [];
 
-  // verifica preenchimento do nome do paciente
-  if (nome == "") {
-    alert("Informe o nome do paciente");
+function adicionarPacientes() {
+  var inPaciente = document.getElementById('inPacientes');
+  var outLista = documen.getElementById('outLista');
+
+  var nome = inPaciente.value;
+
+  if (nome == '') {
+    alert('informe o nome do paciente');
     inPaciente.focus();
     return;
   }
-  pacientes.push(nome); // adiciona o nome no final do vetor
-  var lista = ""; // string para concatenar pacientes
 
-  // percorre os elementos do vetor
+  pacientes.push(nome);
+
+  var lista = '';
+
   for (i = 0; i < pacientes.length; i++) {
-    lista += i + 1 + ". " + pacientes[i] + "\n";
+    lista += i + 1 + '. ' + pacientes[i] + '\n';
   }
-  // altera o conteúdo da tag outLista
+
   outLista.textContent = lista;
 
-  // limpa campo e posiciona cursor em inPaciente
-  inPaciente.value = "";
+  inPaciente = value = '';
   inPaciente.focus();
 }
+
+var btAdicionar = document.getElementById('btAdicionar');
+btAdicionar.addEventListener('click', adicionarPacientes);

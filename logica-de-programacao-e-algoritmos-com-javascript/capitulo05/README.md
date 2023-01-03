@@ -14,14 +14,14 @@ Os vetores ou arrays são estruturas que permitem armazenar uma lista de dados n
 Um vetor pode ser referenciado através do seu nome, seguido por um número entre colchetes que aponta para o seu índice. Um índice de um vetor inicia-se pelo 0. Para obter o primeiro valor de um vetor de produtos, devemos utilizar: `produtos[0]`. Para alterar um produto da lista, podemos atribuir um conteúdo a um elemento do vetor.
 
 ```js
-produtos[4] = 'Requeijão'
+produtos[4] = 'Requeijão';
 ```
 
 A declaração de um vetor pode ser da seguinte forma:
 
 ```js
 var produtos = [];
-var produtos2 = new array()
+var produtos2 = new array();
 ```
 
 Também é possível declarar um vetor com algum conteúdo inicial.
@@ -63,40 +63,39 @@ Podemos gerenciar a lista com a inclusão e a exclusão de itens a esse veto. Os
 | pop()     | Remove o último elemento do vetor       |
 | shift()   | Remove o primeiro elemento do vetor     |
 
-Os exemplos abaixo são uma demonstração do que acontece com o conteúdo do vetor  utilizando cada um dos métodos acima.
+Os exemplos abaixo são uma demonstração do que acontece com o conteúdo do vetor utilizando cada um dos métodos acima.
 
 ```html
 <script>
-    // declara e define conteúdo inicial do vetor
-    var cidade = ['Pelotas'];
+  // declara e define conteúdo inicial do vetor
+  var cidade = ['Pelotas'];
 
-    cidades[0] = 'Pelotas';
+  cidades[0] = 'Pelotas';
 
-    // adiciona cidade ao final do vetor
-    cidades.push('São Lourenço')
+  // adiciona cidade ao final do vetor
+  cidades.push('São Lourenço');
 
-    cidades[0] = 'Pelotas';
-    cidades[1] = 'São Lourenço';
+  cidades[0] = 'Pelotas';
+  cidades[1] = 'São Lourenço';
 
-    // adiciona ao inicio e desloca as demais
-    cidades.unshift('Porto Alegre');
+  // adiciona ao inicio e desloca as demais
+  cidades.unshift('Porto Alegre');
 
-    cidades[0] = 'Porto Alegre';
-    cidades[1] = 'Pelotas';
-    cidades[2] = 'São Lourenço';
+  cidades[0] = 'Porto Alegre';
+  cidades[1] = 'Pelotas';
+  cidades[2] = 'São Lourenço';
 
-    // remove a útima cidade do vetor
-    cidades.pop()
+  // remove a útima cidade do vetor
+  cidades.pop();
 
-    cidades[0] = 'Porto Alegre';
-    cidades[1] = 'Pelotas';
+  cidades[0] = 'Porto Alegre';
+  cidades[1] = 'Pelotas';
 
-    // remove a primeira e "sobre" as demais
-    cidades.shift()
+  // remove a primeira e "sobre" as demais
+  cidades.shift();
 
-     cidades[1] = 'Pelotas';
+  cidades[1] = 'Pelotas';
 </script>
-
 ```
 
 ---
@@ -107,32 +106,34 @@ Uma propriedade importante utilizada na manipulação de vetores é a propriedad
 
 ```html
 <script>
-    var cidades = ['Pelotas', 'São Lourenço', 'Porto Alegre']
+  var cidades = ['Pelotas', 'São Lourenço', 'Porto Alegre'];
 
-    for(var i;i < cidades.length; i++){
-        alert(cidades[i])
-    }
+  for (var i; i < cidades.length; i++) {
+    alert(cidades[i]);
+  }
 </script>
-
 ```
 
 Outra forma de exibir o conteúdo do vetor é usando métodos `toString()` e `join()`. Eles convertem o conteúdo do vetor em uma string, sendo que o método `toString()` uma vírgula é inserida entre os elementos, o join() podemos indicar qual caractere vai separar os itens.
 
 ```html
 <script>
-    var cidades = ['Pelotas', 'São Lourenço', 'Porto Alegre']
+  var cidades = ['Pelotas', 'São Lourenço', 'Porto Alegre'];
 
-    for(var i;i < cidades.length; i++){
-        alert(cidades.toString() + "\n\n" + cidades.join(" - "))
-    }
+  for (var i; i < cidades.length; i++) {
+    alert(
+      'toString(): ',
+      cidades.toString() + '\n\n Join(): ' + cidades.join(' - ')
+    );
+  }
 </script>
 ```
 
 Resultado
 
-![exemplo 5.2.a](/.github/cap05/exe5_2.b.png)
+![exemplo 5.2.b](/.github/cap05/exe5_2.b.png)
 
-Para ilustrar a aplicação dos métodos de inclusão e exclusão de elemento no vetor, o  [Consultório Odontológico](/capitulo05/exemplos/ex5_2/ex5_2.c/) é um controlador de atendimento de pacientes de um consultório – como se fosse um painel em exposição em uma TV  de consultório.
+Para ilustrar a aplicação dos métodos de inclusão e exclusão de elemento no vetor, o [Exemplo 5.2.c](/capitulo05/exemplos/ex5_2/ex5_2.c/) é um controlador de atendimento de pacientes de um consultório – como se fosse um painel em exposição em uma TV de consultório.
 
 ![exemplo 5.2.c](/.github/cap05/exe5_2.c.png)
 
@@ -144,24 +145,23 @@ Linguagens de programação dispõem de alguns métodos para auxiliar no control
 
 ```html
 <script>
-    var cidades = [5, 6, 8, 3, 6, 9,]
+  var cidades = [5, 6, 8, 3, 6, 9];
 
-    alert('indexOf - ' + idade.indexOf(6), '\n')
-    alert('lastIndexOf - ' + idade.lastIndexOf(6), '\n')
-    alert('indexOf - ' + idade.indexOf(7), '\n')
-
+  alert('indexOf - ' + idade.indexOf(6), '\n');
+  alert('lastIndexOf - ' + idade.lastIndexOf(6), '\n');
+  alert('indexOf - ' + idade.indexOf(7), '\n');
 </script>
 ```
 
-No exemplo acima o  `indexOf()` exibido no `alert()` verifica a existência do número 6, retornando a posição a posição 1 da ocorrência desse conteúdo. Já no método `lastIndexOf()` age da mesma forma, retornando a posição 4. Na última busca, um valor inexistente é passado, assim o valor -1 é retornado pelo método. Um segundo exemplo que pode ser utilizado para fixar o aprendizado do `indexOf()` e `lastIndexOf()`, trata-se do do [Jogo Descubra o Número](/capitulo05/exemplos/ex5_4/), que como o nome sugere é um programa em que o usuário tem qye adivinhar o número sorteado entre 1 e 100.
+No exemplo acima o `indexOf()` exibido no `alert()` verifica a existência do número 6, retornando a posição a posição 1 da ocorrência desse conteúdo. Já no método `lastIndexOf()` age da mesma forma, retornando a posição 4. Na última busca, um valor inexistente é passado, assim o valor -1 é retornado pelo método. Um segundo exemplo que pode ser utilizado para fixar o aprendizado do `indexOf()` e `lastIndexOf()`, trata-se do[Exemplo 5.3.b](/capitulo05/exemplos/ex5_3/ex5_3.b/), é um programa em que o usuário tem que adivinhar o número sorteado entre 1 e 100.
 
 ![Exemplo 5.2.b](/.github/cap05/exe5_3.b.png)
 
 ---
 
-5.4 VETORES DE OBJETOS
+## 5.4 VETORES DE OBJETOS
 
-Definir um vetor de objetos nos permite realizar operações sobre esse vetor, como classificar os elementos por um dos seus atributos. Um vetor de objetos é declarado da mesma forma que um vetor simples. Na inserção de itens no vetor, contudo, devem-se indicar os atributos que o compõem.
+Definir um vetor de objetos nos permite realizar operações sobre esse vetor, como classificar os elementos por um dos seus atributos. Um vetor de objetos é declarado da mesma forma que um vetor simples. Na inserção de itens no vetor, contudo, devem-se indicar os atributos que os compõem.
 
 ```html
 <script>
@@ -182,8 +182,9 @@ No script [exemplo 5.4](/capitulo05/exemplos/ex5_4/index.html) , o vetor é inic
 
 ## 5.5 PESQUISAR E FILTRAR DADOS
 
-Podemos explorar como percorrer os elementos do vetor para extrair algumas informações sobre o seu conteúdo. É muito importante ter um cuidado extra de informar ao usuário quando uma pesquisa não encontrou um resultado. O código [exemplo 5.5.a](/capitulo05/exe5_5/exe5_5.a) apresenta as idades que possuem valor maior ou igual a 18 armazenadas em um vetor. A solução para apresentar uma mensagem que indica que não há idades maiores que 18 na lista, é utilizar uma variável de controle. Essa variável recebe um valor inicial antes da repetição. Caso a condição dentro do laço seja verdadeira, então, modifica-se o valor da variável. Após o laço, deve-se verificar, então, se a variável mantém o valor inicial. Isso significa que a condição testada no laço não ocorreu e que, portanto, a mensagem indicativa deve ser exibida.
-O código do exemplo [5.5.b](/capitulo05/exe5_5/exe5_5.b) explora um recurso de filtragem de dados em uma lista, o programa ‘Revenda Herbie’,armazena um valor de objetos, o modelo e o preço dos carros disponíveis na revenda.
+Podemos explorar como percorrer os elementos do vetor para extrair algumas informações sobre o seu conteúdo. É muito importante ter um cuidado extra de informar ao usuário quando uma pesquisa não encontrou um resultado. O código [exemplo 5.5.a](/capitulo05/exemplos/ex5_5/ex5_5.a/) apresenta as idades que possuem valor maior ou igual a 18 armazenadas em um vetor. A solução para apresentar uma mensagem que indica que não há idades maiores que 18 na lista, é utilizar uma variável de controle. Essa variável recebe um valor inicial antes da repetição. Caso a condição dentro do laço seja verdadeira, então, modifica-se o valor da variável. Após o laço, deve-se verificar, então, se a variável mantém o valor inicial. Isso significa que a condição testada no laço não ocorreu e que, portanto, a mensagem indicativa deve ser exibida.
+
+O código do exemplo [5.5.b](/capitulo05/exemplos/ex5_5/ex5_5.b/) explora um recurso de filtragem de dados em uma lista, o programa ‘Revenda Herbie’,armazena um valor de objetos, o modelo e o preço dos carros disponíveis na revenda.
 
 ![Exemplo 5.5.b](/.github/cap05/exe5_5.b.png)
 

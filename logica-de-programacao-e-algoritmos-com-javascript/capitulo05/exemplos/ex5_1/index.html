@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exemplo 5.1</title>
+  </head>
+  <body>
+    <script>
+      var cidade = ['Pelotas'];
+
+      cidades[0] = 'Pelotas';
+
+      // adiciona cidade ao final do vetor
+      cidades.push('São Lourenço');
+
+      cidades[0] = 'Pelotas';
+      cidades[1] = 'São Lourenço';
+
+      // adiciona ao inicio e desloca as demais
+      cidades.unshift('Porto Alegre');
+
+      cidades[0] = 'Porto Alegre';
+      cidades[1] = 'Pelotas';
+      cidades[2] = 'São Lourenço';
+
+      // remove a útima cidade do vetor
+      cidades.pop();
+
+      cidades[0] = 'Porto Alegre';
+      cidades[1] = 'Pelotas';
+
+      // remove a primeira e "sobre" as demais
+      cidades.shift();
+
+      cidades[1] = 'Pelotas';
+    </script>
+  </body>
+</html>
