@@ -9,14 +9,14 @@ function verificarNumeroPrimo() {
     inNumero.focus();
     return;
   }
-
+  
   var numDivisores = 0;
   for (var i = 1; i <= num; i++) {
     if (num % i === 0) {
       numDivisores++;
     }
   }
-
+  
   if (numDivisores == 2) {
     outResposta.textContent = num + ' É primo';
   } else {
