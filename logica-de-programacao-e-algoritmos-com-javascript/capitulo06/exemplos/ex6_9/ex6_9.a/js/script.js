@@ -5,16 +5,16 @@
 // mensagem.
 
 function criptografarMensagem() {
-  var inMensagem = document.getElementById("inMensagem");
+  var inMensagem = document.getElementById('inMensagem');
   var mensagem = inMensagem.value;
 
-  if (mensagem == "") {
-    alert("Informe a mensagem...");
+  if (mensagem == '') {
+    alert('Informe a mensagem...');
     inMensagem.focus();
     return;
   }
 
-  var resposta = "";
+  var resposta = '';
   var tam = mensagem.length;
 
   for (var i = 1; i < tam; i = i + 2) {
@@ -25,25 +25,25 @@ function criptografarMensagem() {
     resposta += mensagem.charAt(i);
   }
 
-  document.getElementById("outResposta").textContent = resposta;
+  document.getElementById('outResposta').textContent = resposta;
 }
 
-var btCripto = document.getElementById("btCripo");
-btCripto.addEventListener("click", criptografarMensagem);
+var btCripto = document.getElementById('btCripo');
+btCripto.addEventListener('click', criptografarMensagem);
 
 function decriptografarMensagem() {
-  var inMensagem = document.getElementById("inMensagem");
+  var inMensagem = document.getElementById('inMensagem');
   var mensagem = inMensagem.value;
 
-  if (mensagem == "") {
-    alert("Informe a mensagem...");
+  if (mensagem == '') {
+    alert('Informe a mensagem...');
     inMensagem.focus();
     return;
   }
 
   var tam = mensagem.length;
   var metade = Math.floor(tam / 2);
-  var resposta = "";
+  var resposta = '';
 
   if (tam % 2 == 0) {
     for (var i = metade; i < tam; i++) {
@@ -58,8 +58,8 @@ function decriptografarMensagem() {
     resposta += mensagem.charAt(i);
   }
 
-  document.getElementById("outResposta").textContent = resposta;
+  document.getElementById('outResposta').textContent = resposta;
 }
 
-var btDecripto = document.getElementById("btDecripo");
-btDecripto.addEventListener("click", decriptografarMensagem);
+var btDecripto = document.getElementById('btDecripo');
+btDecripto.addEventListener('click', decriptografarMensagem);

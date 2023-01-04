@@ -8,7 +8,7 @@
   </head>
   <body>
     <script>
-      var palavra = prompt("Palavra: ");
+      var palavra = prompt('Palavra: ');
       var tam = palavra.length;
 
       var inverso = palavra.charAt(tam - 1).toUpperCase();
@@ -16,7 +16,8 @@
       for (var i = tam - 2; i >= 0; i--) {
         inverso += palavra.charAt(i).toLocaleLowerCase();
       }
-      alert("Palavra: " + palavra + "\nInvertida: " + inverso);
+
+      alert('Palavra: ' + palavra + '\nInvertida: ' + inverso);
     </script>
   </body>
 </html>

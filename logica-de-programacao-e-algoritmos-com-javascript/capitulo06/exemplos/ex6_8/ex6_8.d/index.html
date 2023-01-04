@@ -8,8 +8,8 @@
   </head>
   <body>
     <script>
-      var parcelas = Number(prompt("Quantas Parcelas? "));
-      var lista = "";
+      var parcelas = Number(prompt('Quantas Parcelas? '));
+      var lista = '';
       var dia, mes, ano, diaZero, mesZero;
       var data = new Date();
 
@@ -18,9 +18,10 @@
         dia = data.getDate();
         mes = data.getMonth() + 1;
         ano = data.getFullYear();
-        diaZero = dia < 10 ? "0" + dia : dia;
-        mesZero = mes < 10 ? "0" + mes : mes;
-        lista += i + "ª Parcela: " + diaZero + "/" + mesZero + "/" + ano + "\n";
+
+        diaZero = dia < 10 ? '0' + dia : dia;
+        mesZero = mes < 10 ? '0' + mes : mes;
+        lista += i + 'ª Parcela: ' + diaZero + '/' + mesZero + '/' + ano + '\n';
       }
 
       alert(lista);

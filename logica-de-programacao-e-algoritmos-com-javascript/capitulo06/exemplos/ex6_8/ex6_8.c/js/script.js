@@ -1,17 +1,18 @@
 const TAXA_MULTA = 2 / 100;
 const TAXA_JUROS = 0.33 / 100;
+
 function calcularMultaJuros() {
-  var inDataVenc = document.getElementById("inDataVenc");
-  var inValor = document.getElementById("inValor");
-  var outMulta = document.getElementById("outMulta");
-  var outJuros = document.getElementById("outJuros");
-  var outTotal = document.getElementById("outTotal");
+  var inDataVenc = document.getElementById('inDataVenc');
+  var inValor = document.getElementById('inValor');
+  var outMulta = document.getElementById('outMulta');
+  var outJuros = document.getElementById('outJuros');
+  var outTotal = document.getElementById('outTotal');
 
   var dataVenc = inDataVenc.value;
   var valor = Number(inValor.value);
 
-  if (dataVenc == "" || valor == 0 || isNaN(valor)) {
-    alert("Informe corretamente os dados da conta...");
+  if (dataVenc == '' || valor == 0 || isNaN(valor)) {
+    alert('Informe corretamente os dados da conta...');
     inData.focus();
     return;
   }
@@ -19,7 +20,7 @@ function calcularMultaJuros() {
   var hoje = new Date();
   var vencto = new Date();
 
-  var partes = dataVenc.split("-");
+  var partes = dataVenc.split('-');
   vencto.setDate(Number(partes[2]));
   vencto.setMonth(Number(partes[1]) - 1);
   vencto.setFullYear(Number(partes[0]));
@@ -44,5 +45,5 @@ function calcularMultaJuros() {
   outTotal.value = total.toFixed(2);
 }
 
-var btCalcular = document.getElementById("btCalcular");
-btCalcular.addEventListener("click", calcularMultaJuros);
+var btCalcular = document.getElementById('btCalcular');
+btCalcular.addEventListener('click', calcularMultaJuros);

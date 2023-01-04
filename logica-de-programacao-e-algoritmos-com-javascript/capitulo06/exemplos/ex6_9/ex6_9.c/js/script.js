@@ -1,16 +1,16 @@
 function verificarPalindromo() {
-  var inFrase = document.getElementById("inFrase");
-  var outResposta = document.getElementById("outResposta");
+  var inFrase = document.getElementById('inFrase');
+  var outResposta = document.getElementById('outResposta');
 
   var frase = inFrase.value.toUpperCase();
 
-  if (frase == "" || frase.indexOf(" ") == -1) {
-    alert("Informe, por favor, uma frase");
+  if (frase == '' || frase.indexOf(' ') == -1) {
+    alert('Informe, por favor, uma frase');
     inFrase.focus();
     return;
   }
 
-  var frase2 = frase.replace(/ /g, "");
+  var frase2 = frase.replace(/ /g, '');
   var tam = frase2.length;
 
   var iguais = true;
@@ -23,10 +23,11 @@ function verificarPalindromo() {
   }
 
   if (iguais) {
-    outResposta.textContent = frase + " é um Palíndromo";
+    outResposta.textContent = frase + ' é um Palíndromo';
   } else {
-    outResposta.textContent = frase + " Não é um Palíndromo";
+    outResposta.textContent = frase + ' Não é um Palíndromo';
   }
 }
-var btVerificar = document.getElementById("btVerificar");
-btVerificar.addEventListener("click", verificarPalindromo);
+
+var btVerificar = document.getElementById('btVerificar');
+btVerificar.addEventListener('click', verificarPalindromo);
