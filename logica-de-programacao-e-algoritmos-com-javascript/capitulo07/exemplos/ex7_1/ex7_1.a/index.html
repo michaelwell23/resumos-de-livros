@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exemplo 7.1.a</title>
+  </head>
+  <body>
+    <script>
+      function exbirSituacao(nota, media) {
+        if (nota >= media) {
+          alert('Aprovado');
+        } else {
+          alert('Reprovado');
+        }
+      }
+      var prova1 = Number(prompt('Qual Nota: '));
+      exbirSituacao(prova1, 7);
+    </script>
+  </body>
+</html>
