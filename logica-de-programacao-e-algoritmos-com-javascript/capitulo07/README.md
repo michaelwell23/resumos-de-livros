@@ -50,3 +50,26 @@ O [Exemplo 7.2](/capitulo07/exemplos/ex7_2/) exemplifica o uso de funções com 
 ![Exemplo 7.2](/.github/cap07/ex7.2.png)
 
 Ao dividir tarefas de um programa em blocos menores, é possível obter como vantagens: facilidade de compreensão, manutenção e reutilização de código. Pensando na ideia de um sistema maior.
+
+---
+
+## 7.3 FUNÇÕES ANÔNIMAS
+
+As funções anônimas permitem definir a programação de um evento sem atribuir um nome para a função. Apenas se utiliza a palavra reservada `function()` seguida do trecho de programa que queremos executar. No geral, são utilizadas para a inserção de pequenos trechos de código. Contudo, todos os recursos de programação podem ser normalmente inseridos em uma função anônima. O [Exemplo 7.3](/capitulo07/exemplos/ex7_3) é a demonstração da sintaxe de criação de uma função anônima. Ele deve ler o preço de um produto qualquer e exibir as formas de pagamento disponíveis na loja, que variam de 1x até 10x.
+
+---
+
+## 7.4 FUNÇÕES ATRIBUÍDAS PARA VARIÁVEIS
+
+A linguagem JavaScript permite que uma função seja atribuída a uma variável. Esse formato é também conhecido como expressão de função. Para chamar a função, devemos informar o nome da variável e, como nos outros formatos, é possível declarar parâmetros a serem manipulados pela `function`.
+
+```js
+  var dobro = function(a){
+      return a * 2
+    }
+
+    var num = Number(prompt('Numero: "));
+    alert('O dobro é: ' + dobro(num))
+```
+
+---
