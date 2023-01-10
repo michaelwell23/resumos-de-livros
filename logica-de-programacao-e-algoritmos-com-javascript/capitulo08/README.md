@@ -58,6 +58,50 @@ Ao trocar de clube vemos a modificação do estilo dos elementos da `div`, que o
 localStorage.removeItem('idade');
 ```
 
-De volta o exemplo anterior, podemos acrescentar a opção `Nenhum` para caso o cliente queira retornar às cores iniciais exibidas pela página. O [Exemplo 8.3]() mostra essa modificação.
+De volta o exemplo anterior, podemos acrescentar a opção `Nenhum` para caso o cliente queira retornar às cores iniciais exibidas pela página. O [Exemplo 8.3](/capitulo08/exemplos/ex8_3/) mostra essa modificação.
 
 ---
+
+## 8.4 USO DO "GETELEMENTSBYTAGNAME()"
+
+Existem outros métodos que também podem ser utilizados e qe, em alguns casos, se tornam mais práticos em termos de organização de código. Um deles é o método `getElementsByTagName()`. Como o nome sugere, esse método captura os elementos da página com uma determinada `TagName`. Os elementos são obtidos como itens de um vetor.
+
+```html
+<p>Exemplo</p>
+<p>Capítulo 8</p>
+
+<script>
+  var p = document.getElementsByTagName('p');
+  p[0].style.color = 'blue';
+  p[1].style.color = 'red';
+</script>
+```
+
+Também é possível limitar a busca dos `TagNames` pela referência ao contêiner “pai” dos elementos que se pretende obter.
+A captura dos elementos, bem como a associação do evento change à função `trocaClube`, pod ser feita da seguinte forma:
+
+```js
+var divResposta = document.getElementById('divResposta');
+var p = divResposta.getElementsByTagName('p');
+```
+
+A captura dos elementos e a associação do evento `change` à função `trocarClube` pode ser feita da seguinte forma:
+
+```js
+// captura as tags input da página
+var inputsRadio = document.getElementsByTagName('input');
+// percorre os elementos para associar function ao evento change
+for (var i = 0; i < inputsRadio.length; i++) {
+  inputsRadio[i].addEventListener('change', trocarClube);
+}
+```
+
+O [Exemplo 8.4](/capitulo08/exemplos/ex8_4/) demonstra outra forma de realizar a troca do nome dos clubes e do estilo `divTitulo`e para explicar o método `removeItem()` da LocalStorage. A `function verificarClube`, também foi ajustada para alterar o item selecionado de acordo com o nome dado ao vetor que contém os elementos `input typr=”radio”` da página.
+
+---
+
+## 8.5 MANIPULAR LISTAS NO LOCALSTORAGE
+
+O carácter “;” pode servir como delimitador dos itens inseridos. Assim, o conteúdo inicial atribuído à variável frutas, por exemplo, na `localStorage` pode ser:
+
+Afim de aplicar essa ideia, o [Exemplo 8.5](/capitulo08/exemplos/ex8_5/) é um programa que replica a brincadeira “Qual é o peso da melancia?”. As respostas são geralmente armazenadas e não pode haver o mesmo número. O ganhador é a pessoa que acertou o peso ou quem chegou mais perto do número correto.
