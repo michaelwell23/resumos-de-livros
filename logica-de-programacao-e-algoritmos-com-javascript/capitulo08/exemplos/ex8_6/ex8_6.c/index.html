@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./css/estilos.css" />
+    <title>Exemplo 8.1.c</title>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3">
+          <img src="img/exerc.jpg" alt="Exercícios" />
+        </div>
+
+        <div class="col-sm-9">
+          <h1>Herbie: Controle de Serviços</h1>
+
+          <p>
+            <label for="inProduto">Serviço - Veículo:</label>
+            <input type="text" id="inServico" class="form-control" autofocus />
+          </p>
+
+          <p>
+            <input
+              type="button"
+              value="Adicionar Serviço"
+              id="btAdicionar"
+              class="btn btn-primary"
+            />
+            <input
+              type="button"
+              value="Executar Serviço"
+              id="btExecutar"
+              class="btn btn-danger"
+            />
+          </p>
+
+          <h3>
+            Serviços Pendentes:
+            <span id="outPendentes"></span>
+          </h3>
+          <p class="bg-danger text-white">&nbsp; Serviço em Execução:</p>
+          <h4 id="outExecucao"></h4>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>

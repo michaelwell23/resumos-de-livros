@@ -1,3 +1,28 @@
+function contarVisitas() {
+  var outContador = document.getElementById('outContador');
+
+  var contador = 0;
+
+  if (localStorage.getItem('lojaContador')) {
+    contador = Number(localStorage.getItem('lojaContador'));
+  }
+
+  contador++;
+
+  if (contador === 0) {
+    outContador.textContent =
+      'Muito Bem-Vindo! Esta é a sua primeira visita ao nosso site.';
+  } else {
+    outContador.textContent =
+      'Que bom que você voltou! Esta é a sua visita de número ' +
+      contador +
+      ' ao nosso site.';
+  }
+
+  localStorage.setItem('lojaContador', contador);
+}
+contarVisitas();
+
 var inputsRadio = document.getElementsByTagName('input');
 
 for (var i = 0; i < inputsRadio.length; i++) {
