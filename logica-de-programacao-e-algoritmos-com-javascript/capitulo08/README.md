@@ -105,3 +105,22 @@ O [Exemplo 8.4](/capitulo08/exemplos/ex8_4/) demonstra outra forma de realizar a
 O carácter “;” pode servir como delimitador dos itens inseridos. Assim, o conteúdo inicial atribuído à variável frutas, por exemplo, na `localStorage` pode ser:
 
 Afim de aplicar essa ideia, o [Exemplo 8.5](/capitulo08/exemplos/ex8_5/) é um programa que replica a brincadeira “Qual é o peso da melancia?”. As respostas são geralmente armazenadas e não pode haver o mesmo número. O ganhador é a pessoa que acertou o peso ou quem chegou mais perto do número correto.
+
+## 8.6 EXECÍCIOS
+
+Os exercícios do capitulo estão no arquivo de exemplo, você pode ir até eles clicando [AQUI](/capitulo08/exemplos/ex8_6/)
+
+Exercício 7.6.b
+![exemplo 6.1.a](/.github/cap08/ex8_6.b.png)
+
+Exercício 7.6.c
+![exemplo 6.1.a](/.github/cap08/ex8_6.c.png)
+
+---
+
+## 8.7 CONSIDERAÇÕES FINAIS DO CAPÍTULO
+
+A linguagem JavaScript dispõe dos métodos `localStorage.setItem("chave", valor)` para gravar um conteúdo no Local
+Storage e `localStorage.getItem("chave")` para recuperar esse conteúdo. Também é possível excluir os dados salvos pelo cliente em seu navegador, a partir dos métodos `localStorage.removeItem("chave")` e `localStorage.clear()`, que excluem uma variável ou todas as variáveis salvas em um domínio, respectivamente. A capacidade de armazenamento dos dados salvos no local Storage por domínio é, no geral, de 5 MB. Com isso, é possível manipular pequenas listas de dados explorando as técnicas de programação discutidas nos capítulos que abordam o tratamento de strings e vetores.
+
+No entanto, além dos aspectos relacionados à pratica das técnicas de programação como persistência de dados, importantes para o processo de aprendizado, salvar dados no navegador do usuário é um recurso igualmente impornates na construção de sistemas web.
