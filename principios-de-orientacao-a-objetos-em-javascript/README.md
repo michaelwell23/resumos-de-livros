@@ -30,3 +30,5 @@ Com o livro você poderá conhecer a forma única com que o JavaScript lida com 
 | [Capítulo 4](/capitulo04/) | Construtores e Protótipos |
 | [Capítulo 5](/capitulo05/) | Herança                   |
 | [Capítulo 6](/capitulo06/) | Padrões de Projeto        |
+
+---

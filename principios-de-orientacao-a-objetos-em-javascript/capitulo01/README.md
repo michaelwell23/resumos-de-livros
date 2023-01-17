@@ -66,8 +66,6 @@ console.log(colo2); // "red"
 
 O código acima, `color1`tem seu valor alterado para "blue" e color2 preserva o valor original, "red". [Exemplo 1.1](/capitulo01/exemplos/ex1/ex1.1.js);
 
----
-
 ### IDENTIFICANDO TIPOS PRIMITIVOS
 
 A melhor maneira de identificar tipos primitivos é por meio do operador `typeof`, ele retorna uma string indicando o tipo de dado.
@@ -114,8 +112,6 @@ tentando identi car um null , use a igualdade tripla para que você possa identi
 corretamente.
 ```
 
----
-
 ### MÉTODOS PRIMITIVOS
 
 Strings, Number, e Booleans contêm métodos. As Strings em particular, têm vários métodos para ajudar a trabalhar com elas.
@@ -134,3 +130,160 @@ var stringFlag = flag.toString(); // Converte para "true"
 ```
 
 `NOTA: Apesar de terem métodos, os valores primitivos não são objetos. O JavaScript faz com que eles pareçam ser objetos para oferecer uma experiência consistente na linguagem, como será visto adiante.`
+
+---
+
+## TIPOS DE REFERÊNCIA
+
+Valores de referência são `instâncias` de tipos de referência e são sinônimos de objeto. Um objeto é uma lista não ordenada de `propriedades` de chave e valor. Quando o valor de uma propriedade for uma função, ela é chamada de `método`. As funções propriamente ditas, na verdade, são valores de referência em JavaScript, de modo que há pouca diferença entre uma propriedade que contém um array e uma que contém uma função, exceto pelo fato de que a função pode ser executada.
+
+### CRIANDO OBJETOS
+
+Podemos pensar em objetos JavaScript como nada mais que tabela hash.
+
+![img1_2](/.github/img/cap01/img1_2.png);
+
+Existem algumas maneiras de `instanciar` um objeto. A primeira é por meio do operador `new` e um `construtor`. Por convenção os nomes dos construtores em JavaScript iniciam com uma letra maiúscula para distingui-los de funções que não são construtoras.
+
+```js
+var object = new Object();
+```
+
+Os tipos de referência não armazenam o objeto diretamente na variável à qual ele foi atribuído. Em vez disso, ela armazena um ponteiro (referência) para a posição de memória em que esse objeto está. A principal diferença entre objetos e valores primitivos é essa: “Os valores primitivos são armazenados diretamente na variável em que são definidos, já os objetos não.
+
+```js
+var object1 = new Object();
+var object2 = object1;
+```
+
+O código cria um objeto e então armazena uma referência em `object1`. Em seguida, `object2` recebe o valor de `object1`. Continua havendo somente uma única instância do objeto criado na primeira linha, mas ambas as variáveis agora apontam para esse objeto.
+
+![Img1_2.1](/.github/img/cap01/img1_2.1.png);
+
+### REMOVENDO REFERÊNCIA A OBJETOS
+
+Em JavaScript não é realmente necessário se preocupar com alocações de memória ao usar tipos de referência. Pois a linguagem contém o `garbage-collection` (coletores de lixo). Mas, é melhor remover a referência aos objetos que não sejam mais necessários para que o coletor de lixo possa liberar a memória que está sendo referenciada.
+
+```js
+var object1 = new Object();
+
+//faça algo
+
+object1 = null; // remove a referência;
+```
+
+No caso, o `object1` é criado e usado antes de finalmente ser definido como `null`. Quando não houver mais referência a um objeto na memória, o coletor de lixo poderá usar essa área de memória para algo diferente. Remover a referência aos objetos é importante em aplicações grandes com grandes volumes de objetos.
+
+### ADICIONANDO OU REMOVENDO PROPRIEDADES
+
+Outro aspecto interessante sobre objetos em JavaScript é que podemos adicionar ou remover propriedades a qualquer momento.
+
+```js
+var object1 = new Object();
+var object2 = object1;
+
+object1.myCustomProperty = 'Awesome!';
+console.log(object2.myCustomProperty); //"Awesome!"
+```
+
+`NOTA Esse exemplo demonstra uma particularidade única do JavaScript: você pode modi car objetos quando quiser, mesmo que eles não tenham sido de nidos antes. Também há maneiras de evitar essas modi cações, como você verá mais adiante neste livro.`
+
+No caso, `myCustomProperty` é adicionada a `object1` com valor igual a “Awesome!”. Também pode acessar a propriedade no `object2`, porque as duas variáveis aponta para o mesmo objeto.
+
+---
+
+## INSTANCIANDO TIPOS PRÓPRIOS
+
+O tipo `Object` é somente um entre uma grande variedade de tipos de referência que o JavaScript oferece. Outros tipos próprios são mais especializados no que diz respeito ao uso pretendido e podem ser instanciados a qualquer momento.
+
+|          |                                                      |
+| :------: | :--------------------------------------------------- |
+|  Array   | Uma lista ordenada de valores indexado numericamente |
+|   Date   | Uma data e hora                                      |
+|  Error   | Um erro de execução                                  |
+| Function | Uma função                                           |
+|  Object  | Um obejto genérico                                   |
+|  RegExp  | Uma expressão regular                                |
+
+Podemo instanciar cada tipo usando o objeto `new`.
+
+```js
+var itens = new Array();
+var now = new Date();
+var error = new Error('Something bad happened');
+var func = new Function('Console.log("Hello World");');
+var object = new Object();
+var re = new RegExp('\\d+');
+```
+
+### FORMAS LITERAIS
+
+Uma forma `literal` é uma sintaxe que permite definir um valor de referência sem criar um objeto explicitamente, usando o operador `new` e o construtor do objeto.
+
+## LITERAIS DE OBJETOS E DE ARRAYS
+
+Para definir um objeto com a sintaxe literal é preciso definir as propriedades de um novo objeto entre as chaves. As propriedades são compostas de um identificador ou de uma string, dois pontos é um valor com várias propriedades separadas por vírgula.
+
+```js
+var book = {
+  name: 'Princípios de Orientação a objetos em JavaScript',
+  year: 2014,
+};
+```
+
+Também podemos usar strings para nomes de propriedade, é muito útil quando queremos definir um nome de propriedade usando espaço ou caracteres especiais.
+
+```js
+var book2 = {
+  'name ': 'Princípios de Orientação a objetos em JavaScript',
+  'year ': 2014,
+};
+```
+
+Os exemplos acima são logicamente equivalentes ao mostrado logo abaixo, apesar das diferenças sintáticas. A escolha do padrão a ser usado cabe a você, pois a funcionalidades, em última instância, são as mesmas.
+
+```js
+var book3 = new Object();
+book.name = 'Princípios de Orientação a objetos em JavaScript';
+book.year = 2014;
+```
+
+Você pode definir um `literal de array` de forma semelhante, inserindo qualquer quantidade de valores separados por vírgula dentro de colchetes.
+
+```js
+var colors = ['red', 'blue', 'green'];
+console.log('colors[0]'); //red
+```
+
+```js
+var colors2 = new Array('red', 'blue', 'green');
+console.log('colors[0]');
+```
+
+### LITERAIS DE FUNÇÕES
+
+Usar o construtor `Function` normalmente é desaconselhável por ser mais difícil de manter, ler e depurar uma string de código do que o código em si, de modo que raramente, você verá o uso do construtor. Criar funções é muito mais simples e menos sujeito a erros quando usamos a forma literal.
+
+```js
+function reflact(value) {
+  return value;
+}
+
+var reflect = new Function('value', 'return value');
+```
+
+O código define a função `reflect()` que retorna qualquer valor passado a ela. Mesmo no caso dessa função simples, a forma literal é mais fácil de escrever e de ser entendida se comparada ao código que utiliza o construtor.
+
+### LITERAIS DE EXPRESSÕES REGULARES
+
+As expressões regulares também possuem `literias` que permite definir essas expressões sem usar o construtor `RegExp`.
+
+```js
+var numbers = /\d+/g;
+
+var numbers = new RegExp('\\d+', 'g');
+```
+
+É mais fácil lidar com a forma literal das expressões regulares em JavaScript do que usar o método com o construtor porque não é necessário se preocupar com caracteres de escape nas strings. Quando o construtor `RegExp` é usado, a expressão é passado na forma de uma string, de modo que é preciso usar o escape em qualquer barra invertida. Literais de expressões regulares são preferíveis ao método do construtor em JavaScript, exceto quando a expressão regular for construída dinamicamente a partir de uma ou mais strings.
+
+---
