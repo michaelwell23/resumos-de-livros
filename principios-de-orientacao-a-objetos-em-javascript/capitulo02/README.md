@@ -190,3 +190,132 @@ No exemplo a função se comporta de modo diferente de acordo com o número de a
 <kbd>NOTA: Na prática, comparar o parâmetro nomeado com undefined é mais comum do que basear-se em arguments.length === 0</kbd>
 
 ---
+
+## MÉTODOS DE OBJETOS
+
+Quando um valor de propriedade é uma função, esse valor é considerado um método. Você pode adicionar um método a um objeto da mesma maneira que uma propriedade é adicionada.
+
+```js
+var person = {
+  name: 'Nicholas',
+  sayName: function () {
+    console.log(person.name);
+  },
+};
+person.sayName(); // exibe "Nicholas"
+```
+
+Pode-se notar que a sintaxe é a mesma. No caso, o valor é uma função. O método pode ser chamado diretamente a partir do objeto.
+
+### OBJETO THIS
+
+O método `sayName()` referência `person.name` diretamente, o que gera um alto nível de acoplamento entre método e o objeto. Isso representa um problema por vários motivos. O primeiro, se o nome da variável for alterado, você terá de se lembrar de alterar a referência a esse nome no método. Em segundo, esse tipo de alto acoplamento faz com que seja difícil usar a mesma função em diferentes objetos.
+
+Todo escopo tem um objeto `this` que representa o objeto que chama a função. No escopo global, `this` representa o objeto global. Quando a função associada a um objeto é chamada, por padrão, o valor de `this` é igual a esse objeto. Portanto, em vez de referenciar diretamente um objeto em um método, `this` pode ser referenciado em seu lugar.
+
+```js
+var person = {
+  name: 'Nicholas',
+  sayName: function () {
+    console.log(this.name);
+  },
+};
+person.sayName(); // exibe "Nicholas"
+```
+
+O código funciona do mesmo modo que a versão anterior, mas, dessa vez, a função referencia `this` em vez de `person`.Podemos facilmente alterar o nome da variável ou até mesmo reutilizar a função em objetos diferentes.
+
+```js
+function sayNameForAll() {
+  console.log(this.name);
+}
+var person1 = {
+  name: 'Nicholas',
+  sayName: sayNameForAll,
+};
+var person2 = {
+  name: 'Greg',
+  sayName: sayNameForAll,
+};
+var name = 'Michael';
+
+person1.sayName(); // exibe "Nicholas"
+person2.sayName(); // exibe "Greg"
+sayNameForAll(); // exibe "Michael"
+```
+
+No exemplo, a função chamada inicialmente é criada. Em seguida, dois objetos são criados, em que a função é definida para que seja igual à função `sayNameForAll`. As funções são apenas valores de referência, portanto elas podem ser definidas como valores de propriedade em qualquer objeto.
+
+### MUDANDO THIS
+
+A capacidade de usar e de manipular o valor de `this` das funções é fundamental para um bom entendimento de orientação a objetos em JavaScript. As funções podem ser usadas em muitos contextos diferentes e elas devem funcionar em todas as situações. Embora `this` normalmente seja definido automaticamente, seu valor poderá ser alterado para obter resultados diferentes. Há três métodos que permitem mudar o valor de `this`.
+
+#### MÉTODO CALL()
+
+O primeiro método usado para manipular o `this` é o `call()`, que executa a função com um determinado valor de `this` e com parâmetros específicos. O primeiro parâmetro é o valor que `this` deve ter quando a função for executada. Todos os parâmetros seguintes correspondem aos parâmetros que devem ser passados para a função.
+
+```js
+function sayNameForAll(label) {
+  console.log(label + ':' + this.name);
+}
+var person1 = {
+  name: 'Nicholas',
+};
+var person2 = {
+  name: 'Greg',
+};
+var name = 'Michael';
+sayNameForAll.call(this, 'global'); // exibe "global: Michael"
+sayNameForAll.call(person1, 'person1'); // exibe "person1:Nicholas"
+sayNameForAll.call(person2, 'person2'); // exibe "person2:Greg"
+```
+
+No exemplo, `sayNameForAll()` aceita um parâmetro que é usado como label para exibir o valor de saída. Em seguida, a função é chamada três vezes. Não há parênteses depois da função porque ela é acessada como um objeto em vez de ser acessada como um código a ser executado.
+
+#### MÉTODO APPLY()
+
+O método `apply()` funciona exatamente como `call()`, exceto que ele aceita somente um parâmetro: o valor de this e um array ou um objeto semelhante a um array contendo os parâmetros a serem passados para a função. Desse modo, em vez de nomear individualmente cada parâmetro usando `call()`, você pode facilmente passar arrays para o `apply()` como segundo argumento.
+
+```js
+function sayNameForAll(label) {
+  console.log(label + ':' + this.name);
+}
+var person1 = {
+  name: 'Nicholas',
+};
+var person2 = {
+  name: 'Greg',
+};
+var name = 'Michael';
+sayNameForAll.apply(this, ['global']); // exibe "global:Michael"
+sayNameForAll.apply(person1, ['person1']); // exibe "person1:Nicholas"
+sayNameForAll.apply(person2, ['person2']); // exibe "person2:Greg"
+```
+
+O método usado normalmente dependerá do tipo de dados que você tiver. Se você já tiver um array de dados, use `apply()`; se tiver apenas variáveis individuais, use `call()`.
+
+#### MÉTODO BIND()
+
+O método `bind()` se comporta de modo bem diferente dos outros dois. O primeiro argumento corresponde ao valor de `this` para a nova função; Todos os demais argumentos representam parâmetros nomeados que devem ser definidos permanentemente na nova função. Podemos passar qualquer parâmetro que não seja definido de modo permanente mais tarde. Abaixo há dois exemplos que mostra a utilização do `bind()`.A função `sayNameForPerson2()` é criada ao efetuar a ligação do valor `this` com `person1`, enquanto `sayNameForPerson2()` faz ligação de this com `person2` e do primeiro parâmetro com “person2”.
+
+```js
+function sayNameForAll(label) {
+  console.log(label + ':' + this.name);
+}
+var person1 = {
+  name: 'Nicholas',
+};
+var person2 = {
+  name: 'Greg',
+};
+```
+
+---
+
+## SUMÁRIO
+
+As funções em JavaScript são únicas porque elas também são objetos, o que significa que podem ser acessadas, copiadas, sobrescritas e normalmente tratadas como qualquer outro objeto. A principal diferença entre uma função JavaScript e outros objetos está na propriedade interna especial [[Call]] , que contém as instruções de execução da função. O operador typeof procura essa propriedade interna em um objeto e, se ela for encontrada, "function" será retornado. Há duas formas literais de função: as declarações e as expressões As declarações de função são compostas do nome da função à direita da palavra-chave function e são “içadas” (hoisted) para o topo do contexto em que são de nidas. As expressões de função são usadas nos locais em que outros valores também podem ser usados, por exemplo, em expressões de atribuição, em parâmetros de função ou no valor de retorno de outra função.
+
+Como as funções são objetos, o construtor Function está presente. Você pode criar novas funções com o construtor Function , mas isso, normalmente, não é recomendável porque pode tornar o seu código mais difícil de entender e o debugging será muito mais complicado. Apesar do que foi dito, é provável que você vá ver o uso do construtor de vez em quando, em situações em que a verdadeira forma de uma função não é conhecida até a execução do programa.
+
+É necessário ter um bom domínio sobre as funções para entender como a programação orientada a objetos funciona em JavaScript. Como em JavaScript não há o conceito de classes, tudo o que você tem para trabalhar a m de implementar a agregação e a herança são as funções e os demais objetos.
