@@ -104,3 +104,79 @@ NOTA Um erro será lançado se você chamar o construtor Person em modo restrito
 Os contrutores permitem configurar instências de objetos com as mesmas pripriedades, mas os construtores por si só não eliminam as redundâncias de código. Seria muito mais eficiente se todas as instâncias compartilhassem um método e esse método pudesse usar `this.name` para acessar o dado apropriado. É ai que os protótipos entram em cena.
 
 ---
+
+## PROTÓTIPOS
+
+Quase todas as funções têm uma propriedade `prototype`, que é usada durante a criação de novas instâncias. Esse protótipo é compartilhado entre todas as instâncias do objeto, e essas instâncias podem acessar as propriedades do protótipo. O método `hasOwnProperty()` é definido no protótipo de Object genérico, mas pode ser acessado a partir de qualquer objeto como se fosse uma propriedad própria.
+
+```js
+var book = {
+  title: 'Princípios de orientação a objetos em JavaScript',
+};
+
+console.log('title' in book); // true
+console.log(book.hasOwnProperty('title')); // true
+console.log('hasOwnProperty' in book); // true
+console.log(book.hasOwnProperty('hasOwnProperty')); // false
+console.log(Object.prototype.hasOwnProperty('hasOwnProperty')); // true
+```
+
+Embora não haja nenhuma definição de `hasOwnProperty()` em `book`, esse método pode ser acessado como `book.hasOwnProperty()` porque sua definição existe em `Object.prototype`.
+
+![identificando uma propriedade de prototipo](/.github/img/cap04/img4_2.png);
+
+### A PROPRIEDADE [[POTOTYPE]]
+
+Uma instância mantém o controle de seu protótipo por meio de uma prorprieade interna chamada [[Prototype]]. Essa propriedade é um ponteiro pra o objeto referente ao protótipo que a intância está usando. Quando um novo objeto é criado usando `new`, a propriedade `prototype` do contrutor é atribuida à propriedade [[Prototype]] desse novo objeto. A imagem abaixo mostra como a propriedade [[Prototype]] permite que árias instâncias de um tipo de objeto se refiram ao mesmo protótipo.
+
+![A propriede [[Prototype]]](/.github/img/cap04/img4_2.1.1.png)
+
+O valor da propriedade [[Prototype]] pode ser lido por meio do método `Object.getPrototypeOf()`.
+
+```js
+var object = {};
+var prototype = Object.getPrototypeOf(object);
+console.log(prototype === Object.prototype);
+```
+
+Quaquer objeto genérico, [[Prototype]] será sempre ua refêrencia a `Objeto.prototype`.
+
+```txt
+NOTA: Algumas engines de JavaScript também suportam uma propriedade chamada **proto** em todos os objetos. Essa propriedade permite tanto ler quanto escrever na propriedade [[Prototype]] . O Firefox, o Safari, o Chrome e o Node.js suportam essa propriedade, e **proto** está prestes a ser padronizada no ECMAScript 6.
+```
+
+Podemos utilizar o método `isPrototypeOf()` para verificar se um objeto é prototypo de outro.
+
+```js
+var object2 = {};
+console.log(Object.prototype.isPrototypeOf(object));
+```
+
+Como `object` é somente um objeto genérico, seu protótipo deve ser `Object.prototype`, o que faz com que `isPrototypeOf()` retorne `true`. Quando uma propriedade é lida em um objeto, a engine da linguagem inicialmente procura uma propriedade própria com esse nome. Se a engina encontra ela retorna esse valor. Se não houver nenhuma propriedade própria com esse o nome no objeto-alvo, ele procurará no objeto [[Prototype]]. Se houver uma propriedade de protótipo, o valor será retornado, se nã houver `undefined` será retornado.
+
+```js
+var object = {};
+console.log(object.toString()); // "[object Object]"
+
+object.toString = function () {
+  return '[object Custom]';
+};
+
+console.log(object.toString()); // "[object Custom]"
+
+// apaga a propriedade própria
+delete object.toString;
+console.log(object.toString()); // "[object Object]"
+
+// sem efeito, pois delete só funciona em propriedades próprias
+delete object.toString;
+console.log(object.toString()); // "[object Object]"
+```
+
+No exemplo, o método `toString()` é disponibilizado pelo protótipo e retorna `[object objetc]` por padrão. Se uma propriedade própria `toString()` for definida, essa propriedade será usada sempre que `toString()` for chamada no objeto novamente. A propriedade própria `encobre` a propriedade protótipo. A propriedade protótipo só será utilizado aso a propriedade própria venha ser apagada do objeto.
+
+![Figura do exemplo anterior](/.github/img/cap04/img4_2.1.2.png)
+
+Não se pode atribuir um valor a uma propriedade do protótipo a partir de uma instância. Atribuir um valor a `toString`faz com que uma nova propriedade própria seja criada na instância, deixando a propriedade do protótipo inalterada.
+
+---
