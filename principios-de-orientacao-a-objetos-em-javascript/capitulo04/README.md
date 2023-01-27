@@ -180,3 +180,107 @@ No exemplo, o método `toString()` é disponibilizado pelo protótipo e retorna 
 Não se pode atribuir um valor a uma propriedade do protótipo a partir de uma instância. Atribuir um valor a `toString`faz com que uma nova propriedade própria seja criada na instância, deixando a propriedade do protótipo inalterada.
 
 ---
+
+USANDO PROTÓTIPOS COM CONSTRUTORES
+
+É muito mais eficiente colocar os métodos no protótipo e usar `this` para acessar a instância atual, do que fazer com que cada instância deva ter seu próprio conjunto de métodos.
+
+```js
+function Person(name) {
+  this.name = name;
+}
+
+Person.prototype.sayName = function () {
+  console.log(this.name);
+};
+
+var person1 = new Person('Nicholas');
+var person2 = new Person('Greg');
+
+console.log(person1.name); // "Nicholas"
+console.log(person2.name); // "Greg"
+
+person1.sayName(); // exibe "Nicholas"
+person2.sayName(); // exibe "Greg"
+```
+
+O código acima, o construtor `Person`, `sayName()` está definido no protótipo, e não no construtor. AS instâncias do objeto funcionam exatamente da mesma maneira. Como `person1`e `person2` são referências de base para as chamadas a `sayName()`, o valor `this` é atribuido a `person1` e a `person2`, respectivamente. Outros tipos de dados podem ser armazenados, mas é preciso cuidado ao usar valores de refêrencia. Como esses valores são compartilhados pela instância, não espera que uma instância possa alterar os valores que outra instância irá acessar, por isso é preciso ter cuidado com o local para onde os valores de referência apontam.
+
+```js
+function Person(name) {
+  this.name = name;
+}
+
+Person.prototype.sayName = function () {
+  console.log(this.name);
+};
+
+Person.prototype.favorites = [];
+var person1 = new Person('Nicholas');
+var person2 = new Person('Greg');
+
+person1.favorites.push('pizza');
+person2.favorites.push('quinoa');
+
+console.log(person1.favorites); // "pizza, quinoa"
+console.log(person2.favorites); // "pizza, quinoa
+```
+
+A propriedade `favorites` é definida no portótipo, o que significa que `person1.favorites` e `person2.favorites` apontam para o mesmo array. Qualquer valor adicionado à propriedade `favorites` de qualquer pessoa será um elemento do array que está no protótipo, por isso é importante ter cuidado com o que é definido no protótipo. Por padrão, substituir o protótipo por um objeto literal é uma forma mais sucinta para se usar.
+
+```js
+function Person(name) {
+  this.name = name;
+}
+Person.prototype = {
+  sayName: function () {
+    console.log(this.name);
+  },
+  toString: function () {
+    return '[Person ' + this.name + ']';
+  },
+};
+```
+
+O código define dois métodos no protótipo. Esse padrão se tornou popular porque elimina a necessidade de digitar `Peson.prototype` diversas vezes. Porém há um efeito colateral que é preciso estar ciente:
+
+```js
+var person1 = new Person('Nicholas');
+console.log(person1 instanceof Person); // true
+console.log(person1.constructor === Person); // false
+console.log(person1.constructor === Object); // true
+```
+
+Usar a notação de objeto literal para sobrescrever o portótipo alteraou a propriedade `constructor`, de modo que ela aponta para `Object` em vez de `Person`. Isso ocorre porue a propriedade `constructor` está no protótipo, e não na instância do objeto. Quando uma função é criada, sua propriedade `prototype` é criada com uma propriedade `constructor`igual à função. Esse padrão sobrescreve completamente o objeto referente ao protótipo, o que significa que o `constructor` será proveniente do novo objeto criado. Para evitar isso, é preciso restaurar a propriedade `constructor`para um valor adequado ao sobrescrito no protótipo.
+
+```js
+function Person(name) {
+  this.name = name;
+}
+Person.prototype = {
+  constructor: Person,
+  sayName: function () {
+    console.log(this.name);
+  },
+  toString: function () {
+    return '[Person ' + this.name + ']';
+  },
+};
+
+var person1 = new Person('Nicholas');
+var person2 = new Person('Greg');
+
+console.log(person1 instanceof Person); // true
+console.log(person1.constructor === Person); // true
+console.log(person1.constructor === Object); // false
+
+console.log(person2 instanceof Person); // true
+console.log(person2.constructor === Person); // true
+console.log(person2.constructor === Object); // false
+```
+
+No exemplo, a propriedade `constructor` é especificamente atribuída no protótipo. O aspecto mais interessante das relações entre construtores, protótipos e instâncias estaja no fato de não haver uma ligação direta entre instância e o construtor. Mas há uma ligação direta entre a instância e o protótipo e entre o protótipo e o construtor.
+
+![Intância e o seu construtor ligado pelo protótipo](/.github/img/cap04/img4_2.2.png)
+
+---
