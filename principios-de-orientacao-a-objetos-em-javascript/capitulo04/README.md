@@ -284,3 +284,114 @@ No exemplo, a propriedade `constructor` é especificamente atribuída no protót
 ![Intância e o seu construtor ligado pelo protótipo](/.github/img/cap04/img4_2.2.png)
 
 ---
+
+### ALTERANDO PROTÓTIPOS
+
+Como todas as instências de um tipo particular referenciam um protótipo compartilhado, é possíel estender todos esses objetos em conjunto a qualquer momento. Qualquer alteração no protótipo estará imediatemente disponǘel a qualquer instância que o referenciar, já que a propriedade [[Prototype]] contém um ponteiro para o protótipo. Isso significa que podemos literalmente adicionar novos membro a um protótipo a qualquer momento, e essas mudanças serão refletdas nas intâncias atuais.
+
+```js
+function Person(name) {
+  this.name = name;
+}
+
+Person.prototype = {
+  constructor: Person,
+
+  sayName: function () {
+    console.log(this.name);
+  },
+  toString: function () {
+    return '[Person ' + this.name + ']';
+  },
+};
+
+var person1 = new Person('Nicholas');
+var person2 = new Person('Greg');
+
+console.log('sayHi' in person1); // false
+console.log('sayHi' in person2); // false
+// adiciona um novo método
+
+Person.prototype.sayHi = function () {
+  console.log('Oi');
+};
+
+person1.sayHi(); // exibe "Hi"
+person2.sayHi(); // exibe "Hi
+```
+
+O código acima, o tipo `Person` começa com apenas dois métodos: `sayName()` e `toString()`. Duas instâncias de `Person` são criadase e em, seguida, o métod `SayHi()` é adicionado ao protótipo. A partir daá, ambas as instâncias podem acessar `sayHi()`. A procura por uma propriedade nomeada ocorre sempre que a propriedade for acessada, o que proporciona fluidez ao processo.
+
+Quando `Object.seal()` e `Object.freeze()` forem utilizado em um objeto para selar e congelar o objeto, a ação acontecerá
+`somente` na instância do objeto e em suas propriedade próprias. Não é possível adicionar novas propriedades próprias nem mudar as que já existem em objetos congelados, mas, certamente, poderá continuar adicionando propriedades ao protótipo e poderá estender esses objetos.
+
+```js
+var person1 = new Person('Nicholas');
+var person2 = new Person('Greg');
+Object.freeze(person1);
+
+Person.prototype.sayHi = function () {
+  console.log('Hi');
+};
+person1.sayHi(); // exibe "Hi"
+person2.sayHi(); // exibe "Hi"
+```
+
+O exempo, há duas intâncias de `Person`. A primeira está congelada, enquanto a outra é um objeto normal. Ao adicionar `sayHi()`ao protótipo, os dois objetos ganham um novo método, aparentemente contradizendo o status de congelamento. A propriedade [[Prototype]] é considerada uma propriedade própria da instância e, embora a propriedade em si esteja congelada, o valor não está.
+
+```txt
+NOTA Na prática, provavelmente você não usará protótipos dessa maneira com muita frequência quando estiver desenvolvendo em JavaScript. Entretanto é importante entender a relação que existe entre os objetos e seus protótipos, e exemplos incomuns
+como esse ajudam a esclarecer os conceitos.
+```
+
+---
+
+### PROTÓTIPOS DE OBJETO PRONTOS
+
+Todos os objetos prontos têm construtores e, sendo assim, têm protótipos que podem ser alterados.
+
+```js
+Array.prototype.sum = function () {
+  return this.reduce(function (previous, current) {
+    return previous + current;
+  });
+};
+
+var numbers = [1, 2, 3, 4, 5, 6];
+var result = numbers.sum();
+
+console.log(result); // 21
+```
+
+No exemplo, o método chamado `sum()`, que simplismente soma todos os itens do array e retorna o resultado, é criado em `Array.prototype`. O array number tem acesso automaticamnet a esse método por meio do protótipo. Em `sum()`, `this` se refere a `numbers`, que é uma instância de `Array`, de modo que o método é livre para usar outros métodos de array. Se o protótipo de um tipo wrapper primitivo for modificado, é possível adicionar mais funcionalidade a esses valores primitivos.
+
+```js
+Array.prototype.sum = function () {
+  return this.reduce(function (previous, current) {
+    return previous + current;
+  });
+};
+
+var numbers = [1, 2, 3, 4, 5, 6];
+var result = numbers.sum();
+
+console.log(result); // 21
+```
+
+O código cria um novo método `capitalize()` para strings. O tipo `String` é o wrapper primitivo para string, e modificar o seu protótipo significa que todas as strings automaticamnet terão essas mudanças à disposição.
+
+```txt
+NOTA Embora possa parecer divertido e interessante modi car objetos prontos para testar novas funcionalidades, não é uma boa ideia fazer isso em ambiente de produção. Os desenvolvedores esperam que os objetos prontos se comportem de uma determinada maneira e que tenham determinados métodos. Alterar objetos prontos deliberadamente viola essas expectativas e faz com que outros desenvolvedores não tenham certeza de como os objetos devem funcionar.
+```
+
+---
+
+## SUMÁRIO
+
+Os construtores são apenas funções normais chamadas com o operador `new` . Você pode definir seus próprios construtores sempre que quiser ter vários objetos com as mesmas propriedades. Os objetos criados por meio de construtores podem ser identificados pelo operador `instanceof` ou pelo acesso direto à sua propriedade `constructor`.
+
+Toda função tem uma propriedade prototype que de ne qualquer propriedade compartilhada pelos objetos criados com um determinado construtor. Métodos e propriedades com valores primitivos compartilhados normalmente são definidos nos protótipos, enquanto todas as demais propriedades são de nidas no construtor. A propriedadeestá definida no protótipo porque ela é compartilhada pelas instâncias do objeto.
+
+O protótipo de um objeto é armazenado internamente na propriedade [[Prototype]]. Essa propriedade é uma referência, e não uma cópia. Se o protótipo for alterado em algum momento, essas mudanças ocorrerão em todas as instâncias por causa da maneira como o JavaScript procura as propriedades. Ao tentar acessar uma propriedade de um objeto, uma pesquisa é feita no objeto, em busca de qualquer propriedade própria com o nome especificado. Se uma propriedade própria não for encontrada, a procura será feita no protótipo. Esse sistema de pesquisa implica que o protótipo pode continuar a sofrer mudanças e que as instâncias dos objetos que referenciam esse protótipo irão re etir essas mudanças imediatamente.
+
+Objetos prontos também têm protótipos que podem ser modi cados. Embora não seja recomendável fazer isso em ambiente de produção, pode ser útil para testes e provas de conceito relacionados a novas funcionalidades.
