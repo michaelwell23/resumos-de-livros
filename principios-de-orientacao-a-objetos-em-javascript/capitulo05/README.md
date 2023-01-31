@@ -112,3 +112,69 @@ Se, por um lado, essa abordagem é e ciente contra possíveis propriedades indes
 quer. Sua melhor aposta para ter o máximo de exibilidade é não modificar Object.prototype.
 
 ---
+
+## HERANÇA ENTRE OBJETOS
+
+O timpo mais simples de herança é a herança entre objetos. Só é preciso especificar que objeto de ser o [[Prototype]] do novo objeto. Inicialmente os objetos literais têm seu [[Prototype]] definidos como `Object.prototype`, mas [[Prototype]] também pode ser explicitamente espeficado no método `Object.create()`. O `Object.create()` aceita dois argumentos: O primeiro é o objeto que corresponderá ao [[Prototype]] do novo objeto. E o segundo opcional é um objeto contendo descritores de propriedade no mesmo formato usado por `Object.definePropoerties()`.
+
+```js
+var book = {
+  title: 'Princípios de orientação a objetos em JavaScript',
+};
+
+// é o mesmo que:
+var book2 = Object.create(Object.prototype, {
+  title: {
+    configurable: true,
+    enumerable: true,
+    value: 'Princípios de orientação a objetos em JavaScript',
+    writable: true,
+  },
+});
+```
+
+As duas declaraçõs nesse código são exatamente iguais. A primeira declaração utiliza da forma literal para definir um objeto. Esse objeto herda automaticamente de `Object.prototype`, e a propriedade é definida como configurável, enumeravel e pode ser escrita por padrão. A segunda declaração executa o mesmo passo, mas faz isso explicitamente usando `Object.create()`.
+
+Provavelmente nunca escreveremos código que herde de `Object.prototype` diretamente, pois isso já é padrão. Herdar de outros objetos é muito mais interessante:
+
+```js
+var person1 = {
+  name: 'Nicholas',
+  sayName: function () {
+    console.log(this.name);
+  },
+};
+var person2 = Object.create(person1, {
+  name: {
+    configurable: true,
+    enumerable: true,
+    value: 'Greg',
+    writable: true,
+  },
+});
+
+person1.sayName(); // exibe "Nicholas"
+person2.sayName(); // exibe "Greg"
+
+console.log(person1.hasOwnProperty('sayName')); // true
+console.log(person1.isPrototypeOf(person2)); // true
+console.log(person2.hasOwnProperty('sayName')); // false
+```
+
+No código acima, o objeto `person1` é criado com uma propriedade `name` e um método `sayName()`. O objeto `person2` herda de `person1` a propriedade e o método. Mas, o objeto `person2` é definido por meio do `Object.create()`, que também define as duas propriedade. Essa propriedade própria enconbre a propriedade de mesmo no do protótipo e é usada em seu lugar. A cadeia de herança é maior para `person2` do que para `person1`. O objeto `person2` herda do objeto `person1`, e `person1` herda de `Object.prototype`.
+
+![Cadeia de protótipos](/.github/img/cap05/img5_2.png)
+
+Quando uma propriedade é acessada em um objeto, a engine do JavaScript executa um processo de pesquisa. Se a propriedade for encontrada na instância (ou seja, se for uma propriedade própria), o valor dessa propriedade será usado. Se a propriedade não for encontrada na instância, a procura continuará no [[Prototype]] desse objeto, e assim por diante até o m da cadeia ser alcançado. Essa cadeia normalmente termina com Object.prototype, cujo [[Prototype]] é de nido com null.
+
+Também é possível criar objetos com um [[Prototype]] igual a null por meio de `Object.create()`:
+
+```js
+var nakedObject = Object.create(null);
+console.log('toString' in nakedObject); // false
+console.log('valueOf' in nakedObject); // false
+```
+
+O objeto acima criado no exemplo é um objeto sem cadeia de protótipos. Isso significa que métodos como `toString()` e `valueOf()`, não estão presente no objeto. Esse objeto, é um quadro em branco, sem propriedade predefinidas, o que o torna perfeito para a criação de uma tabela de pesquisa has sem que você tenha de se preocupar com colisões de nomes com as propriedades herdadas. Não há muitos usos diferentes para um objeto como esse, e você não pode usá-lo como se ele herdasse de `Object.prototype`.
+
+---
