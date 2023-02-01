@@ -178,3 +178,103 @@ console.log('valueOf' in nakedObject); // false
 O objeto acima criado no exemplo é um objeto sem cadeia de protótipos. Isso significa que métodos como `toString()` e `valueOf()`, não estão presente no objeto. Esse objeto, é um quadro em branco, sem propriedade predefinidas, o que o torna perfeito para a criação de uma tabela de pesquisa has sem que você tenha de se preocupar com colisões de nomes com as propriedades herdadas. Não há muitos usos diferentes para um objeto como esse, e você não pode usá-lo como se ele herdasse de `Object.prototype`.
 
 ---
+
+## HERANÇA DE CONSTRUTORES
+
+Herança de objetos em JavaScript também é a base de herança de contrutores. Vimos que quase toda função tem uma propriedade `prototype` que pode ser modificada ou substituída. Esse `prototype` é automaticamnete definida para conter um novo objeto genérico que herda de `Object.prototype` e que tem uam única propriedade própria chamada `constructor`.
+
+```js
+// Você escreve isto:
+function YourConstrutor() {
+  // inicialização
+}
+
+// A engine do JavaScript faz isto internamente
+YourConstrutor.prototype = Object.create(Object.prototype, {
+  constructor: {
+    configurable: true,
+    enumerable: true,
+    value: YourConstrutor,
+    writable: true,
+  },
+});
+```
+
+O código acima define uma propriedade `prototype` do contrutor com um objeto que herda de `Object.prototype`, o que significa que qualquer instância de `YourContructor` também herdará de `Object.prototype. YourConstrutor`é um `sibtipo` de `Object.prototype` , e `Object.prototype` é um `subtipo` de `YourContructor`.
+
+Como a propriedade `prototype`pode ser atualizada, a cadeia de protótipos pode ser alterada ao ser sobrescrita.
+
+```js
+function Rectangle(length, width) {
+  this.length = length;
+  this.width = width;
+}
+Rectangle.prototype.getArea = function () {
+  return this.length * this.width;
+};
+Rectangle.prototype.toString = function () {
+  return '[Rectangle ' + this.length + 'x' + this.width + ']';
+};
+// herda de Rectangle
+function Square(size) {
+  this.length = length;
+  this.width = size;
+}
+
+Square.prototype = new Rectangle();
+Square.prototype.constructor = Square;
+Square.prototype.toString = function () {
+  return '[Square ' + this.length + 'x' + this.width + ']';
+};
+
+var rect = new Rectangle(5, 10);
+var square = new Square(6);
+
+console.log(rect.getArea()); // 50
+console.log(square.getArea()); // 36
+console.log(rect.toString()); // "[Rectangle 5x10]"
+console.log(square.toString()); // "[Square 6x6]"
+console.log(rect instanceof Rectangle); // true
+console.log(rect instanceof Object); // true
+console.log(square instanceof Square); // true
+console.log(square instanceof Rectangle); // true
+console.log(square instanceof Object); // true
+```
+
+No código acima, há dois construtores `Rectangle` e `Square`. O construtor `Square`tem sua propriedade `prototype` sobrescrita com uma instância de `Retangle`. Nenhum argumento é passado para `Rectangle` nesse ponto porque eles não precisam ser usados, e se fossem, todas as instâncias de `Square`compartilham as mesmas dimensões. Para mudar a cadeia de protótipos, é preciso garantir que o construtor não irá lançar um eror se os argumentos não forem fornecidos e que o contrutor não alterará nenhum tipo de estado global.
+
+Depois disso `rect` é criado como uma instância de `Rectangle` , e square é criado como uma instância de `Square`. Ambos têm o método `getArea()` herdado de `Rectangle.prototype`.A variável square é considerada uma instância de Square bem como de Rectangle e de Object porque instanceof usa a cadeia de protótipos para determinar o tipo do objeto.
+
+![A cadeia de protótipos](/.github/img/cap05/img5_3.png)
+
+A única parte relevante é que Square.prototype, de alguma maneira, deve se ligar a Rectangle.prototype para que a herança aconteça. Isso significa que você pode simpli car esse exemplo usando `Object.create()` novamente:
+
+```js
+function Square(size) {
+  this.length = size;
+  this.width = size;
+}
+
+Square.prototype = Object.create(Rectangle.prototype, {
+  constructor: {
+    configurable: true,
+    enumerable: true,
+    value: Square,
+    writable: true,
+  },
+});
+
+Square.prototype.toString = function () {
+  return '[Square ' + this.length + 'x' + this.width + ']';
+};
+```
+
+Nesse novo código, `Squera.prototype` é sobrescrito por um novo objeto que herda de `Rectangle.prototype`, e o construtor `Rectangle` jamais é chamado. Isso significa que podemos não precisar mais se preocupar em causar um erro ao chamar o construtor sem argumento. O código se comporta exatamente da maneira que o código anterior.
+
+```txt
+NOTA Sempre garanta que você irá sobrescrever prototype antes de adicionar propriedades a ele; do contrário, você perderá todos os métodos adicionados quando a sobrescrita ocorrer.
+```
+
+---
+
+## FURTO DE CONSTRUTOR
