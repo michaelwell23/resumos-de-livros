@@ -278,3 +278,94 @@ NOTA Sempre garanta que você irá sobrescrever prototype antes de adicionar pro
 ---
 
 ## FURTO DE CONSTRUTOR
+
+Se quiser chamar o construtor do supertipo a partir do construtor subtipo, é preciso tirar vantagem do modo como as função em JavaScript funcioname. A maneira como o `furto de construtor`funciona é muito simples. Basta chamar o construtor do supertipo a partir do construtor do subtipo usando `call()` ou `apply()` para passar o objeto recém-criado.
+
+```js
+function Rectangle(length, width) {
+  this.length = length;
+  this.width = width;
+}
+Rectangle.prototype.getArea = function () {
+  return this.length * this.width;
+};
+Rectangle.prototype.toString = function () {
+  return '[Rectangle ' + this.length + 'x' + this.width + ']';
+};
+// herda de Rectangle
+function Square(size) {
+  Rectangle.call(this, size, size);
+  // opcional: adiciona novas propriedades ou sobrescreve as
+  // propriedades existentes aqui
+}
+
+Square.prototype = Object.create(Rectangle.prototype, {
+  constructor: {
+    configurable: true,
+    enumerable: true,
+    value: Square,
+    writable: true,
+  },
+});
+Square.prototype.toString = function () {
+  return '[Square ' + this.length + 'x' + this.width + ']';
+};
+var square = new Square(6);
+console.log(square.length); // 6
+console.log(square.width); // 6
+console.log(square.getArea()); // 36
+```
+
+O construtor `Square` chama o construtor `Rectangle`, passa `this` e também `size` duas vezes. Fazer isso cria as propriedades `lenght` e `width` no novo objeto e faz cada uma delas ser igual a `size`. Esse processo de duas etapas é útil quando queremos implementar a herança entre tipos personalizados. Você sempre deverá modificar o protótipo de um construtor, e poderá precisar chamar o construtor do supertipo a partir do construtor do subtipo. Geralmente, você irá modificar o protótipo para a herança de métodos e usará o furto de construtor para as propriedades. Essa abordagem normalmente é conhecida como herança pseudoclássica porque ela imita a herança clássica das linguagens baseadas em classe.
+
+---
+
+## ACESSANDO OS MÉTODOS DO SUPERTIPO
+
+Para constinuar acessando p método do supertipo é preciso acessar diretamente o método do protótipo referente ao supertipo e suar tanto `call()` quanto `apply()` para executar o método no objeto referente ao subtipo.
+
+```js
+function Rectangle(length, width) {
+  this.length = length;
+  this.width = width;
+}
+Rectangle.prototype.getArea = function () {
+  return this.length * this.width;
+};
+Rectangle.prototype.toString = function () {
+  return '[Rectangle ' + this.length + 'x' + this.width + ']';
+};
+// herda de Rectangle
+function Square(size) {
+  Rectangle.call(this, size, size);
+}
+Square.prototype = Object.create(Rectangle.prototype, {
+  constructor: {
+    configurable: true,
+    enumerable: true,
+    value: Square,
+    writable: true,
+  },
+});
+// chama o método do supertipo
+Square.prototype.toString = function () {
+  var text = Rectangle.prototype.toString.call(this);
+  return text.replace('Rectangle', 'Square');
+};
+```
+
+O método só precisa substituir `Rectagle` por `Square` antes de retornar o texto resultante. Essa abordagem pode parcer um pouco extensa para uma operação simples como essa, mas é a única maneira de acessar um método do supertipo.
+
+---
+
+## SUMÁRIO
+
+O JavaScript suporta a herança por meio de cadeia de protótipos. Uma cadeia de protótipos é criada entre os objetos quando o [[Prototype]] de um objeto é definido como o outro objeto. Todos os objetos genéricos herdam automaticamente de `Object.prototype`. Se você deseja criar um objeto que herde de outro objeto, `Object.create()` poderá ser usado para especificar o valor de [[Prototype]] do novo objeto.
+
+A herança é implementada entre tipos personalizados por meio da criação de uma cadeia de protótipos no construtor. Ao definir a propriedade prototype do construtor com outro valor, a herança é implementada entre as instâncias do tipo personalizado e o protótipo desse outro valor. Todas as instâncias desse construtor compartilham o mesmo protótipo, portanto todas herdam do mesmo objeto. Essa técnica funciona bem para a herança de métodos de outros objetos, mas não se podem herdar propriedades próprias usando protótipos.
+
+Para herdar propriedades próprias corretamente, o furto de construtor (constructor stealing) pode ser usado, o que consiste simplesmente em chamar uma função construtora com `call()` ou `apply()` para que qualquer inicialização seja feita no objeto referente ao subtipo. Combinar furto de construtor com cadeia de protótipos é a maneira mais comum de implementar a herança entre tipos personalizados em JavaScript. Essa combinação é frequentemente chamada de herança pseudoclássica devido a sua semelhança com a herança em linguagens baseadas em classes.
+
+Você pode acessar os métodos de um supertipo ao acessar diretamente o seu protótipo. Para isso, use `call()` ou `apply()` para que qualquer inicialização seja feita no objeto referente ao subtipo. Combinar furto de construtor com cadeia de protótipos é a maneira mais comum de implementar a herança entre tipos personalizados em JavaScript. Essa combinação é frequentemente chamada de herança pseudoclássica devido a sua semelhança com a herança em linguagens baseadas em classes. Você pode acessar os métodos de um supertipo ao acessar diretamente o
+seu protótipo. Para isso, use `call()` ou `apply()` para executar o método do
+supertipo no objeto referente ao subtipo.
