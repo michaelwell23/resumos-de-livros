@@ -59,3 +59,88 @@ Existe três valores especiais em JavaScript que são considerados números, mas
 ---
 
 ## 1.3 STRINGS
+
+`Strings` são usadas para representar textos, e são escritas delimitando o seu conteúdo entre aspas.
+
+```js
+'Patch my boat with chewinf gum';
+'Mokeys wave goodbye';
+```
+
+Ambas as aspas simples e duplas pode ser usadas para respresentar `strings`, contanto que as aspas abertas sejam no início e no final. Quase tudo pode ser colocado entre aspas, o JavaScript criará um valor do tipo `string como o que quer que seja. Mas alguns caracteres são mais difíceis, como colocar aspas dentro de aspas. Alem disso, quebra de linhas não podem ser colocadas entre aspas e as strings deve permanecer em uma única linha.
+
+Para que seja possível inserir tais caracteres a notação de `\` pode ser utilizada: quando ele for inserido dentro de um texto entre aspas, ele indicará que o caractere seguinte possui um significado especial (chamado de escape). Uma aspa que se encontra logo após uma barra invertida não representará o fim da string, mas será considerado como parte dela. Quando inserimos um `n` após a barra invertida ele será interpretado como uma quebra de linha. Semelhantemente a letra `t` que significa tabulação.
+
+```js
+'This is first line\nAnd this is the second';
+```
+
+Quando quisermos considerar uma barra invertida como uma barra invertida, podemos utilizar duas barras invertidas, elas se anulam e apenas uma será deixada no valo de estring resultante.active
+
+```js
+'A newlin character is writter like \"\\n\"."
+```
+
+Não podemos fazer operações de divisão, multiplição ou subtração com strings. Mas o operador `+` pode ser usado para concatenar, ou seja juntar duas strings e forma uma única string.
+
+```js
+'con' + 'cat' + 'e' + 'nate';
+```
+
+---
+
+## 1.4 OPERADORES UNÁRIOS
+
+Nem todos os operadores são símbolos. Um exemplo é o operador `typeof`, que produz um valor do tipo `string` contendo o nome do tipo do valor que está sendo vereficado.
+
+```js
+console.log(typeof 4.5); // -> number
+console.log(typeof 'x'); // -> string
+```
+
+O `console.log` é utilizado para ver o resultado da avaliação de algo. Quando executado, o vaor produzido é mostrado em tela, mas isso depende muito do ambiente em que o código está sendo executado.
+
+O `typeof` espera um único valor por isso ele é chamado de operádor unário. Já operadores operam 2 valores são chamados de binários. O operador `-` pode ser usado tanto como binário quanto como unário.
+
+```js
+console.log(-(10 - 2)); //-8
+```
+
+## 1.5 VALORES BOOLEANOS
+
+Os tipos booleanos tem apenas dois valores: verdadeiro ou falso, que são escritos como `true`ou `false` respectivamente.
+
+### Comparações
+
+Essa é uma maneira que produz valores booleanos:
+
+```js
+console.log(3 > 2); // true
+console.log(2 < 3); // false
+```
+
+Os sinais de > e < são símbolo que representam "maior que" e "menor que". Ele são operadores binários, e o resultado da aplicação deles é um valor Booleano que indica se eles são verdadeiros nesse caso.
+
+As strings também podem ser comparadas:
+
+```js
+console.log('Aerdvark' < 'Zoroaster');
+```
+
+A forma de comparação de string é mais a ordenação alfabética. Letras maiusculas serão sempre "menores" que as minúsculas. A comparação é baseada no padrão unicode que atribui um número para todos os caracteres. Quando comparamos strings, o JavaScript da esquerda para a direita, compara os códigos numéricos dos caracteres um por um. Outros operadores parecids são >=(maior ou igual a), <= (menor ou igual), == (igual a) e != (não igual).
+
+```js
+console.log('Itchy' != 'Scratchy');
+```
+
+Somente o valor `NaN` não é igual a ele mesmo quando são comparados.
+
+```js
+console.log(NaN == NaN);
+```
+
+NaN é supostamente usado para indicar o resultado de alguma operação que não tenha sentido e, por isso, ele não será igual ao resultado de quaisquer outras operações sem sentido.active
+
+---
+
+## OPERADORES LÓGICOS
