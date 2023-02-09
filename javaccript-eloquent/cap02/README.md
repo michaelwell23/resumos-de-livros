@@ -140,3 +140,92 @@ alert('Your number is the square root of ' + theNumber * theNumber);
 Existe funções que fazem conversões de tipo como `String`, `Boolean`. A função `Number`, faz exatamente isso, como precisamos de um número, a função `prompt` retorna uma string, é necessário fazer essa conversão.Aqui podemos ver uma reprsentação bem trívial do fluxo de controle em linha reta.
 
 ---
+
+## 2.11 - EXECUÇÃO CONDICIONAL
+
+Uma outra alternativa alem da ordem linear é a execução `condicional`, onde escolhemos entre duas rotas diferentes baseando em um valor booleano. A execução condicional é escrita utilizando a palavra-chave `if`. No caso mais simples, nós queremos que algum código seja executado se, e somente se, uma certa condição existir. Utilizando o exemplo anterios, podemos mostra o dobro do número fornecendo como entra apenas se ele for realmente um número
+
+```js
+var theNumber = Number(prompt('Pick a number', ''));
+if (!isNaN(theNumber))
+  alert('Your number is the square root of ' + theNumber * theNumber);
+```
+
+com essa modificação, se você fornecer qualquer outro dado que não seja um número, nenhuma saída será retornada. Tal expressão é escrita entre parênteses logo após a palavra-chave e seguida por uma declaração a ser executada. A função `isNaN` retorna true apenas se o argumento fornecido for `NaN`. A função `Number` retorna `NaN` quando o valor fornecido é diferente de um número valido. A palavras-chave `else` pode ser usada, juntamente com `if`, para criar dois caminhos distintos de execução.
+
+```js
+var theNumber = Number(prompt('Pick a number', ''));
+if (!isNaN(theNumber))
+  alert('Your number is the square root of ' + theNumber * theNumber);
+else alert("Hey. Why didn't you give me a number?");
+```
+
+Se tiver mais de dois caminhos a escolher, múltiplos pares de `if/else` podem ser encadeados.
+
+```js
+var num = Number(prompt('Pick a number', '0'));
+
+if (num < 10) alert('Small');
+else if (num < 100) alert('Medium');
+else 'Large';
+```
+
+---
+
+## 2.12 - LOOPS WHILE E DO
+
+Considerando um programa que imprime todos os números pares de 0 a 12.
+
+```js
+console.log(0);
+console.log(2);
+console.log(4);
+console.log(6);
+console.log(8);
+console.log(10);
+console.log(12);
+```
+
+Isso funciona, mas a ideia é escrever um programa é fazer com que algo seja menos trabalhoso. O que precisamos é de uma maneira de repetir os código. Para isso, é necessário utilizar um fluxo de controle, chamado de `laço de repetição` (loop). O fluxo de controle do loop permite voltar a um mesmo ponto no programa e repeti-lo no estad atual do programa.
+
+```js
+var number = 0;
+
+while (number <= 12) {
+  console.log(number);
+  number = number + 2;
+}
+```
+
+Uma declaração que inicia com a palavra-chave `while` cria um loop. Essa palavra é acompanhada por uma expressão entre parêntes e seguida pro uma declaração. O loop continua executando a declaração enquato a expressão produzir uma valor que, seja `true`. No loop, imprime-se o número atual e soma dois em sua variável. Sempre que precisamos executar múltiplas declarações dentro de um loop, nós as envolvemos com chaves. Uma sequência declarada envolvidas por chaves é chamado de `bloco`. A variável `number` demonstra uma maneira na qual variável podem verificar o progresso de um program. Toda vez que o loop se repete, `number` é incrementada por 2. No início de cada repetição, ele é comparado com número 12 para decidir se o proggra terminou de executar todo o trabalho esperado.
+
+Como exemplo, o programa abaixo calcula e mostra o valor de 2¹⁰. Há duas variáves, uma para armazenar o resultado e outra para contar quantas vezes multiplicamos esse resultado por 2. O looptesta se a segunda variável já atingiu o valor 1o e então atualiza ambas as variáveis.
+
+```js
+var result = 1;
+var counter = 0;
+while (counter < 10) {
+  result = result * 2;
+  counter = counter + 1;
+}
+console.log(result);
+```
+
+O loop `do` é uma estrutura de controle similar ao `while`. A única diferença entre eles é o `do` sempre executa suas declarações ao menos uma vez e inicia o teste para verificar se deve parar ou não paenas após a primeira execução.
+
+```js
+do {
+  var name = prompt('Who are you?');
+} while (!name);
+console.log(name);
+```
+
+O programa força o usuário a informa um nome. Ele continuará pedinto até que seja fornecidio um valor que não seja uma string vazia. Aplicar o operador ! faz com que o valor seja convertido para o tipo Booleano antes de negá-lo, e todas as strings exceto "" convertem para `true`.
+
+---
+
+## 2.13 - INDENTANDO CÓDIGO
+
+Você deve ter reparado nos espaços que coloco em algumas declarações. No JavaScript, eles não são necessários e o computador irá aceitar o programa sem eles. O papel da indentação é fazer com que a estrutura do código se destaque. Com a indentação adequada, o formato visual do programa corresponde ao formato dos blocos contidos nele.
+
+---
