@@ -199,7 +199,7 @@ while (number <= 12) {
 
 Uma declaração que inicia com a palavra-chave `while` cria um loop. Essa palavra é acompanhada por uma expressão entre parêntes e seguida pro uma declaração. O loop continua executando a declaração enquato a expressão produzir uma valor que, seja `true`. No loop, imprime-se o número atual e soma dois em sua variável. Sempre que precisamos executar múltiplas declarações dentro de um loop, nós as envolvemos com chaves. Uma sequência declarada envolvidas por chaves é chamado de `bloco`. A variável `number` demonstra uma maneira na qual variável podem verificar o progresso de um program. Toda vez que o loop se repete, `number` é incrementada por 2. No início de cada repetição, ele é comparado com número 12 para decidir se o proggra terminou de executar todo o trabalho esperado.
 
-Como exemplo, o programa abaixo calcula e mostra o valor de 2¹⁰. Há duas variáves, uma para armazenar o resultado e outra para contar quantas vezes multiplicamos esse resultado por 2. O looptesta se a segunda variável já atingiu o valor 1o e então atualiza ambas as variáveis.
+Como exemplo, o programa abaixo calcula e mostra o valor de 2¹⁰. Há duas variáves, uma para armazenar o resultado e outra para contar quantas vezes multiplicamos esse resultado por 2. O looptesta se a segunda variável já atingiu o valor 10 e então atualiza ambas as variáveis.
 
 ```js
 var result = 1;
@@ -227,5 +227,68 @@ O programa força o usuário a informa um nome. Ele continuará pedinto até que
 ## 2.13 - INDENTANDO CÓDIGO
 
 Você deve ter reparado nos espaços que coloco em algumas declarações. No JavaScript, eles não são necessários e o computador irá aceitar o programa sem eles. O papel da indentação é fazer com que a estrutura do código se destaque. Com a indentação adequada, o formato visual do programa corresponde ao formato dos blocos contidos nele.
+
+---
+
+## 2.14 - LOOP FOR
+
+O JavaScript fornece uma forma um pouco mais curta e compreensiva do que o loop `while`. Esse loop é chamado de loop `for`.
+
+```js
+for (var number = 0; number <= 12; number = number + 2) {
+  console.log(number);
+}
+```
+
+Os parênteses após a palavra-chave devem conter dois pontos e vírgulas; A parte anterior ao primeiro ponto e virgula inicializa o loop, definindo uma variável. A segunda parte é a expressão que verifica se o loop deve continuar ou não. A parte final, atualiza o estado do loop após cada interação. Abaixo podemos ver o códido que calcula 2¹⁰ utilizando `for`.
+
+```js
+var result = 1;
+for (var counter = 0; counter < 10; counter = conunter + 1) {
+  result = result * 2;
+}
+console.log(result);
+```
+
+---
+
+## 2.15 - QUEBRANDO A EXECUÇÃO DE UM LOOP
+
+Ter uma condição que produza um resultado `false` não é a única maneira que um loop pode para. Existe também uma declaração especial chamada `break` que tem o efeito de parar a execução e sair do loop em questão.
+
+```js
+for (var current = 20; ; current++) {
+  if (current % 7 === 0) break;
+}
+console.log(current);
+```
+
+Usar o operador resto é uma boa maneira de testar se um número é divisivel por outro, veficando se o resulatdo da divisão é igual a 0. A construção do `for` no exemplo não contém a parte que checa pelo fim do loop. Isso significa que o loop não vai parar de executar até que a declaração `break` contina nele seja executada. Se não incluir a declaração `break` ou acidentalmente escrevel uma condição que sempre produza um resultado `true`, o programa ficará preso em um loop infinito. Um programa preso em um loop infinito nunca vai terminar sua execução.
+
+A palavra-chave `continue`é similar ao `break`.Quando ele está contido no corpo de um loop, o controle de execução pula para fora do corpo e continua executando a próxima iteraão do loop.
+
+---
+
+## 2.16 - ATUALIZANDO VARIÁVEIS SUCENTAMENTE
+
+Um programa, quando está em um loop, muitas vezes o valor armazenado em uma variável precisa ser atualizado, baseado no valor anterior dessa mesma variável.
+
+```js
+counter = conter + 1;
+```
+
+Podemos utilizer como atalho:
+
+```
+count += 1
+```
+
+atalhos similares funcionam para outros operadores, como `*=`, `-=`. Isso permite encurtar a contagem um pouco.active
+
+```js
+for (var number = 0; number <= 12; number += 2) console.log(number);
+```
+
+Outras formar de encurtar ainda mais a contagem para operadores `+=` e `-=`, podemos utilizar `counter++` e `counter--`
 
 ---
