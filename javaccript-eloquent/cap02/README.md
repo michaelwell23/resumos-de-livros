@@ -292,3 +292,88 @@ for (var number = 0; number <= 12; number += 2) console.log(number);
 Outras formar de encurtar ainda mais a contagem para operadores `+=` e `-=`, podemos utilizar `counter++` e `counter--`
 
 ---
+
+## 2.17 - RESOLVENDOUM VALOR COM SWITCH
+
+É comum que o código fique assim:
+
+```js
+if (variable == 'value1') action1();
+else if (variable == 'value2') action2();
+else if (variable == 'value3') action3();
+else defaultAction();
+```
+
+Há um construto chamado `switch` que se destina a resolver o envio de valores de uma forma mais direta. Infelizmente, a sintaxe JavaScript utilziada para isso é um pouco estranha - frequentemente uma cadeia de declarações `if` continua parecendo melhor.
+
+```js
+switch (prompt('What is the weather like?')) {
+  case 'rainy':
+    console.log('Remember to bring an umbrella.');
+    break;
+  case 'sunny':
+    console.log('Dress lightly.');
+  case 'cloudy':
+    console.log('Go outside.');
+    break;
+  default:
+    console.log('Unknown weather type!');
+    break;
+}
+```
+
+Dentro do bloco aberto pelo `switch`, podems colcoar qualquer número de rótulo no `case`. O programa vai pular para o rótulo correspondente ao valor que `switch` fornece, ou para `default` se nehum valor for encontrado. ENtão ele começa a executar as declarações, e continua a passar pelo rótulos, até encontrar uma declarção `break`. Mas tenha cuidado: é fácil esquecer de um `break`, o que fará com que o programa execute códigos que você não gostaria de executar.
+
+---
+
+## 2.18 - CAPITALIZAÇÃO
+
+Essas são as escolhas para escrever nome de variáveis com duas ou mais palavras:
+
+```txt
+fuzzylittleturtle
+fuzzy_little_turtle
+FuzzyLittleTurtle
+fuzzyLittleTurtle
+```
+
+Por padrão o último estimo é o mais utilizado, conhecido com Camelcase, eles capitalizam todas as palavras exceto a primeira. Não é difícil se acostumar com coisas pequenas assim, e o código com estilos de nomenclaturas mistas pode ser tornar desagradável para leitura.
+
+## 2.19 - COMENTÁRIOS
+
+Os comentários são para anotar alguns pensamento como parte de seu programa. O comentário é um pedaço de texto que é parte de um programa mais completamente ignorado pelo computador. No JavaScript temos duas formas de escrever os comentários. O de única linha, utilizado por duas barras (//).
+
+```js
+var accountBalance = calculateBalance(account);
+// It's a green hollow where a river sings
+accountBalance.adjust();
+// Madly catching white tatters in the grass.
+var report = new Report();
+// Where the sun on the proud mountain rings:
+addToReport(accountBalance, report);
+// It's a little valley, foaming like light in a glass.
+```
+
+E a outra forma é utilizado o /\* \*/, que cria um comentário de mmultiplas linhas.
+
+```js
+/*
+I first found this number scrawled on the back of one of
+my notebooks a few years ago. Since then, it has
+occasionally dropped by, showing up in phone numbers and
+the serial numbers of products that I bought. It
+obviously likes me, so I've decided to keep it.
+*/
+var theNumber = 11213;
+```
+
+## RESUMO
+
+Você agora sabe que um programa é construído de declarações, que as vezes contém mais declarações. Declarações tendem a conter expressões, que podem ser feitas de pequenas expressões.
+
+Colocar declarações uma após a outra nos dá um programa que é executado de cima para baixo. Você pode
+causar transtornos no fluxo de controle usando declarações condicionais ( `ìf , else e switch` ) e loops ( `while, do e for` ).
+
+As variáveis podem ser usadas para arquivar pedaços de dados sob um nome, e são úteis para rastrear o estado de um programa. O ambiente é um conjunto de variáveis que são definidas. O sistema JavaScript sempre coloca um número padrão de variáveis úteis dentro do seu ambiente.
+
+Funções são valores especiais que encapsulam um pedaço do programa. Você pode invocá-las escrevendo `function Name (argument1, argument2) {}` . Essa chamada de função é uma expressão, que pode produzir um valor.
