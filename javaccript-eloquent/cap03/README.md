@@ -117,3 +117,102 @@ var launchMissiles= funtion(value){
 if (safeMode)
 launchMissiles = function(value) {/* do nothing */};
 ```
+
+---
+
+## 3.5 - NOTAÇÃO POR DECLARAÇÃO
+
+A palavra-chave `function` também pode ser usada no inicio da declaração.
+
+```js
+function square(x) {
+  return x * x;
+}
+```
+
+Isso é uma declaração de função. Ela define a variável e faz com que ela referencie a função em questão. Existe uma pequena diferença nessa maneira de definir uma função.
+
+```js
+console.log('The future says:', future());
+
+function future() {
+  return 'We STILL have no flying cars.';
+}
+```
+
+Mesmo que a função seja definida após o código que a executa, o código funciona. Isso ocorre porque as declarações de função não faze parte do fluxo normal de controle, que é executado de cima para baixo. Elas são conceitualmente movidas para o topo do escopo que as contém e pode ser usadas por qualquer código no mesmo escopo. É recomendado que nunca declara uma função dentro de um bloco condicional ou em um laço de repetição. Para que o programa se comporte de forma consistente, recomendá-se o uso somente essa forma de definição de função de bloco externo de uma outra função ou programa.
+
+```js
+function example() {
+  function a() {} // Okay
+  if (something) {
+    function b() {} // Danger!
+  }
+}
+```
+
+## 3.6 - A PILHA DE CHAMADAS
+
+Será muito úti obeservar como o fluxo de controle flui por meio das execuções das funções.
+
+```js
+function greet(who) {
+  console.log('Hello ' + who);
+}
+greet('Harry');
+console.log('Bye');
+```
+
+A execução do programa funciona da seguinte forma: a chamada da função "greet" faz com que o controle pule para o início dessa função. Em seguida, é invocado o `console.log` que assume o controle, faz seu trabalho e então retorna o controle para a linha 2 novamente. O controle chega ao fim da função "greet" e retorna para o local onde a função foi invocada originalmente. Por fim, o controle exexuta uma nova chamada a `console.log`.
+O fluxo de controle pode ser representado da seguinte forma:
+
+```txt
+top
+  greet
+    console.log
+  greet
+top
+  console.log
+top
+```
+
+Devido ao fato de que a função deve retornar ao local onde foi chamada após finalizar a sua execução, o computador precisa se lembrar do contexto no qual a função foi invocada originalmente. O local onde o computador armazena esse contexto é chamado de `call stack` (pilha de chamada). Toda vez que uma função é invocada, o contexto atual é colocado no topo dessa "pilha" de contexto. Quando a função finaliza sua execução, o contexto no topo da pilha é removido e utilizado para continuar o fluxo de execução.O armazenamento dessa pilha de contexto necesita de espaço na memória do computador. Quando a pilha começar a ficar muito grande, o computador reclamará com uma mensagem do tipo `out of stack space` ou `too much recursion`. O código abaixo demonsta esse problema fazendo uma pergunta difícil para o computador, que resulta em um ciclo infinito de chamadas entre duas funções.
+
+```js
+function chicken() {
+  return egg();
+}
+
+function egg() {
+  return chicken();
+}
+
+console.log(chicken() + ' came first.');
+```
+
+---
+
+## 3.7 - ARGUMENTOS OPCIONAIS
+
+O código a seguir executa sem problemas:
+
+```js
+alert('Hello', 'Good Evening', 'How do you do?');
+```
+
+A função `alert`, oficialmente, aceita somente um argumento. No entanto, ela ignora os outros argumentos e lhe mostra o "Hello". O JavaScript é extremamente tolerante com a quantidade de argumento que são passados para uma função. Se mais argumentos que o necessário for passado, eles serão ignorados. Se menos argumentos forem passado, os parâmetros restantes terão seus valores definidos em `undefined`. A vantagem é que esse comportamento pode ser usado em funções que aceitam argumentos opcionais. Por exemplo, a versão seguinte de power pode ser chamada com um ou dois argumentos. No caso de ser invocada com apenas um argumento, ela assumirá o valor 2 para o expoente e a função se comportará com um expoente ao quadrado.
+
+```js
+function power(base, exponent) {
+  if (exponent == undefined) exponent = 2;
+  var result = 1;
+  for (var count = 0; count < exponent; count++) result *= base;
+  return result;
+}
+console.log(power(4));
+// → 16
+console.log(power(4, 3));
+// → 64
+```
+
+---
