@@ -216,3 +216,182 @@ console.log(power(4, 3));
 ```
 
 ---
+
+## 3.8 - CLOSURE
+
+O que acontece com variáveis locais quando a função que as criou não está mais ativa? O código a seguir define uma função `wrapValue` que cria uma variável local e retorna uma função que acessa e retorna essa variável.
+
+```js
+function wrapValue(n) {
+  var localVariable = n;
+  return function () {
+    return localValue;
+  };
+}
+
+var wrap1 = wrapValue(1);
+var wrap2 = wrapValue(2);
+console.log(wrap1());
+// → 1
+console.log(wrap2());
+// → 2
+```
+
+Várias instâncias de variável podem coexistir, o que é uma boa demonstração do conceito de que variáveis locais são realmente recriadas para cada nova chamada, sendo que as chamadas não interferem nas variáveis locais uma das outras. A funcionalidade capaz de referenciar uma instância específica de uma variável local após a execução de uma função é chamada de `closure`. Esse comportamento faz com que você não tenha que se preocupar com o tempo de vida das variáveis, como tabém permite uso criativo de valores de função.
+
+```js
+function multiplier(factor) {
+  return function (number) {
+    return number * factor;
+  };
+}
+
+var twice = multiplier(2);
+console.log(twice(5));
+```
+
+Pensar em programas que funcionam dessa forma requer um pouco de prática. Um bom modelo mental é pensar que a palavra-chave `funtion` "congela" o código que está em seu corpo e o envolve em um pacote. No exemplo, `multiplier` retorna um pedaço de código "congelado" que fica armazenado na variável `twice`. A última linha do exemplo chama o valor armazenada nessa variável, fazeno com que o código "congelado" seja executado.
+
+---
+
+## 3.9 - RECURSÃO
+
+Uma função que invoca a si mesma é denominada `recursiva`. A recursividade permite que as funções sejam excritas em um estilo diferente.
+
+```js
+function power(base, exponent) {
+  if (exponent == 0) return 1;
+  else return base * power(base, exponent - 1);
+}
+
+console.log(power(2, 3));
+```
+
+Essa é a maneira mais próxima da forma como os matemáticos definem a exponenciação. A função chama a si mesma várias vezes com diferentes argumentos para alcançar a multiplicação repetida. Entretanti, há um grave problema: A versãorecursiva é aproximadamente dez vezes mais lenta do que a variação que utiliza um laço de repetição. O dilema velocidade X elegância é basicamente interessante. Muitos programadores iniciantes focam excessivamente em eficiência até nos menores detalhes. Isso caba gerando programas maiores, mais complexos e muitas vezes menos corretos, que demoram mais tempo para serem escritos e, normalmente , executam apenas um pouco mais rapidamente do que as variaões mais simples e diretas. Porém, muitas vezes a recursão não é uma alternativa menos eficiente do que um laço de repetição. É muito mais simples resolver alguns problemas com recursão do que com laço de repetição. Considere este quebra-cabeça: Como você implementaria uma função que, dado
+um número, tenta achar a sequência de adições e multiplicações que produzem esse número? Por exemplo, o
+número 13 pode ser produzido multiplicando-se por 3 e adicionando-se 5 duas vezes. Já o número 15 não pode
+ser produzido de nenhuma forma. Veja uma solução recursiva:
+
+```js
+function findSolution(target) {
+  function find(start, history) {
+    if (start == target) return history;
+    else if (start > target) return null;
+    else
+      return (
+        find(start + 5, '(' + history + ' + 5)') ||
+        find(start * 3, '(' + history + ' * 3)')
+      );
+  }
+  return find(1, '1');
+}
+
+console.log(findSolution(24)); // → (((1 * 3) + 5) * 3)
+```
+
+A função interna find é responsável pela recursão. Ela recebe dois argumentos e retorna uma string que mostra como chegar no número esperado ou null. Para fazer isso, a função executa uma entre três ações possíveis. Se o número atual é o número esperado, o histórico atual reflete uma possível sequência para alcançar o número esperado, então ele é simplesmente retornado. Se o número atual é maior que o número esperado, não faz sentido continuar explorando o histórico, já que adicionar ou multiplicar o número atual gerará um número ainda maior. Por fim, se nós tivermos um número menor do que o número esperado, a função tentará percorrer todos os caminhos possíveis que iniciam do
+número atual, chamando ela mesma duas vezes, uma para cada próximo passo que seja permitido. Se a primeira chamada retornar algo que não seja null, ela é retornada. Caso contrário, a segunda chamada é retornada, independentemente se ela produzir string ou null. Para entender melhor como essa função produz o resultado que estamos esperando, vamos analisar todas as
+chamadas a find que são feitas quando procuramos a solução para o número 13.
+
+```txt
+find(1, '1')
+  find(6, '(1 + 5)')
+    find(11, '((1 + 5) + 5)')
+      find(16, '(((1 + 5) + 5) + 5)')
+        too big
+      find(33, '(((1 + 5) + 5) * 3)')
+        too big
+    find(18, '((1 + 5) * 3)')
+      too big
+  find(3, '(1 * 3)')
+    find(8, '((1 * 3) + 5)')
+      find(13, '(((1 * 3) + 5) + 5)')
+        found!
+```
+
+A primeira chamada tenta achar a solução que começa com (1 + 5) e, usando recursão, percorre todas as possíveis soluções que produzam um número menor ou igual ao número esperado. Como ele não encontra uma solução para o número esperado, o valor null
+é retornado até retornar para a chamada inicial. Nesse momento, o operador || faz com que a pilha de chamadas inicie o processo de exploração pelo outro caminho (1 \* 3) . Essa busca tem resultados satisfatórios, porque após duas chamadas recursivas acaba encontrando o número 13. Essa chamada recursiva mais interna retorna uma string e cada operador || nas chamadas intermediárias passa essa string adiante, retornando no final a solução esperada.
+
+---
+
+## 3.10 - FUNÇÕES CRESCENTES
+
+Existem duas razões naturais para as funções serem introduzidas nos programas. A primeira delas é quando você percebe que está escrevendo o mesmo código várias vezes. A segunda é quando você precisa de uma funcionalidade que ainda não foi escrita e que merece ser encapsulada em uma função própria. Podemos escrever um programa que imprima dois números, sendo eles um numero de vacas e o outro de galinhas em uma fazenda, depois de alguns algorismos definidos por numeros de três digitos.
+
+```js
+function printFarmInventory(cows, chickens) {
+  var cowString = String(cows);
+  while (cowString.length < 3) cowString = '0' + cowString;
+  console.log(cowString + ' Cows');
+  var chickenString = String(chickens);
+  while (chickenString.length < 3) chickenString = '0' + chickenString;
+  console.log(chickenString + ' Chickens');
+}
+
+printFarmInventory(7, 11);
+```
+
+Adicionar .length após o valor de uma string nos fornecerá o tamanho daquela string. Por isso, o laço de repetição while continua adicionando zeros no início da string que representa o número até que a mesma tenha três caracteres. Podemos dizer que a missão foi concluída. Mas, o fazendeiro ligou e agora ele quer adicionar porcos.
+
+```js
+function printZeroPaddedWithLabel(number, label) {
+  var numberString = String(number);
+  while (numberString.length < 3) numberString = '0' + numberString;
+  console.log(numberString + ' ' + label);
+}
+
+function printFarmInventory(cows, chickens, pigs) {
+  printZeroPaddedWithLabel(cows, 'Cows');
+  printZeroPaddedWithLabel(chickens, 'Chickens');
+  printZeroPaddedWithLabel(pigs, 'Pigs');
+}
+
+printFarmInventory(7, 11, 3);
+```
+
+Funcionou! Mas o nome printZeroPaddedWithLabel é um pouco estranho. Ele é uma combinação de três coisas - imprimir, adicionar zeros e adicionar a label correta - em uma única função.
+Ao invés de tentarmos abstrair a parte repetida do nosso programa como um todo, vamos tentar selecionar apenas um conceito.
+
+```js
+function zeroPad(number, width) {
+  var string = String(number);
+  while (string.length < width) string = '0' + string;
+  return string;
+}
+function printFarmInventory(cows, chickens, pigs) {
+  console.log(zeroPad(cows, 3) + ' Cows');
+  console.log(zeroPad(chickens, 3) + ' Chickens');
+  console.log(zeroPad(pigs, 3) + ' Pigs');
+}
+printFarmInventory(7, 16, 3);
+```
+
+Ter uma função com um bom nome descritivo como zeroPad torna fácil para qualquer um ler e entender o código. Além disso, ele pode ser útil em outras situações, além desse programa específico. Você pode usá-lo, por exemplo, para imprimir números corretamente alinhados em uma tabela. Um princípio útil é não adicionar funcionalidades, a menos que você tenha certeza absoluta de que irá precisar
+delas. Pode ser tentador escrever soluções genéricas para cada funcionalidade com que você se deparar. Resista a essa vontade. Você não vai ganhar nenhum valor real com isso e vai acabar escrevendo muitas linhas de código que nunca serão usadas.
+
+---
+
+## 3.11 - FUNÇÕES E EFEITOS COLATERAIS
+
+Uma função "pura" é um tipo específico de função que produz valores e que não gera efeitos colaterais, como também não depende de efeitos colaterais de outros códigos. Uma função pura tem a característica de, ser sempre chamada com os mesmos argumentos, produzir o mesmo valor. Isso acaba fazendo com que seja fácil de entendermos como ela funciona. Uma chamada para tal função pode ser mentalmente substituída pelo seu resultado, sem alterar o significado do código. Funções que não são "puras" podem retornar valores diferentes baseados em vários tipos de fatores e produzem efeitos colaterais que podem fazer com que seja difícil de testar e pensar sobre elas. Mesmo assim, não há necessidade de se sentir mal ao escrever funções que não são "puras" ou começar uma "guerra santa" para eliminar códigos impuros. Efeitos colaterais são úteis em algumas situações. Não existe uma versão "pura" de console.log , por exemplo, e console.log certamente é útil. Algumas operações são também mais fáceis de se expressar de forma mais eficiente quando usamos efeitos colaterais, portanto a velocidade de computação pode ser uma boa razão para se evitar a "pureza".
+
+---
+
+## RESUMO
+
+Este capítulo ensinou a você como escrever suas próprias funções. A palavra-chave function , quando usada
+como uma expressão, pode criar um valor de função. Quando usada como uma declaração, pode ser usada para
+declarar uma variável e dar a ela uma função como valor.
+
+```JS
+39// Create a function value f
+var f = function(a) {
+console.log(a + 2);
+};
+// Declare g to be a function
+function g(a, b) {
+return a * b * 3.5;
+}
+```
+
+Um aspecto chave para entender funções, é entender como os escopos locais funcionam. Parâmetros e variáveis declaradas dentro de uma função são locais àquela função, recriados toda vez que a função é invocada, e não são acessíveis do contexto externo à função. Funções declaradas dentro de outras têm acesso ao escopo local das funções mais externas que as envolvem. Separar as tarefas que a sua aplicação executa em diferentes funções, é bastante útil. Você não terá que repetir o código e as funções fazem um programa mais legível, agrupando o código em pedaços conceituais, da mesma forma que os capítulos e as seções ajudam a organizar um texto.
