@@ -379,9 +379,7 @@ Uma função "pura" é um tipo específico de função que produz valores e que 
 
 ## RESUMO
 
-Este capítulo ensinou a você como escrever suas próprias funções. A palavra-chave function , quando usada
-como uma expressão, pode criar um valor de função. Quando usada como uma declaração, pode ser usada para
-declarar uma variável e dar a ela uma função como valor.
+Este capítulo ensinou a você como escrever suas próprias funções. A palavra-chave function , quando usada como uma expressão, pode criar um valor de função. Quando usada como uma declaração, pode ser usada para declarar uma variável e dar a ela uma função como valor.
 
 ```JS
 39// Create a function value f
