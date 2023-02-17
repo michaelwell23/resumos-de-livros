@@ -33,3 +33,40 @@ O primeiro índice de uma _array_ é o número zero e não o número um. Portant
 ---
 
 ## 4.2 - PROPRIEDADES
+
+Praticamente todos os valores no JavaScript possuem propriedades. As únicas exceções são _null_ e _undefined_. Se você tentar acessar a propriedade em algum deles, você receberá um erro.
+
+As duas formas mais comuns de acessar propriedades no JavaScript são usando ponto e colchetes. Ambos acessam uma propriedade em `value`, mas não necessariamente a mesma propriedade. A diferença está em como _x_ é interpretado. Enquanto acessar a propriedade utilzando ponto acessa a propriedade chamada "X", utilizar colchetes tenta avaliar a expressão _x_ e, então, usa o seu resultado como o nome da propriedade. Portanto, se você sabe que a propriedade que você está interessado se chama `length`, você usa `value.length`. Se você deseja extrair a propriedade cujo nome é o valor que está armazenado na variável _i_, você usa _value[i]_. Devido ao fato de que nomes de propriedades podem ser qualquer string, se você quiser acessar as propriedades "2" ou "John Doe", você deve usar os colchetes: _value[2]_ ou _value["John Doe"]_ , pois mesmo sabendo exatamente o nome da propriedade, "2" e "John Doe" não são nomes válidos de variáveis, sendo
+impossível acessá-los usando a notação com o ponto.
+
+---
+
+## 4.3 - MÉTODOS
+
+Ambos os objetos `string` e `arrays` possuem além da propriedade length, um número de propriedades que se referem à valores de função.
+
+```js
+var doh = 'Doh';
+console.log(typeof doh.toUppercase);
+console.log(doh.toUppercase());
+```
+
+Toda `string`possui uma propriedade `toUpperCase`. Quando chamada, ela retornará uma cópia da string com todas as letras convertidas para maiúsculas. Existe a propriedade `toLowerCase`, que faz o contrário, convertendo para minúsculas. As propriedades quem contêm funções são geralmente chamadas de _métodos_ do valor a que pertencem.
+
+```js
+var mack = [];
+
+mark.push('Mack');
+mark.push('The', 'Knife');
+
+console.log(mack);
+console.log(mack.join(' '));
+console.log(mack.pop());
+console.log(mack);
+```
+
+O método **push** pode ser usado para adicionar valores ao final do array. O método **pop** faz o contrário, remove o valor que está no final do array. Um array de string pode ser combinado em uma única `string` com o método **join**. O argumento passado para o **join** determina o texto que será inserido entre cada elemento do array.
+
+---
+
+## 4.4 - OBJETOS
