@@ -211,3 +211,146 @@ A notação n01 indica o número de ocorrências nas quais a primeira variável 
 ---
 
 ## 4.7 - CALCULANDO A CORRELAÇÃO
+
+A maneira mais simples e que faz com que seja mais fácil acessar os dados é utilizando um array com quatro elementos. Nós iremos interpretar os índices do array como elementos binários de dois bits, onde o dígito a esquerda se refere à variável do esquilo, e o dígito a direita se refere à variável do evento. Por exemplo, o número binário 10 se refere ao caso no qual Jacques se tornou um esquilo, mas o evento não ocorreu. Isso aconteceu quatro vezes, e já que o número binário 10 é equivalente ao número 2 na notação decimal, podemos armazenar esse valor no índice 2 do array.
+
+```js
+function phi(table) {
+  return (
+    (table[3] * table[0] - table[2] * table[1]) /
+    Math.sqrt(
+      (table[2] + table[3]) *
+        (table[0] + table[1]) *
+        (table[1] + table[3]) *
+        (table[0] + table[2])
+    )
+  );
+}
+console.log(phi([76, 9, 4, 1]));
+// → 0.068599434
+```
+
+`Math.sqrt` é uma função que calcula a raiz quadrada, fornecida pelo objet `Math` que é padrão do JavaScript. Temos que somar dois campos da tabela para encontrar como n1\*, pois a soma das linhas ou colunas não são armazenadas diretamente em nossa estrutura de dados. Jacques manteve seu díario por três meses. O conjunto de dados resultante está disponivel no arquivo [JOURNAL](./exemplos/ex4_7/journal.js),presente na pasta de exemplos. Para extrair uma tabela dois por dois de um evento específico desse diário, devemos usar um loop para percorrer todas as entradas e ir adicionando quantas vezes o evento ocorreu em relação às transformações de esquilo.
+
+```js
+function hasEvent(event, entry) {
+  return entry.events.indexOf(event) != -1;
+}
+
+function tableFor(event, journal) {
+  var table = [0, 0, 0, 0];
+  for (var i = 0; i < journal.length; i++) {
+    var entry = journal[i],
+      index = 0;
+    if (hasEvent(event, entry)) index += 1;
+    if (entry.squirrel) index += 2;
+    table[index] += 1;
+  }
+  return table;
+}
+console.log(tableFor('pizza', JOURNAL));
+// → [76, 9, 4, 1]
+```
+
+A função `hasEvent` testa se uma entrada contém ou não o evento em questão. Os arrays possuem um método `indexOf` que procura pelo valor informado no array (nesse exemplo o nome do evento), e retorna o índice onde ele foi encontrado ou -1 se não for. O corpo do loop presente na função tableFor , descobre qual caixa da tabela cada entrada do diário pertence, verificando se essa entrada contém o evento específico e se o evento ocorreu juntamente com um incidente de transformação em esquilo. O loop adiciona uma unidade no número contido no array que corresponde a essa caixa na tabela. Agora temos as ferramentas necessárias para calcular correlações individuais. O único passo que falta é encontrar a correlação para cada tipo de evento que foi armazenado e verificar se algo se sobressai.
+
+---
+
+## 4.8 - OBJETOS COMO MAPAS
+
+Podemos usar as propriedades do objeto nomeadas de acordo com o tipo do evento. Podemos usar a notação de colchetes para acessar e ler as propriedades e, além disso, usar o operador `in` para testar se tal propriedade existe.
+
+```js
+var map = {};
+function storePhi(event, phi) {
+  map[event] = phi;
+}
+storePhi('pizza', 0.069);
+storePhi('touched tree', -0.081);
+console.log('pizza' in map);
+// → true
+console.log(map['touched tree']);
+// → -0.081
+```
+
+Um map é uma maneira de associar valores de um domínio com valores correspondentes em outro domínio. Diferentemente de um array, as propriedades não formam uma sequência previsível, impossibilitando o uso de um loop `for` normal. Entretanto, o JavaScript fornece uma contrução de loop específica para percorrer as propriedades de um objeto.
+
+```js
+for (var event in map)
+  console.log("The correlation for '" + event + "' is " + map[event]);
+// → The correlation for 'pizza' is 0.069
+// → The correlation for 'touched tree' is -0.081
+```
+
+---
+
+## 4.9 - A ANÁLISE FINAL
+
+Para achar todos os tipos de eventos que estão presentes no conjunto de dados, nós simplismente processamos cada entrada e percorremos por todos os eventos presentes usando um loop. A partir do momento em que encontramos um tipo que não está presente no objeto, calculamos o valor de sua correlação e então adicionamos ao objeto.
+
+```js
+function gatherCorrelations(journal) {
+  var phis = {};
+  for (var entry = 0; entry < journal.length; entry++) {
+    var events = journal[entry].events;
+    for (var i = 0; i < events.length; i++) {
+      var event = events[i];
+      if (!(event in phis)) phis[event] = phi(tableFor(event, journal));
+    }
+  }
+  return phis;
+}
+
+var correlations = gatherCorrelations(JOURNAL);
+console.log(correlations.pizza);
+// → 0.068599434
+```
+
+E o resultado é:
+
+```js
+for (var event in correlations) console.log(event + ': ' + correlations[event]);
+// → carrot:
+0.0140970969;
+// → exercise: 0.0685994341
+// → weekend:0.1371988681
+// → bread:-0.0757554019
+// → pudding: -0.0648203724
+// and so on...
+```
+
+A grande maioria das correlações tende a zero. Entretanto, elas parecem acontecer com mais frequência aos finais de semana. Vamos filtrar os resultados para mostrar apenas as correlações que são maiores do que 0.1 ou menores do que -0.1.
+
+```js
+for (var event in correlations) {
+  var correlation = correlations[event];
+  if (correlation > 0.1 || correlation < -0.1)
+    console.log(event + ': ' + correlation);
+}
+// → weekend:
+0.1371988681;
+// → brushed teeth: -0.3805211953
+// → candy:0.1296407447
+// → work:-0.1371988681
+// → spaghetti:0.2425356250
+// → reading:0.1106828054
+// → peanuts:0.5902679812
+```
+
+Existem dois fatores nos quais a correlação é claramente mais forte que a das outras. E testando uma outra coisa podemos concluir que:
+
+```js
+for (var i = 0; i < JOURNAL.length; i++) {
+  var entry = JOURNAL[i];
+  if (hasEvent('peanuts', entry) && !hasEvent('brushed teeth', entry))
+    entry.events.push('peanut teeth');
+}
+console.log(phi(tableFor('peanut teeth', JOURNAL)));
+// → 1
+```
+
+Está bem evidente! O fenômeno ocorre precisamente quando Jacques come amendoins e não escova os dentes. Se ele não fosse preguiçoso em relação à higiene bucal, ele não sequer teria reparado nesse problema que o aflige. Sabendo disso, Jacques simplesmente para de comer amendoins e descobre que isso coloca um fim em suas transformações. Tudo ficou bem com Jacques por um tempo.
+
+---
+
+## 4.10 - ESTUDO APROFUNDADO DE ARRAYS
