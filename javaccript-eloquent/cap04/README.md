@@ -354,3 +354,193 @@ Está bem evidente! O fenômeno ocorre precisamente quando Jacques come amendoin
 ---
 
 ## 4.10 - ESTUDO APROFUNDADO DE ARRAYS
+
+Os métodos correpondentes para adicionar e remover itens no inicio de um array são chamados `unshift` e `shift`.
+
+```js
+var todolist = [];
+function rememberTo(task) {
+  todoList.push(task);
+}
+
+function whatIsNext() {
+  return todoList.shift();
+}
+
+function urgerntlyRememberTo(task) {
+  todoList.unshift(task);
+}
+```
+
+O programa anterior gerencia uma lista de tarefa. Você pode adicionar tarefas no final da lista chamando `remeberTo('eat')` e, quando estiver preparado para realizar alguma tarefa, você chama `whatIsNext()` para acessar e remover o primeiro item da lista. A função `ungetlyRememberTo` também adiciona uma tarefa, porém, ao invés de adicionar ao final da lista, adiciona no início.
+
+O método `indexOf` tem um irmão chamado `lastIndexOf`, que começa a pesquisar um dado começando pelo final do array.
+
+```js
+console.log([1, 2, 3, 2, 1].indexOf(2));
+// → 1
+console.log([1, 2, 3, 2, 1].lastIndexOf(2));
+// → 3
+```
+
+Ambos recebem um segundo argumento opcional que indica onde iniciar a pesquisa. Outro método fundamental é o `slice` que recebe um índice de início e outro de parada, retornando um array que contém apenas os elementos presentes entres índices.
+
+```js
+console.log([0, 1, 2, 3, 4].slice(2, 4));
+// → [2, 3]
+console.log([0, 1, 2, 3, 4].slice(2));
+// → [2, 3, 4]
+```
+
+Quando o índice de parada não é informado, o `slice` irá pegar todos os elementos após o índice de início. Strings também possuem o método `slice` com um comportamento similar. O método `concat` pode ser utilziado para unir arrays. Ele recebe um array e um índice como argumento, retorna um novo array que é uma cópia do array original, exceto pelo fato de que o elemento no índice informado foi removido.
+
+```js
+function remove(array, index) {
+  return array.slice(0, index).concat(array.slice(index + 1));
+}
+console.log(remove(['a', 'b', 'c', 'd', 'e'], 2));
+// → ["a", "b", "d", "e"]
+```
+
+---
+
+## 4.11 - STRINGS E SUAS PROPRIEDADES
+
+Podemos ler propriedades como `length` e `toUpperCase` de strings. Porém, caso tente adicionar uma nova propriedade, ela não será adicionada.
+
+```js
+var myString = 'Fido';
+myString.myProperty = 'value';
+console.log(myString.myProperty);
+```
+
+Valores do tipo string, number e Boolean não são objetos, esses valores são imutáveis e não podem ser alterados. Mesmo assim, esse tipo possuem propriedades nativas. Toda string possui uma série de métodos. Provavelmente, alguns dos mais úteis são `slice` e `indexOf`.
+
+```js
+console.log('coconuts'.slice(4, 7)); // → nut
+console.log('coconut'.indexOf('u')); // → 5
+```
+
+Uma diferença é que o `indexOf` das strings pode receber uma string contendo mais de um caractere, enquanto que o método correspondente no array procura apenas por um único elemento.
+
+```js
+console.log('one two three'.indexOf('ee')); // → 11
+```
+
+O método `trim` remove todos os espaços vazios do começo e do final de uma string.
+
+```js
+console.log(' okay \n '.trim()); // → okay
+```
+
+Para acessar caracteres indivíduais de uma string, podemos usar o método `charAt` ou simplismente ler suas propriedade numéricas, da mesma forma que você faria em um array.
+
+```js
+var string = 'abc';
+
+console.log(string.length); // → 3
+console.log(string.charAt(0)); // → a
+console.log(string[1]); // → b
+```
+
+---
+
+## 4.12 - O OBJETO ARGUMENTS
+
+Sempre que uma função é invocada, uma variável especial chamada `arguments` é adicionada ao ambiente no qual o corpo da função executa. Essa variável se refere a um objeto que contém todos os argumentos passados à função.
+
+```js
+function noArguments() {}
+noArguments(1, 2, 3); // → This is okay
+function threeArguments(a, b, c) {}
+threeArguments();
+```
+
+O objeto `arguments` possui a propriedade `length` que nos informa o número de argumentos que realmente foi passado à função. Esse objetivo é muito parecido com um array. Porém, ele não possui nenhum dos métodos de array, fazendo com que seja um pouco mais difícil de se usar do que um array de verdade.
+
+```js
+function argumentCounter() {
+  console.log('You gave me', arguments.length, 'arguments.');
+}
+argumentCounter('Straw man', 'Tautology', 'Ad hominem');
+// → You gave me 3 arguments.
+```
+
+Agumas funções podem receber qualquer número de argumentos, como no caso de `console.log`. Essa função normalmente percorre por todos os valores em seu objeto `arguments` e pode ser usada para criar interfaces extremamente agradáveis.
+
+```js
+addEntry(['work', 'touched tree', 'pizza', 'running', 'television'], false);
+```
+
+Devido ao fato de que essa função irá ser executada muitas vezes, poderíamos criar uma alternativa mais simples.
+
+```js
+function addEntry(squirrel) {
+  var entry = { events: [], squirrel: squirrel };
+  for (var i = 1; i < arguments.length; i++) entry.events.push(arguments[i]);
+  journal.push(entry);
+}
+addEntry(true, 'work', 'touched tree', 'pizza', 'running', 'television');
+```
+
+Essa versão lê o primeiro argumento da forma normal e depois percorre o resto dos argumentos juntando-os em um array.
+
+---
+
+## 4.13 - O OBJETO MATH
+
+O objeto `Math` é usado como um _container_ para agrupar uma série de funcionalidades relacionadas. Existe apenas um único objeto `Math` e, na maioria das vezes , ele é útil quando usado como um valor. Mas precisamente, ele fornece um _namespace_ para que todas essas funções e valores não precisem ser declaradas como variáveis globais. Caso precise realizar cálculos trigonométricos, `Math` pode ajudá-lo. Ele contém `cos` (cosseno), `sin`(seno) e `tan`(tangente), tanto quanto suas funções inversas `aos`, `asin` e `atan` respectivamente. O número pi, é representada através de um número no JavaScript, está disponível como `Math.PI`.
+
+```js
+function randomPointOnCircle(radius) {
+  var angle = Math.random() * 2 * Math.PI;
+  return { x: radius * Math.cos(angle), y: radius * Math.sin(angle) };
+}
+console.log(randomPointOnCircle(2));
+// → {x: 0.3667, y: 1.966}
+```
+
+O exemplo anterior utiliza o `Math.random`. Essa função retorna um número "pseudo-aleatório" entre zero (incluído) e um (excluído) toda vez que você chama.
+
+```js
+console.log(Math.random());
+// → 0.36993729369714856
+console.log(Math.random());
+// → 0.727367032552138
+console.log(Math.random());
+// → 0.40180766698904335
+```
+
+Embora os computadores sejam deterministas, é possivel fazer com que els produzam números que pareçam ser aleatórios. Para fazer issso, a máquina mantém um número armazenado em seu estado interno. Assim, toda vez que um número aleatório é requisitado, ele executa alguns cálculos complicados e deterministas usando esse estado interno e, então, retorna parte do resultado desses cálculos. A máquina também utiliza esses resultados para mudar o seu estado interno, fazendo com que o próximo número "aleatório" produzido seja diferente. E se quisermos um número aleatório inteiro? Podemos utilizar `Math.floor`.
+
+```js
+console.log(Math.floor(Math.random() * 10)); // → 2
+```
+
+Multiplicar o número aleatório por dez resulta em um número que seja maior ou igual a zero e menor do que dez. Devido ao fato de que Math.floor arredonda o valor para baixo, essa expressão irá produzir, com chances iguais, qualquer número de zero a nove. Também existem as funções Math.ceil (para arredondar o valor para o maior número inteiro mais próximo) e
+`Math.round` (para arredondar o valor para o número inteiro mais próximo).
+
+---
+
+## 4.14 - OBJETO GLOBAL
+
+O escopo global, que é o espaço no qual as variáveis globais residem, também pode ser abordado como um objeto no JavaScript. Cada variável global está presente como uma propriedade desse objeto. Nos navegadores, o objeto do escopo global é armazenado na variável _window_.
+
+```js
+var myVar = 10;
+console.log('myVar' in window); // → true
+console.log(window.myVar); // → 10
+```
+
+---
+
+## RESUMO
+
+Objetos e arrays (que são tipos específicos de objetos) fornecem maneiras de agrupar uma conjunto de valores em um único valor. Conceitualmente, ao invés de tentar carregar e manter todas as coisas individualmente em nossos braços, eles nos permitem colocar e carregar todas as coisas relacionadas dentro de uma bolsa.
+
+Com exceção de _null_ e _undefined_ , a maioria dos valores no JavaScript possuem propriedades e são acessados usando `value.propName` ou `value["propName"]`. Objetos tendem a usar nomes para suas propriedades e armazenam mais o menos uma quantidade fixa delas. Por outro lado, os Arrays normalmente contêm quantidades variáveis de valores conceitualmente iguais e usam números (iniciando do zero) como os nomes de suas propriedades.
+
+Existem algumas propriedades com nomes específicos nos arrays, como `length` e uma série de
+métodos. Métodos são funções que são armazenadas em propriedades e, normalmente, atuam no valor nas quais elas são propriedade.
+
+Objetos podem também ser usados como mapas, associando valores com seus nomes. O operador `in` pode ser usado para verificar se um objeto contém a propriedade com o nome informado. A mesma palavra-chave pode ser usada em um loop `for ( for (var name in object) )` para percorrer todas as propriedades do objeto.
