@@ -18,7 +18,7 @@
 | [Capítulo 02](./cap02/) | Estrutura do Programa               |
 | [Capítulo 03](/cap03/)  | Funções                             |
 | [Capítulo 04](./cap04/) | Estrutura de Dados: Objetos e Array |
-|                         |                                     |
+| [Capítulo 05](./cap05/) | Funções de Ordem Superior           |
 |                         |                                     |
 |                         |                                     |
 |                         |                                     |

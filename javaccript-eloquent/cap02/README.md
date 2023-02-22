@@ -367,6 +367,8 @@ obviously likes me, so I've decided to keep it.
 var theNumber = 11213;
 ```
 
+---
+
 ## RESUMO
 
 Você agora sabe que um programa é construído de declarações, que as vezes contém mais declarações. Declarações tendem a conter expressões, que podem ser feitas de pequenas expressões.

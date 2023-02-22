@@ -543,4 +543,4 @@ Com exceção de _null_ e _undefined_ , a maioria dos valores no JavaScript poss
 Existem algumas propriedades com nomes específicos nos arrays, como `length` e uma série de
 métodos. Métodos são funções que são armazenadas em propriedades e, normalmente, atuam no valor nas quais elas são propriedade.
 
-Objetos podem também ser usados como mapas, associando valores com seus nomes. O operador `in` pode ser usado para verificar se um objeto contém a propriedade com o nome informado. A mesma palavra-chave pode ser usada em um loop `for ( for (var name in object) )` para percorrer todas as propriedades do objeto.
+Objetos podem também ser usados como mapas, associando valores com seus nomes. O operador `in` pode ser usado para verificar se um objeto contém a propriedade com o nome informado. A mesma palavra-chave pode ser usada em um loop `for(for(var name in object))` para percorrer todas as propriedades do objeto.
