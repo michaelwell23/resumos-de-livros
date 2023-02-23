@@ -163,3 +163,105 @@ No exemplo acima, a variável n é um parâmetro da função externa. Mas como a
 ---
 
 ## 5.4 - PASSANDO ARGUMENTOS
+
+Envolver argumentos de uma função em outra função pode gerar uma grave deficiência.
+
+```js
+function noisy(f) {
+  return function (arg) {
+    console.log('calling with', arg);
+    var val = f(arg);
+    console.log('called with', arg, '- got', val);
+    return val;
+  };
+}
+```
+
+Para resolver o problema de parâmetros, poderíamos acrescentar vários argumentos para a função interna e passar elas para f, mas mesmo assim isso não deixaria explícito quantos seriam suficientes. Essa solução limita algumas informações de f com o `arguments.length`. Passaremos sempre a mesma quantidade de argumentos, mas nunca saberemos a quantidade exata de argumentos que foi passada.
+
+Para esse tipo de situação, podemos utilizar o método `apply`. Podemos passar um array como argumento, e ele chama a função com estes argumentos.
+
+```js
+function transparentWrapping(f) {
+  return function () {
+    return f.apply(null, arguments);
+  };
+}
+```
+
+A função é inútil,mas nos mostra o padrão que estamos interessados, a função passa todos os argumentos dados para f e retorna, apenas estes argumentos, para f. Ela faz isso passando seus próprios argumentos para o objeto `apply`.
+
+---
+
+## 5.5 - JSON
+
+Observe o seguinte arquivos:
+
+```js
+[
+  {
+    "name": "Emma de Milliano", "sex": "f",
+    "born": 1876, "died": 1956,
+    "father": "Petrus de Milliano",
+    "mother": "Sophia van Damme"
+  },
+  {
+      "name": "Carolus Haverbeke", "sex": "m",
+    "born": 1832, "died": 1905,
+    "father": "Carel Haverbeke",
+    "mother": "Maria van Brussel"
+  },
+  … and so on
+]
+```
+
+Este formato é chamado de JSON que significa JavaScript Object Notation. JSON é amplamente utilizado como armazenamento de dados e formato de comunicação na Web. JSON se escreve semelhantemente como arrays e objetos em JavaScript, mas com alguamas restrições. Todos os nomes das propriedades devem ficar entre aspas duplas e apenas expressões de dados simples são permitidos, não é permitido chamadas de funções, variáveis ou qualquer coisa que envolva cálculo real. JavaScript nos fornece duas funções `JSON.stringfy` e `JSON.parse`, que convertem dados para este formato. O primeiro recebe um valor em JavaScript e retorna uma strign codificada em JSON. A seguinda obtém uma string e converte-a para o valor que ele codifica.
+
+```js
+var string = JSON.stringify({ name: 'X', born: 1980 });
+console.log(string);
+// → {"name":"X","born":1980}
+console.log(JSON.parse(string).born);
+// → 1980
+```
+
+Podemos utilizar o array contido no arquivo [ANCESTRY_FILE](./exemplos/ex5_5/ancestry.js) e decodificá-lo para ver quantas pessoas contém no array.
+
+```js
+var ancestry = JSON.parse(ANCESTRY_FILE);
+console.log(ancestry.length);
+// → 39
+```
+
+---
+
+## 5.6 - FILTRANDO UM ARRAY
+
+Para encontrar as pessoas no conjunto de dados dos ancestrais que eram jovens em 1924, a seguinte função pode ser útil e nos ajudar a filtrar os elementos em uma matriz que não passa pelo teste.
+
+```js
+function filter(array, test){
+  var passed = [];
+  for (var i = 0; i <  array.legth; i++){
+    if(test(array[i])){
+      passed.push(array[i]);
+    }
+  }
+    return passed;
+}
+
+console.log(filter(ancestry, function(person){
+  return person.born : 1900 && person.born < 1925;
+}))
+```
+
+A função test é chamada para cada elemento, e o seu valor de retorno determina se um elemento é incluido no array retornado. Podemos observar como a função filter, em vez de excluir os elementos do array, contrói um novo com apenas os elementos que passaram no teste. Assim como forEach, `filter` é um método padrão de array, e pode ser utiizado da seguinte forma:
+
+```js
+console.log(
+  ancestry.filter(function (person) {
+    return person.father == 'Carel Haverbeke';
+  })
+);
+// → [{name: "Carolus Haverbeke", …}]
+```
