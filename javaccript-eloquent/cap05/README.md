@@ -265,3 +265,112 @@ console.log(
 );
 // → [{name: "Carolus Haverbeke", …}]
 ```
+
+---
+
+## 5.7 - TRANSFORMANDO COM MAP
+
+O método `map` trabsforma um array aplicando uma função para todos os elementos e contrói um novo array a partir dos valores retomados. O novo array terá o mesmo tamanho do array enviado, mas seus conteúdo é mapeado para um novo formato através da função.
+
+```js
+function map(array, transform) {
+  var mapped = [];
+  for (var i = 0; i < array.length; i++) {
+    mapped.push(transform(array[i]));
+    return mapped;
+  }
+}
+var overNinety = ancestry.filter(function (person) {
+  return person.died - person.born > 90;
+});
+console.log(
+  map(overNinety, function (person) {
+    return person.name;
+  })
+);
+```
+
+curiosamente, as pessoas que viveram pelo menos 90 anos de idade são as maesmas três que vimos antes, as pessoas que eram jovem em 1920, passam a ser a geração mais recente no conjunto de dados. O `map`também é um método padrão de arrays.
+
+---
+
+## 5.8 - RESUMINDO COM REDUCE
+
+Outro padrão na computação em arrays é calcula todos elementos e tranformá-los em apenas um. Uma operação de ordem superior que representa este padrão é chamado de `reduce`. dois. Os parâmetros para a função `reduce` são, além do array, uma função para combinação e um valor inicial. Esta função é menos simples do que o `filter` e `map` por isso observe com muita atenção.
+
+```js
+function reduce(array, combine, start) {
+  var current = start;
+  for (var i = 0; i < arrary.legth; i++) {
+    current = combine(current, array[i]);
+    return current;
+  }
+}
+console.log(
+  reduce(
+    [1, 2, 3, 4],
+    function (a, b) {
+      return a + b;
+    },
+    0
+  )
+);
+```
+
+---
+
+O array padrão do método `reduce` que corresponde a esta função tem uma maior comodidade. Se o arra contém apenas um elemento, você não precisa avisar um valor inicial. O método irá pegar o primeiro elemento do array com valor inicila, começando a redução a partir dos segundos. Para usar o reduce e encontrar o mais antigo ancestral, o código ficaria parecido com isso:
+
+```js
+console.log(
+  ancestry.reduce(function (min, cur) {
+    if (cur.born < min.born) return cur;
+    else return min;
+  })
+);
+// → {name: "Pauwels van Haverbeke", born: 1535, …}
+```
+
+---
+
+## 5.9 - COMPONIBILIDADE
+
+A escrita do código anterior sem utilizar funções de ordem superior ficaria assim:
+
+```js
+var min = ancestry[0];
+for (var i = 1; i < ancestry.length; i++) {
+  var cur = ancestry[i];
+  if (cur.born < min.born) min = cur;
+}
+console.log(min);
+// → {name: "Pauwels van Haverbeke", born: 1535, ...}
+```
+
+Existe mais variáveis, e o programa está com duas linhas a mais, mas ainda sim continua bem fácil de entender. Funções de ordem superior são úteis quando você precisa compor funções.
+
+```js
+function average(array) {
+  function plus(a, b) {
+    return a + b;
+  }
+  return array.reduce(plus) / array.length;
+}
+function age(p) {
+  return p.died - p.born;
+}
+function male(p) {
+  return p.sex == 'm';
+}
+function female(p) {
+  return p.sex == 'f';
+}
+console.log(average(ancestry.filter(male).map(age)));
+// → 61.67
+console.log(average(ancestry.filter(female).map(age)));
+// → 54.56
+```
+
+Ao invés de juntar toda a lógica em um loop gigante, ele está bem composto nos conceitos que interessamos. Podemos aplicá-las uma de cada vez para obtermos o resultado que estamos procurando.
+
+---
