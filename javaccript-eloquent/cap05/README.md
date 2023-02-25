@@ -374,3 +374,117 @@ console.log(average(ancestry.filter(female).map(age)));
 Ao invés de juntar toda a lógica em um loop gigante, ele está bem composto nos conceitos que interessamos. Podemos aplicá-las uma de cada vez para obtermos o resultado que estamos procurando.
 
 ---
+
+## 5.10 - O CUSTO
+
+Um programa que processa um array é mais elegante expresso em uma sequência separada onde cada passa pode fazer algo com o array e produzir um novo array. Mas a construção de todos esses arrays intermediários 'um pouco custoso. Passar uma função para `forEach` e deixar que o método cuide da interação para os nós é conveniente e fácil de ler. Mas chamada de funções são custosas comparadas com os simples bloco e repetição.
+
+E assim existe várias técnicas que ajudam a melhorar a clareza de um programa. Abstraçĩes adiciona uma camada a mais entre as coisas cruas que o computador faz e o conceito que estamos trabalhando, sendo assim a máquina realizada mais trabalho.
+
+Existem várias técnicas que ajudam a esclarecer o código. Elas adicionam camadas entre as coisas cruas que o computador está fazendo com os conceitos que estamos trabalhando e faz com que a máquina trabalhe mais rápido.
+
+Felizmenre muitos computadores são extremamente rápidos. Se você estiver processando uma modesta coleção de dados ou fazendo alguma coisa que tem de acontecer apenas em uma escala de tempo humano, enttão não importa se você escreveu aquela solução maravilhosa que leva meio milisegundos ou uma super solução otimizada que leva um décimo de um milissegundo. É útil quanto tempo mais ou menos leva um trecho de código para executar. Se existe um loop dentro de um looop o código dentro do loop interno acaba rodando NxM vezes, onde N é o número de vezes que o loop de fora se repete e M é o número de vezes que o loop interno se repete dentro de cada interação do loop externo. Quando um programa é lento o problema muitas vezes pode estar atribuída a apenas uma pequena parte do códgio que fica dentro de um loop interno.
+
+---
+
+## 5.11 - O PAI DO PAI DO PAI DO PAI
+
+Para ser capaz de fazer uma busca pelo nome de um pai para um objeto real que representa uma pessoa, primeiramente precisamos construir um objeto que associa os nomes com as pessoas.
+
+```js
+var byName = {};
+ancestry.forEach(function (person) {
+  byName[person.name] = person;
+});
+console.log(byName['Philibert Haverbeke']);
+// → {name: "Philibert Haverbeke", …}
+```
+
+Neste caso queremos condensar a estrutura de dados par um único aloe mas de uma forma que segue a linhas da família. O formato dos dados é a de uma árvore genealógica em vez de uma lista plana. A maneira que podemos reduzir esta forma é calculando um valor para um determinada pessoa, combinando com os valors de seus ancestrais. Isso pode ser feito de forma recursiva. Podemos permir um valor padrão para a função de redução, que será utilizada para pessoas que não estão em nossos dados. No caso, esse valor é simplesmente zero, pressupondo de que as pessoas que não estão na lista nã compartilham do mesmo DNA do ancestral que estamos olhando. Dado uma pessoa, a função combina os valores a partir de dois pais de uma determinada pessoa, e o valor padrão, reduceAncestors condensa o valor a partir de uma árvore genealógica.
+
+```js
+function reduceAncestors(person, f, defaultValue) {
+  function valueFor(person) {
+    if (person == null) return defaultValue;
+    else
+      return f(
+        person,
+        valueFor(byName[person.mother]),
+        valueFor(byName[person.father])
+      );
+  }
+  return valueFor(person);
+}
+```
+
+Podemos então usar isso para calcular a quantidade de DNA do avô compartilhado com Pauwels van Haverbeke e depois dividir por quatro.
+
+```js
+function sharedDNA(person, fromMother, fromFather) {
+  if (person.name == 'Pauwels van Haverbeke') return 1;
+  else return (fromMother + fromFather) / 2;
+}
+var ph = byName['Philibert Haverbeke'];
+console.log(reduceAncestors(ph, sharedDNA, 0) / 4);
+// → 0.00049
+```
+
+A pessoa com o nome Pauwels van Haverbeke obviamente compartilhada 100 por cento de seu DNA com Pauwels van Haverbeke, então a função retorna 1 para ele. Todas as outras pessoas compartilham a média do montante que os seus pais compartilham. Assim estatisticamente falando, eu compartilho cerca de 0,05 por cento do DNA de uma pessoa do século 16.
+Deve-se notar que este é só uma aproximação estatística e, não uma quantidade exata. Este é um número bastante pequeno mas dada a quantidade de material genético que carregamos, provavelmente ainda há algum aspecto na máquina biológica que se originou de Pauwels. Nós também podemos calcular esse número sem depender de reduceAncestors . Mas separando a abordagem geral a partir do caso específico podemos melhorar a clareza do código permitindo reutilizar a parte abstrata do programa para outros casos. Em exemplo podemos encontrar a porentagem de antepassados conhecidos para uma determinada pessoa que vivveu mais de 70 anos.
+
+```js
+function countAncestors(person, test) {
+  function combine(current, fromMother, fromFather) {
+    var thisOneCounts = current != person && test(current);
+    return fromMother + fromFather + (thisOneCounts ? 1 : 0);
+  }
+  return reduceAncestors(person, combine, 0);
+}
+function longLivingPercentage(person) {
+  var all = countAncestors(person, function (person) {
+    return true;
+  });
+  var longLiving = countAncestors(person, function (person) {
+    return person.died - person.born >= 70;
+  });
+  return longLiving / all;
+}
+console.log(longLivingPercentage(byName['Emile Haverbeke']));
+// → 0.129
+```
+
+Tais números não são levados muito a sério, uma vez que o nosso conjunto de dados contém uma coleção bastante arbitrária de pessoas. Mas o código ilustra o fato de que reduceAncestors dá-nos uma peça útil para trabalhar com o vocabulário da estrutura de dados de uma árvore genealógica.
+
+---
+
+## 5.12 - BINDING
+
+O método `bind`, está presente em todas as funções, ele cria uma nova função que chama a função original mais com alguns argumento já fixado. O código a seguir mostra um exemplo de uso do `bind`.
+
+```js
+var theSet = ['Carel Haverbeke', 'Maria van Brussel', 'Donald Duck'];
+function isInSet(set, person) {
+  return set.indexOf(person.name) > -1;
+}
+console.log(
+  ancestry.filter(function (person) {
+    return isInSet(theSet, person);
+  })
+);
+// → [{name: "Maria van Brussel", …},
+// {name: "Carel Haverbeke", …}]
+console.log(ancestry.filter(isInSet.bind(null, theSet)));
+// → … same result
+```
+
+A chamada usando `bind` retorna uma função que chama `isInset` com `theset` sendo o primeiro argumento, seguido por todos os demais argumento indicados pela função vinculada. O primeiro argumento onde o exemplo passa `null`, é utilziando para as chamadas de método, semelhantemento ao primeriro argumento do apply.
+
+---
+
+## RESUMO
+
+A possibilidade de passar funções como argumento para outras funções não é apenas um artifício mas sim um aspecto muito útil em JavaScript. Ela nos permite escrever cálculos com intervalos como funções, e chamar estas funções para preencher estes intervalos, fornecendo os valores para função que descrevem os cálculos que faltam.
+
+_Arrays_ fornece uma grande quantidade de funções de ordem superior - _forEach_ faz algo com cada elemento de um array,_filter_ para construir um novo _array_ com valores filtrados, _map_ para construir um novo array onde cada elemento é colocado através de uma função e _reduce_ para combinar todos os elementos de um _array_ em um valor único.
+
+Funções têm o método _apply_ que pode ser usado para chamar um _array_ especificando seus argumentos. Elas também possuem um método _bind_ que é usado para criar uma versão parcial da função que foi aplicada.
