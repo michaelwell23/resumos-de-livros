@@ -288,3 +288,115 @@ console.log(drawTable(dataTable(MOUNTAINS)));
 A função padrão Object.keys retorna um array com nomes de propriedades de um objeto. A linha do topo da tabela deve conter células sublinhadas que dão os nomes das colunas. Abaixo disso, os valores de todos os objetos no conjunto de dados aparecem como células normais. A tabela resultante se assemelha ao exemplo mostrado anteriormente, exceto que ela não alinha os números à direita na coluna height.
 
 ---
+
+## 6.6 - GETTERS E SETTTERS
+
+Podemosn específicar propriedades que, do lado de fora, parecem propriedades normais mais secretamente tem métodos associados a elas.
+
+```js
+var pile = {
+  elements: ['eggshell', 'orange peel', 'worm'],
+  get height() {
+    return this.elements.length;
+  },
+  set height(value) {
+    console.log('Ignoring attemp to set height to', value);
+  },
+};
+console.log(pile.height); // → 3
+pile.height = 100; // → Ignoring attempt to set height to 100
+```
+
+Em um objeto literal, a notação `get` e `set` para propriedade permite que você especifique uma função a ser exercutada quando a propriedade for lida ou escrita. Você também adicionar tal propriedade em um objeto existente.
+
+```js
+Object.defineProperty(TextCell.prototype, 'heightProp', {
+  get: function () {
+    return this.text.length;
+  },
+});
+var cell = new TextCell('no\nway');
+console.log(cell.heightProp); // → 2
+cell.heightProp = 100;
+console.log(cell.heightProp); // → 2
+```
+
+Você pode usar a propriedade similar set , no objeto passado à defineProperty , para especificar um método setter. Quando um getter é definido mas um setter não, escrever nessa propriedade é algo simplesmente ignorado.
+
+---
+
+## 6.7 - HERANÇA
+
+Podemos simplismente construit um novo construtor com todos os três métodos em seu protótipo. Mas protótipos podem ter eus próprios protótipos, e isso nos permite fazer algo inteligente.
+
+```js
+function RTextCell(text) {
+  TextCell.call(this, text);
+}
+RTextCell.prototype = Object.create(TextCell.prototype);
+RTextCell.prototype.draw = function (width, height) {
+  var result = [];
+  for (var i = 0; i < height; i++) {
+    var line = this.text[i] || '';
+    result.push(repeat(' ', width - line.length) + line);
+  }
+  return result;
+};
+```
+
+Nós reusamos o contrutor e os métodos `minHeight` e `minWidth` de `TextCell`. Um `RTextCell` é agora basicamente equivalente a `TextCell`, exceto que seu método `draw` contém um função diferente. Este padrão é chamado _herança_. Isso nos permite construir tipos de dados levemnete diferentes a partir de tipos de dados existentes com relativamente pouco esforço.
+
+Agora, se nós ajustarmos sutilmente a função `dataTable`para usar `RTextCell` para as célular cujo valor é um número, vamos obter a tabela que estávamos buscando.
+
+```js
+function dataTable(data) {
+  var keys = Object.keys(data[0]);
+  var headers = keys.map(function (name) {
+    return new UnderlinedCell(new TextCell(name));
+  });
+  var body = data.map(function (row) {
+    return keys.map(function (name) {
+      var value = row[name];
+      // This was changed:
+      if (typeof value == 'number') return new RTextCell(String(value));
+      else return new TextCell(String(value));
+    });
+  });
+  return [headers].concat(body);
+}
+console.log(drawTable(dataTable(MOUNTAINS)));
+// → … beautifully aligned table
+```
+
+Herança é uma parte fundamental da orientação a objetos tradiconal, ao lado de encapsulamento e polimorfismo. A principal razão para isso é que este tópico é geralmente confundido com polimorfismo, vendido como uma ferramenta mais poderosa do que realmente é, e subsequentemente usado em excesso de diversas horríveis formas. Onde encapsulamento e polimorfismo podem ser usados para separar pedaços de código de cada um, reduzindo o emaranhamento de todo o programa, herança fundamentalmente vincula os tipos, criando mais emaranhados.
+
+Você pode ter polimorfismo sem herança. Mas você deve vê-la como um leve truque desonesto que vai ajudá-lo a definir novos tipos com menos código, não como um grande princípio de organização de código.
+
+---
+
+## 6.8 - O OPERADOR INSTANCEOF
+
+Ocasionalmente é útil saber se um objeto foi derivado de um construtor em específico. Para isso, o JavaScript fornece um operador binário chamado instaceof.
+
+```js
+console.log(new RTextCell('A') instanceof RTextCell); // → true
+console.log(new RTextCell('A') instanceof TextCell); // → true
+console.log(new TextCell('A') instanceof RTextCell); // → false
+console.log([1] instanceof Array); // → true
+```
+
+O operador vai olhar através dos tipos herdados. Um RTextCell é uma instância de TextCell porque _RTextCell.prototype_ deriva de _TextCell.prototype_ . O operador pode ser aplicado a construtores padrão como Array . Praticamente todos os objetos são uma instância de Object.
+
+---
+
+## RESUMO
+
+Então objetos são mais complicados do que inicialmente eu os retratei. Eles tem protótipos, que são outros bjetos, e vão agir como se tivessem propriedades que eles não tem caso seu protótipo tenha essa propriedade. Objetos simples tem Object.prototype como seus protótipos.
+
+Construtores, que são funções cujos nomes usualmente iniciam com uma letra maiúscula, podem ser usador com o operador new para criar objetos. O protótipo do novo objeto será o objeto encontrado na propriedade prototype da função construtora. Você pode fazer bom uso disso adicionando propriedades que todos os valores de um tipo compartilham em seus protótipos. O operador instanceof pode, dado um objeto e um construtor, dizer se o objeto é uma instância deste construtor.
+
+Algo útil a se fazer com objetos é especificar uma interface para eles e dizer para todos quer irão supostamente conversar com seu objeto a fazer isso somente por essa interface. O resto dos detalhes que constroem seu objeto estão agora encapsulados, escondidos atrás da interface.
+
+Uma vez que você esteja conversando em termos de interfaces, quem diz que apenas um tipo de objeto pode implementar essa interface? Ter diferentes objetos expondo a mesma interface é chamado de polimorfismo. Isso é muito útil.
+
+Quando implementando vários tipos que diferem apenas em alguns detalhes, pode ser útil simplesmente criar o protótipo do seu novo tipo derivando do protótipo do seu antigo tipo e ter seu novo construtor chamando o antigo. Isso lhe dá um tipo similar de objeto ao antigo mas que permite que você adicione ou sobrescreva propriedades quando necessário.
