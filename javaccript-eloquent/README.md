@@ -19,19 +19,5 @@
 | [Capítulo 03](/cap03/)  | Funções                             |
 | [Capítulo 04](./cap04/) | Estrutura de Dados: Objetos e Array |
 | [Capítulo 05](./cap05/) | Funções de Ordem Superior           |
-|                         |                                     |
-|                         |                                     |
-|                         |                                     |
-|                         |                                     |
-|                         |                                     |
-|                         |                                     |
-|                         |                                     |
-|                         |                                     |
-|                         |                                     |
-|                         |                                     |
-|                         |                                     |
-|                         |                                     |
-|                         |                                     |
-|                         |                                     |
-|                         |                                     |
-|                         |                                     |
+| [Capítulo 06](./cap06/) | A Vida Secretad dos Objetos         |
+| [Capítulo 07](./cap07/) | Projeto - Vida Eletrônica           |
