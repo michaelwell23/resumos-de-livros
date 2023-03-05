@@ -263,3 +263,89 @@ Grid.prototype.forEach = function (f, context) {
 ---
 
 ## 7.6 - DANDO VIDA
+
+O próximo passo é escrver um método para o objeto mundo que dá aos bixõs a chance de movimento. Ele vai passar por cima da grid usando o método `forEach` que acabamos de definir a procura de objetos com um método `act`. Quando ele encontra um ele chama o método para obter uma ação e realiza a ação quando ela for válida. O problema com essa abordagem é que se deixarmos as criaturas se mover livremente, eles podem se mover para um quadrado que não existe, e nós vamos permitir que eles se mova novamente quando estiver dentro do quadrado vazio. Assim mantemos uma variedade de criaturas que já sumiram ao invés de apenas ignorarmos.
+
+```js
+World.prototype.turn = function () {
+  var acted = [];
+  this.grid.forEach(function (critter, vector) {
+    if (critter.act && acted.indexOf(critter) == -1) {
+      acted.push(critter);
+      this.letAct(critter, vector);
+    }
+  }, this);
+};
+```
+
+Podemos usar o contexto como segundo parâmentro no método `forEach` para se a referência da _grid_ para conseguirmos acessar corretamente as funções internas.
+
+```js
+World.prototype.letAct = function (critter, vector) {
+  var action = critter.act(new View(this, vector));
+  if (action && action.type == 'move') {
+    var dest = this.checkDestination(action, vector);
+    if (dest && this.grid.get(dest) == null) {
+      this.grid.set(vector, null);
+      this.grid.set(dest, critter);
+    }
+  }
+};
+World.prototype.checkDestination = function (action, vector) {
+  if (directions.hasOwnProperty(action.direction)) {
+    var dest = vector.plus(directions[action.direction]);
+    if (this.grid.isInside(dest)) return dest;
+  }
+};
+```
+
+Em primeiro lugar, nós simplesmente pedimos para o bicho se mover, passando um objeto de exibição que tem informações sobre o mundo e a posição atual do bicho naquele mundo. O método retorna alguma tipo de ação. Se o tipo de ação não é um "move" ele será ignorado. Se é "move" ele terá uma propriedade de direção que se refere a um sentido válido caso o quadrado na direção referida estiver vazio. Estes dois métodos não fazem a parte da interface externa de um objeto do mundo. Eles são um detalhe interno. Algumas línguas fornece maneiras de declarar explicitamente certos métodos e propriedades privadas e sinalizar um erro quando você tenta usá-los de fora do objeto. JavaScript não faz isso então você vai ter que confiar em
+alguma outra forma de comunicação para descrever o que faz ou não parte da interface de um objeto. Às vezes ele pode ajudar a usar um esquema de nomes para distinguir entre as propriedades externas e internas, por exemplo, prefixando todas as propriedades internas com um caractere sublinhado( \_ ). Isso fará com que os usos acidentais de propriedades que não fazem parte da interface de um objeto fique mais fácil de detectar.
+
+```js
+function View(world, vector) {
+  this.world = world;
+  this.vector = vector;
+}
+View.prototype.look = function (dir) {
+  var target = this.vector.plus(directions[dir]);
+  if (this.world.grid.isInside(target))
+    return charFromElement(this.world.grid.get(target));
+  else return '#';
+};
+View.prototype.findAll = function (ch) {
+  var found = [];
+  for (var dir in directions) if (this.look(dir) == ch) found.push(dir);
+  return found;
+};
+View.prototype.find = function (ch) {
+  var found = this.findAll(ch);
+  if (found.length == 0) return null;
+  return randomElement(found);
+};
+```
+
+O método observa e descobre se as coordenadas que estamos visitando está dentro da grid e se o personagem correspondente ao elemento.
+
+---
+
+## 7.7 - O MOVIMENTO
+
+Nós instanciamos o objeto mundo antes. Agora que nós adicionamos todos os métodos necessários, devemos
+fazer os movimentos dos elementos no mundo.
+
+```js
+for (var i = 0; i < 5; i++) {
+  world.turn();
+  console.log(world.toString());
+}
+// → … five turns of moving critters
+```
+
+Imprimir várias cópias do mundo é uma forma bastante desagradável para movimentar um mundo. É por isso que podemo utilizar a função [animateWorld]() que executa uma animação, movendo o mundo com três voltas por segundo até que você aperte o botão de stop.
+
+```js
+animateWorld(world); // → … life!
+```
+
+A implementação do _animateWorld_ parece algo misterioso agora, mas depois que você ler os capítulos deste livro que discutem a integração JavaScript em navegadores web, ele não sera tão mágico.
