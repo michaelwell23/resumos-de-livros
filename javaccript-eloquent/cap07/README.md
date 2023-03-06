@@ -342,10 +342,95 @@ for (var i = 0; i < 5; i++) {
 // → … five turns of moving critters
 ```
 
-Imprimir várias cópias do mundo é uma forma bastante desagradável para movimentar um mundo. É por isso que podemo utilizar a função [animateWorld]() que executa uma animação, movendo o mundo com três voltas por segundo até que você aperte o botão de stop.
+Imprimir várias cópias do mundo é uma forma bastante desagradável para movimentar um mundo. É por isso que podemo utilizar a função [animateWorld](./exemplo-projeto/animateWorld.js) que executa uma animação, movendo o mundo com três voltas por segundo até que você aperte o botão de stop.
 
 ```js
 animateWorld(world); // → … life!
 ```
 
 A implementação do _animateWorld_ parece algo misterioso agora, mas depois que você ler os capítulos deste livro que discutem a integração JavaScript em navegadores web, ele não sera tão mágico.
+
+---
+
+## 7.8 - MAIS FORMAS DE VIDA
+
+Precisamos ser capazes de calcular as direções com a bússola. As direções são modelados por um conjunto de String , precisamos definir nossa própria operação( dirPlus ) para calcular as direções relativas. Então _dirPlus("n", 1)_ significa 45 graus no sentido horário para norte quando retornar "ne". Da mesma forma _dirPlus("s", -2)_ significa 90 graus para a esquerda ao sul retornando leste.
+
+```js
+function dirPlus(dir, n) {
+  var index = directionNames.indexOf(dir);
+  return directionNames[(index + n + 8) % 8];
+}
+
+function WallFollower() {
+  this.dir = 's';
+}
+WallFollower.prototype.act = function (view) {
+  var start = this.dir;
+  if (view.look(dirPlus(this.dir, -3)) != ' ')
+    start = this.dir = dirPlus(this.dir, -2);
+  while (view.look(this.dir) != ' ') {
+    this.dir = dirPlus(this.dir, 1);
+    if (this.dir == start) break;
+  }
+  return { type: 'move', direction: this.dir };
+};
+```
+
+O que complica é que um bicho pode acabar no meio de um espaço vazio, quer como a sua posição de partida ou como um resultado de caminhar em torno de um outro bicho. Se aplicarmos a abordagem que acabei de descrever no espaço vazio o bicho vai apenas virar à esquerda a cada passo correndo em círculos. Portanto, há uma verificação extra(instrução if ) no inicio da digitalização para a esquerda para analisar se o bicho acaba de passar algum tipo de obstáculo, no caso, se o espaço atrás e à esquerda do bicho não estiver vazio. Caso contrário, o bicho começa a digitalizar diretamente à frente de modo que ele vai andar em linha reta ate um espaço vazio. E finalmente há um teste comparando this.dir para começar após cada passagem do laço para se certificar de que o circuito não vai correr para sempre quando o bicho está no muro ou quando o mundo esta lotados de outros bichos não podendo achar quadrados vazios. Este pequeno mundo demonstra as criaturas na parede:
+
+```js
+animateWorld(
+  new World(
+    [
+      '############',
+      '#     #    #',
+      '#   ~    ~ #',
+      '#  ##      #',
+      '#  ##   o###',
+      '#          #',
+      '############',
+    ],
+    { '#': Wall, '~': WallFollower, o: BouncingCritter }
+  )
+);
+```
+
+---
+
+## 7.9 - UMA SITUAÇÃO MAIS REALISTA
+
+Para tornar a vida em nosso mundo mais interessante vamos adicionar os conceitos de alimentação e reprodução. Cada coisa viva no mundo ganha uma nova propriedade, a energia, a qual é reduzida por realizar ações e aumenta comendo alguma coisas. Quando o bicho tem energia suficiente ele pode se reproduzir, gerando um novo bicho da mesma espécie. Para manter as coisas simples; os bichos em nosso mundo se reproduzem assexuadamente ou seja por si so.
+
+Se bichos só se movimentar e comer uns aos outros o mundo em breve ira se sucumbir na lei da entropia crescente, ficando sem energia e tornando um deserto sem vida. Para evitar que isso aconteça(muito rapidamente pelo menos) adicionaremos plantas para o mundo. As plantas não se movem
+
+Para fazer este trabalho vamos precisar de um mundo com um método diferente de letAct
+
+Uma solução é usar herança. Criamos um novo construtor, LifelikeWorld , cujo seu protótipo é baseado no protótipo global, mas que substitui o método letAct . O novo método letAct delega o trabalho do que realmente deve executar uma ação para várias funções armazenados no objeto actionTypes.
+
+```js
+function LifelikeWorld(map, legend) {
+  World.call(this, map, legend);
+}
+LifelikeWorld.prototype = Object.create(World.prototype);
+var actionTypes = Object.create(null);
+LifelikeWorld.prototype.letAct = function (critter, vector) {
+  var action = critter.act(new View(this, vector));
+  var handled =
+    action &&
+    action.type in actionTypes &&
+    actionTypes[action.type].call(this, critter, vector, action);
+  if (!handled) {
+    critter.energy -= 0.2;
+    if (critter.energy <= 0) this.grid.set(vector, null);
+  }
+};
+```
+
+O novo método letAct verifica primeiro se uma ação foi devolvido, então se a função manipuladora para este tipo de ação existir, o resultado deste manipulador sera true , indicando que ele tratou com sucesso a ação.
+
+Se a ação não funcionou por algum motivo a ação padrão é que a criatura simplesmente espere. Perde um quinto de sua energia e se o seu nível de energia chega a zero ou abaixo a criatura morre e é removido da grid.
+
+---
+
+## 7.10 - MANIPULADORES DE AÇÕES

@@ -213,3 +213,57 @@ View.prototype.find = function (ch) {
   if (found.length == 0) return null;
   return randomElement(found);
 };
+
+function dirPlus(dir, n) {
+  var index = directionNames.indexOf(dir);
+  return directionNames[(index + n + 8) % 8];
+}
+
+function WallFollower() {
+  this.dir = 's';
+}
+
+WallFollower.prototype.act = function (view) {
+  var start = this.dir;
+  if (view.look(dirPlus(this.dir, -3)) != ' ')
+    start = this.dir = dirPlus(this.dir, -2);
+  while (view.look(this.dir) != ' ') {
+    this.dir = dirPlus(this.dir, 1);
+    if (this.dir == start) break;
+  }
+  return { type: 'move', direction: this.dir };
+};
+
+// animateWorld(
+//   new World(
+//     [
+//       '############',
+//       '#     #    #',
+//       '#   ~    ~ #',
+//       '#  ##      #',
+//       '#  ##   o###',
+//       '#          #',
+//       '############',
+//     ],
+//     { '#': Wall, '~': WallFollower, o: BouncingCritter }
+//   )
+// );
+
+function LifelikeWorld(map, legend) {
+  World.call(this, map, legend);
+}
+LifelikeWorld.prototype = Object.create(World.prototype);
+
+var actionTypes = Object.create(null);
+
+LifelikeWorld.prototype.letAct = function (critter, vector) {
+  var action = critter.act(new View(this, vector));
+  var handled =
+    action &&
+    action.type in actionTypes &&
+    actionTypes[action.type].call(this, critter, vector, action);
+  if (!handled) {
+    critter.energy -= 0.2;
+    if (critter.energy <= 0) this.grid.set(vector, null);
+  }
+};
