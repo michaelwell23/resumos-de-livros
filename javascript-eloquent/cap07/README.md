@@ -434,3 +434,131 @@ Se a ação não funcionou por algum motivo a ação padrão é que a criatura s
 ---
 
 ## 7.10 - MANIPULADORES DE AÇÕES
+
+A ação mais simples que uma criatura pode executar é "crescer" e sera usado pelas plantas. Quando um objeto de ação como {type: "grow"} é devolvido o seguinte método de manipulaçao será chamado.
+
+```js
+actionTypes.grow = function (critter) {
+  critter.energy += 0.5;
+  return true;
+};
+```
+
+Crescecer com sucesso acrescenta meio ponto no nível total da reserva de energia. Analisando o método para se mover:
+
+```js
+actionTypes.move = function (critter, vector, action) {
+  var dest = this.checkDestination(action, vector);
+  if (dest == null || critter.energy <= 1 || this.grid.get(dest) != null)
+    return false;
+  critter.energy -= 1;
+  this.grid.set(vector, null);
+  this.grid.set(dest, critter);
+  return true;
+};
+```
+
+A ação verifica primeiro se o destino é válido usando o método _checkDestination_. Se não é válido, se o destino não está vazio ou se o bicho não tem energia necessária; O movimento retorna flase para indicar que nenhuma ação foi feita. Caso contrário ele move o bicho e subtrai sua energia.Além de movimentar, os bichos podem comer.
+
+```js
+actionTypes.eat = function (critter, vector, action) {
+  var dest = this.checkDestination(action, vector);
+  var atDest = dest != null && this.grid.get(dest);
+  if (!atDest || atDest.energy == null) return false;
+  critter.energy += atDest.energy;
+  this.grid.set(dest, null);
+  return true;
+};
+```
+
+Comer outros bichos também envolve o fornecimento de um quadro de destino válido. Assim, a energia a partir da comida é transferido para o comedor e a vítima é retirada da `grid`. E finalmente nós permitimos que os nossos bichos se reproduzam.
+
+```js
+actionTypes.reproduce = function (critter, vector, action) {
+  var baby = elementFromChar(this.legend, critter.originChar);
+  var dest = this.checkDestination(action, vector);
+  if (
+    dest == null ||
+    critter.enertgy <= 2 * baby.energy ||
+    this.grid.get(dest) != null
+  )
+    return false;
+  critter.energy -= 2 * baby.energy;
+  this.grid.set(dest, baby);
+  return true;
+};
+```
+
+Reproduzir custa duas vezes mais o nível de energia de um bicho recém-nascido. Então primeiro criamos o bebê usando _elementFromChar_ no próprio caráter origem do bixo. Uma vez que temos o bebê podemos encontrar o seu nível de energia e testar se o pai tem energia suficiente para trazê-lo com sucesso no mundo. Se tudo estiver bem o bebê é colocado sobre a grid, e a energia é substraída do pai.
+
+---
+
+## 7.11 - POPULANDO O NOVO MUNDO
+
+Poderíamos colocar os bichos do velho mundo para o novo, mas eles só iriam morrer, uma vez que não há uma propriedade de energia. Então podemos fazer novos elementos escrevendo uma planta que será uma forma de vida bastante simples.
+
+```js
+function Plant() {
+  this.energy = 3 + Math.random() * 4;
+}
+Plant.prototype.act = function (context) {
+  if (this.energy > 15) {
+    var space = context.find(' ');
+    if (space) return { type: 'reproduce', direction: space };
+  }
+  if (this.energy < 20) return { type: 'grow' };
+};
+```
+
+As plantas começam com um nível de energia randomizados entre 3 e 7, isso é para que eles não se reproduzam todos no mesmo tempo. Quando a planta atinge nível 15 de energia e não há espaço vazio nas proximidades ela não se reproduz. Se uma planta não pode se reproduzir ele simplesmente cresce até atingir o nível 20 de energia.
+
+```js
+function PlantEater() {
+  this.energy = 20;
+}
+PlantEater.prototype.act = function (context) {
+  var space = context.find(' ');
+  if (this.energy > 60 && space) return { type: 'reproduce', direction: space };
+  var plant = context.find('*');
+  if (plant) return { type: 'eat', direction: plant };
+  if (space) return { type: 'move', direction: space };
+};
+```
+
+Vamos usar o caractere \* para representar as plantas, quando algum bichos encontrar eles podem consumir como alimento.
+
+---
+
+## 7.12 - DANDO A was-validated
+
+Agora faremos elementos suficientes para experimentar o nosso novo mundo. Imagine o seguinte mapa sendo
+um vale gramado com um rebanho de herbívoros em que há algumas pedras e vida vegetal exuberante em todos
+os lugares.
+
+```js
+var valley = new LifelikeWorld(
+  [
+    '############################',
+    '#####                 ######',
+    '##   ***                **##',
+    '#   *##**         **  O  *##',
+    '#    ***     O    ##**    *#',
+    '#       O         ##***    #',
+    '#                 ##**     #',
+    '#   O       #*             #',
+    '#*          #**       O    #',
+    '#***        ##**    O    **#',
+    '##****     ###***       *###',
+    '############################',
+  ],
+  { '#': Wall, O: PlantEater, '*': Plant }
+);
+```
+
+Vamos ver o que acontece ao executar.
+
+```js
+animateWorld(valley);
+```
+
+Na maioria das vezes as plantas se multiplicam e expandem muito rapidamente, mas em seguida a abundância de alimento provoca uma explosão populacional dos herbívoros que saem para acabar com quase todas as plantas resultando em uma fome em massa dos bichos. Às vezes o ecossistema se recupera e começa outro ciclo. Em outros momentos uma das espécies desaparece completamente. Se é os herbívoros todo o espaço irá ser preenchido por plantas. Se é as plantas os bichos restantes morrem de fome e o vale se torna uma terra desolada.

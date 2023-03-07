@@ -15,3 +15,5 @@ console.log(!false); // true
 console.log(1 + 1 == 2 && 10 * 10 > 50);
 
 // Operador ternário
+console.log(true ? 1 : 2); // → 1
+console.log(false ? 1 : 2); // → 2
