@@ -168,3 +168,138 @@ try {
 A palavra-chave throw é usada para gerar uma exceção. Para tratar uma excessão basta envolver um pedaço de código em um bloco try , seguido pela palavra-chave catch . Quando o código no bloco try causa uma exceção a ser lançada o bloco catch é chamado. Se olharmos para função promptDirection podemos ignoramos completamente a possibilidade de que ela pode conter erros. Esta é a grande vantagem do tratamento de erros - manipulação de erro no código é necessário apenas no ponto em que o erro ocorre e no ponto onde ele é tratado. Essas funções no meio pode perder tudo sobre ela.
 
 ---
+
+## 8.7 - LIMPEZA APÓS EXCEÇÕES
+
+Uma função quer ter certeza de que durante a sua execução, o conteto de nível superior da variável tem um valor de contexto específico. Depois que terminar ele restaura esta variável para o seu valor antigo.
+
+```js
+var context = null;
+function withContext(newContext, body) {
+  var oldContext = context;
+  context = newContext;
+  var result = body();
+  context = oldContext;
+  return result;
+}
+```
+
+A chamada para _winthContext_ será exibido no _stack_ pela exceção, e o contexto nunca será definido de volta para o seu valor antigo. POdemos utilizar o `finally`que é mais uma atibuição do `try`. Não importa o que aconteça esse bloco é executado, depois de terntar executar o código do bloco try. Se uma função tem de limpar alguma coisa, ocódigo de limpeza geralmente deve ser colocado em um bloco finally.
+
+```js
+function withContext(newContext, body) {
+  var oldContext = context;
+  context = newContext;
+  try {
+    return body();
+  } finally {
+    context = oldContext;
+  }
+}
+```
+
+Então podemos fazer isso de um jeito mais seguro:
+
+```js
+try {
+  withContext(5, function () {
+    if (context < 10) throw new Error('Not enough context!');
+  });
+} catch (e) {
+  console.log('Ignoring: ' + e);
+} // → Ignoring: Error: Not enough context!
+console.log(context); // → null
+```
+
+Mesmo que a chamada da função withContext explodiu, withContext limpou corretamente a variável context.
+
+---
+
+## 8.8 - CAPTURA SELETIVA
+
+Quando uma exceção percorre todo o caminho até o final do stack sem ser pego, ele é tratado pelo environment. Significa que isto é diferente entre os ambientes. Nos navegadores uma descrição do erro normalmente é escrita no console do JavaScript. Erros passam muitas vezes como algo normal, isto acontece para erros do programador ou problemas que o browser não consegue manipular o erro. Uma exceção sem tratamento é uma forma razoável para indicar a um programa que ele esta quebrado e o console JavaScript em navegadores modernos terá que fornecer-lhe algumas informações no stack sobre quais foram as chamadas de funções quando o problema ocorreu. O JavaScript (tem uma omissão gritante) não fornece suporte direto para a captura seletiva exceções: ou você manipula todos ou você trata de algum em específico. Isto torna muito fácil supor que a exceção que você recebe
+é o que você estava pensando quando escreveu o bloco catch. Aqui está um exemplo que tentei manter a chamada a função promptDirection até que ele receba uma resposta válida:
+
+```js
+for (;;) {
+  try {
+    var dir = promtDirection('Where?'); // ← typo!
+    console.log('You chose ', dir);
+    break;
+  } catch (e) {
+    console.log('Not a valid direction. Try again.');
+  }
+}
+```
+
+Como regra geral não capturamos exceções a menos que tenha a finalidade de monitora-las em algum lugar, por exemplo através de softwares externos conectados à nossa aplicação que indica quando nossa aplicação está caída. E assim mesmo podemos pensar cuidadosamente sobre como você pode estar escondendo alguma informação. Naturalmente nós poderíamos fazer uma comparação de mensagens de erros. Mas isso é uma forma instável de escrever código pois estaríamos utilizando informações que são destinadas ao consumo humano (a mensagem) para tomar uma decisão programática. Em vez disso, vamos definir um novo tipo de erro e usar instanceof para identificá-lo.
+
+```js
+function InputError(message) {
+  this.message = message;
+  this.stack = new Error().stack;
+}
+InputError.prototype = Object.create(Error.prototype);
+InputError.prototype.name = 'InputError';
+```
+
+A atribuição da propriedade no stack tenta deixar o rastreamento do objeto pelo stacktrace um pouco mais útil, em plataformas que suportam a criação de um objeto de erro regular pode usar a propriedade de stack do objeto para si próprio. Agora promptDirection pode lançar um erro.
+
+```js
+function promptDirection(question) {
+  var result = prompt(question, '');
+  if (result.toLowerCase() == 'left') return 'L';
+  if (result.toLowerCase() == 'right') return 'R';
+  throw new InputError('Invalid direction: ' + result);
+}
+```
+
+E o loop pode ser tratado com mais cuidado.
+
+```js
+for (;;) {
+  try {
+    var dir = promptDirection('Where?');
+    console.log('You chose ', dir);
+    break;
+  } catch (e) {
+    if (e instanceof InputError)
+      console.log('Not a valid direction. Try again.');
+    else throw e;
+  }
+}
+```
+
+Isso vai pegar apenas os casos de InputError e através disso deixa algumas exceções independentes. Se você introduzir um erro de digitação ou um erro de variável indefinida a aplicação nos avisará.
+
+---
+
+## 8.9 - ASSERÇÕES
+
+As asserções são ferramentas que auxiliam na verificação da sanidade básica de erros do programador. Considere essa função auxiliar que afirma:
+
+```js
+function AssertionFailed(message) {
+  this.message = message;
+}
+AssertionFailed.prototype = Object.create(Error.prototype);
+function assert(test, message) {
+  if (!test) throw new AssertionFailed(message);
+}
+function lastElement(array) {
+  assert(array.length > 0, 'empty array in lastElement');
+  return array[array.length - 1];
+}
+```
+
+Isso fornece uma maneira compacta de fazer cumprir as expectativas solicitadas para quebrar um programa se a condição descrita não for válida. As afirmações são maneiras de certificar-se de que erros pode causar falhas e qual o ponto deste erro ao invés de valores sem sentido produzidos silenciosamente que pode acarretar problemas em uma parte do programa a qual não se tem nenhuma relação de onde ocorreu realmente.
+
+---
+
+## RESUMO
+
+Erros e má entrada acontecem. Erros de programas precisam ser encontrados e corrigidos. Eles podem tornar-se mais fácil de perceber quando se tem uma suites de testes automatizadas e asserções adicionadas em seu programa.
+
+Problemas causados por fatores fora do controle do programa devem geralmente serem tratados normalmente. Às vezes quando o problema pode ser tratado localmente, valores de retorno especiais é um caminho sensato para monitorá-los. Caso contrário as exceções são preferíveis.
+
+Lançar uma exceção faz com que stack de chamadas se desencadeie o bloco try/catch até a parte inferior do stack. O valor da exceção será capturado pelo bloco catch onde podemos verificar se ele é realmente do tipo de exceção esperada e em seguida fazer algo com ela. Para lidar com o fluxo de controle imprevisível causado pelas exceções, o bloco finally pode ser utilizado para garantir que um pedaço de código seja sempre executado.
