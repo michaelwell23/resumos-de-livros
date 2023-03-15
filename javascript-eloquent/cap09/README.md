@@ -119,3 +119,75 @@ console.log(cartoonCrying.test('Boohoooohoohooo')); // → true
 O terceiro "+" se aplica a todo grupo (hoo+), encontrando uma ou mais sequências como essa. O "i" no final da expressão do exemplo acima faz com que a expressão regular seja case-insensitive, permitindo-a encontrar a letra maiúscula "B" na \_string_dada, mesmo que a descrição do padrão tenha sido feita em letras minúsculas.
 
 ---
+
+## 9.6 - RESULTADOS E GRUPOS
+
+Expressões regulare possuem o método exec que retorna null quando nenhum resultado for encontrado, e se encontrar retorna um objeto.
+
+```js
+var match = /\d+/.exec('one two 100');
+console.log(match); // → ["100"]
+console.log(match.index); // → 8
+```
+
+Valores string possuem um método que se comporta de maneira semelhante.
+
+```js
+console.log('one two 100'.match(/\d+/)); // → ["100", index: 8, input: "one two 100"]
+```
+
+Um objeto retornado pelo método exec ou match possui um index de propriedade que informa aonde na string o resultado encontrado se inicia. Além disso, o objeto se parece um array de strings, onde o primeiro elemento é a string que foi achada. Quando uma expressão regular contém expressões agrupadas entre parênteses, o texto que correspond a esses grupos também aparece no array,onde o primeiro elemento sempre é todo o resultado, seguido pelo resultado do primeiro grupo entre parênteses, depois o segundo grupo e assim em diante.
+
+```js
+var textoCitado = /'([^']*)'/;
+console.log(textoCitado.exec("'ela disse adeus'")); // → ["'ela disse adeus'", "ela disse adeus", index: 0, input: "'ela disse adeus'"]
+```
+
+Quando um grupo não termina sendo achado, o resultado do array é undefined. QUando achado várias vezes, somente o ultimo resultado encontrado é exibido no array.
+
+```js
+console.log(/bad(ly)?/.exec('bad')); // → ["bad", undefined]
+console.log(/(\d)+/.exec('123')); // → ["123", "3"]
+```
+
+Grupos podem ser muito úteis para extrair partes de uma string. Se adicionarmos parênteses em volta do padrão de dígitos, poderemos selecionar a data no resultado da função exec.
+
+---
+
+## 9.7 - O TIPO DATA
+
+O objeto `Date` é um obejto em JavaScript para representar as datas. Se utilizarmos o `new`, podemo obter a data e hora atual.
+
+```js
+console.log(new Date());
+```
+
+Também é possível criar um objeto para uma hora específica.
+
+```js
+console.log(new Date(2014, 6, 29)); // → Tue Jul 29 2014 00:00:00 GMT-0300 (BRT)
+console.log(new Date(1981, 6, 29, 18, 30, 50)); // → Wed Jul 29 1981 18:30:50 GMT-0300 (BRT)
+```
+
+O JavaScript utiliz uma converção onde a numeração dos meses se inicia em zero,mas os dias iniciam-se em um. É bem confuso. Internamente, objestos do tipo data são armazenados como número de milissegundos desde o inicio de 1970. Usar o método getTime em uma data retorna esse numero, que é bem grande.
+
+```js
+console.log(new Date(2014, 2, 21).getTime()); // → 1395370800000
+console.log(new Date(1395370800000)); // → Fri Mar 21 2014 00:00:00 GMT-0300 (BRT)
+```
+
+Objetos Date possuem métodos como getFullYea getMonth, getDate, getHours, getMinutes e getSeconds para extrair os componentes da data.
+Então agora, ao colocar parênteses em volta das partes que nos interessam, podemos facilmente extrair uma data de uma string.
+
+```js
+function buscaData(string) {
+  var dateTime = /(\d{1,2})\/(\d{1,2})\/(\d{4})/;
+  var match = dateTime.exec(string);
+  return new Date(Number(match[3]), Number(match[2]), Number(match[1]));
+}
+console.log(buscaData('21/1/2014')); // → Fri Feb 21 2014 00:00:00 GMT-0300 (BRT)
+```
+
+---
+
+## 9.8 - LIMITES DE PALAVRA E STRING
