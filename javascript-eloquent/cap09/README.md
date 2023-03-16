@@ -191,3 +191,38 @@ console.log(buscaData('21/1/2014')); // → Fri Feb 21 2014 00:00:00 GMT-0300 (B
 ---
 
 ## 9.8 - LIMITES DE PALAVRA E STRING
+
+A função b uscaData acima irá extrair facilmente a data de um texto como "100/1/30000", um resultado pode acontecer em qualquer lugar da string fornecida, então, nesse caso, vai encontrar no segundo caractere e terminar no último Se quisermos nos assegurar que a busca seja em todo o texto, podemos adicionar os marcadores "^" e "$". O primeiro acha o início da string fornecida e o segundo o final dela. Então /^\d+$/ encontra apenas em uma string feita de um ou mais dígitos, /^!/ encontra qualquer string que começa com sinal de exclamação e /x^/ não acha nada. Se, por outro lado, queremos ter certeza que a data inicia e termina no limite da palavra, usamos o marcador \b.
+
+```js
+console.log(/cat/.test('concatenate')); // → true
+console.log(/\bcat\b/.test('concatenate')); // → false
+```
+
+Note que esses marcadores de limite não cobrem nenhum caractere real, eles apenas asseguram que o padrão de busca irá achar algo na posição desejada, informada nos marcadores.
+
+---
+
+## 9.9 - ALTERNATIVAS
+
+O caractere pipe ("|") indica uma opção entre o padrão à esquerda ou a direita.
+
+```js
+var contagemAnimal = /\b\d+ (porco|vaca|galinha)s?\b/;
+console.log(contagemAnimal.test('15 porcos')); // → true
+console.log(contagemAnimal.test('15 porcosgalinhas')); // → false
+```
+
+Parênteses podem ser usados para limitar a que parte do padrão que o pipe ("|") se aplica, e você pode colocar vários desses operadores lado a lado para expressar uma escolha entre mais de dois padrões.
+
+---
+
+## 9.10 - O MECANISMO DE PROCURA
+
+Uma string corresponde à expressão se um caminho do início até o final do diagrama puder ser encontrado, com uma posição inicial e final correspondente, de modo que cada vez que passar em uma caixa, verificamos que a posição atual na sequência corresponde ao elemento descrito nela, e, para os elementos que correspondem caracteres reai, continue no fluxo das caixas. O modo como o mecanismo de expressões regulares do JavaScript trata uma busca em uma string é simples. Começa no início da string e tenta achar um resultado nela. Nesse casso, existe um limite de palavra aqui, então passamos pela primeira caixa, mas não existe um dígito, então ele falha na segunda caixa. Continua no segundo
+caractere da string e tenta novamente. E assim continua, até encontrar um resultado ou alcançar o fim da string e
+concluir que não encontrou nenhum resultado.
+
+---
+
+## 9.11 - RETROCEDENDO
