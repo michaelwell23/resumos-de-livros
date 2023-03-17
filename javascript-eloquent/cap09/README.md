@@ -226,3 +226,106 @@ concluir que não encontrou nenhum resultado.
 ---
 
 ## 9.11 - RETROCEDENDO
+
+A expressão regular /\b([01]+b|\d+|[\da-f]h)\b/ encontra um número binário seguido por um "b", um número decimal,
+sem um caractere de sufixo, ou um número hexadecimal (de base 16, com as letras "a" a "f" para os algarismos
+de 10 a 15), seguido por um "h".
+
+![re_number](https://eloquentjavascript.net/2nd_edition/img/re_number.svg)
+
+Ao buscar estra expressão, muitas vezes o ramo superior será percorrido, mesmo que a entrada não contenha realmente um número binário. A expressão é buscada não apensas no ramo que ese está executando. É o que acontece se a expressão retroage. Quando entra em um ramo, ela guarda em que ponto aconteceu, então ela retrocede e tenta outro ramo do diagrama se o atual não encontra nenhum resultado.Quando mais de um ramo encontra um resultado, o primeiro será considerado. Retroceder acontece também, de maneiras diferentes, quando buscamos por operadores repetidos. Se buscarmos /^.x/ em "ab cxe", a parte "." tentará achar toda a string. Depois, tentará achar apenas o que for seguido de um "x", e não existe um "x" no final da string. Então ela tentará achar desconsiderando um caractere, e outro, e outro. Quando acha o "x", sinaliza um resultado com sucesso, da posição 0 até 4. É possível escrever expressões regulares que fazem muitos retrocessos. O Problema ocorre quando um padrão encontra um pedaço da string de entrada de muitas maneiras.
+
+![re_number](https://eloquentjavascript.net/2nd_edition/img/re_slow.svg)
+
+Ela tentará achar séries de zeros sem um "b" após elas, depois irá percorrer o circuito interno até passar por todos os dígitos. Quando perceber que não existe nenhum "b", retorna uma posição e passa pelo caminho de fora mais uma vez, e de novo, retrocedendo até o circuito interno mais uma vez. Continuará tentando todas as rotas possíveis através destes dois loops, em todos os caracteres.
+
+---
+
+## 9.12 - O MÉTODO REPLACE
+
+O método replace pode ser usado para substituir partes da string por outra string.active
+
+```js
+console.log('papa'.replace('p', 'm'));
+```
+
+O primeiro argumnto pode ser substituido por uma expressão regular, que na primeira ocorrência de correspondencia será substituída.
+
+```js
+console.log('Borobudur'.replace(/[ou]/, 'a')); // → Barobudur
+console.log('Borobudur'.replace(/[ou]/g, 'a')); // → Barabadar
+```
+
+Quando a opção "g" é adicionada à expressão, todas as ocorrências serão substituidas. A verdadeira utilidade do uso de expressões regulares com o método replace é a opção de fazer referências aos grupos achados através da expressão. Se temos uma string longa com nomes de pessoas, uma por linha, no formato "Sobrenome Nome" e queremos trocar essa ordem e remover a vírgula, para obter o formato "Nome Sobrenome".
+
+```js
+console.log(
+  'Hopper, Grace\nMcCarthy, John\nRitchie, Dennis'.replace(
+    /([\w ]+), ([\w ]+)/g,
+    '$2 $1'
+  )
+);
+// → Grace Hopper
+//John McCarthy
+//Dennis Ritchie
+```
+
+Também é possível passar uma função, em vez de uma string no segundo argumento do método replace. Para
+cada substituição, a função será chamada com os grupos achados (assim como o padrão) como argumentos, e
+o valor retornado pela função será inserido na nova string.
+
+```js
+var s = 'the cia and fbi';
+console.log(
+  s.replace(/\b(fbi|cia)\b/g, function (str) {
+    return str.toUpperCase();
+  })
+); // → the CIA and FBI
+```
+
+Outro exemplo seria:
+
+```js
+var stock = '1 lemon, 2 cabbages, and 101 eggs';
+function minusOne(match, amount, unit) {
+  amount = Number(amount) - 1;
+  if (amount == 1)
+    // only one left, remove the 's'
+    unit = unit.slice(0, unit.length - 1);
+  else if (amount == 0) amount = 'no';
+  return amount + ' ' + unit;
+}
+console.log(stock.replace(/(\d+) (\w+)/g, minusOne)); // → no lemon, 1 cabbage, and 100 eggs
+```
+
+Ele pega a string, acha todas as ocorrências de um número seguido por uma palavra alfanumérica e retorna uma nova string onde cada achado é diminuído em um. O grupo (\d+) finaliza o argumento da função e o (\w+) limita a unidade. A função converte o valor em um número, desde que achado, \d+ faz ajustes caso exista apenas um ou zero esquerda.
+
+---
+
+## 9.13 - QUALIFICADOR / GREED
+
+É simples usar o método replace para escrever uma função que remove todos os comentários de um pedaço de código JavaScript.
+
+```js
+function stripComments(code) {
+  return code.replace(/\/\/.*|\/\*[\w\W]*\*\//g, '');
+}
+console.log(stripComments('1 + /* 2 */3')); // → 1 + 3
+console.log(stripComments('x = 10;// ten!')); // → x = 10;
+console.log(stripComments('1 /* a */+/* b */ 1')); // → 1 1
+```
+
+A parte [\w\W] é uma maneira (feia) de encontrar qualquer caractere. Lembre-se que um ponto não encontra um caractere de quebra de linha / linha nova. Comentários podem conter mais de uma linha, então não podemos usar um ponto aqui. Achar algo que seja ou não um caractere de palavra, irá encontrar todos os caracteres possíveis. Existem duas variações de operadores de repetição em expressões regulares ('+', '_', e '{}'). Por padrão, eles quantificam, significa que eles encontram o que podem e retrocedem a partir daí. Se você colocar uma interrogação depois deles, eles se tornam non_greedy, e começam encontrando o menor grupo possível e o
+resto que não contenha o grupo menor. E é exatamente o que queremos nesse caso. Com o asterisco encontramos os grupos menores que tenham "_/"
+no fechamento, encontramos um bloco de comentários e nada mais.
+
+```js
+function stripComments(code) {
+  return code.replace(/\/\/.*|\/\*[\w\W]*?\*\//g, '');
+}
+console.log(stripComments('1 /* a */+/* b */ 1')); // → 1 + 1
+```
+
+---
+
+## 9.14 - CRIANDO OBJETOS RegExp DINAMICAMENTE
