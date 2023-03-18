@@ -329,3 +329,78 @@ console.log(stripComments('1 /* a */+/* b */ 1')); // → 1 + 1
 ---
 
 ## 9.14 - CRIANDO OBJETOS RegExp DINAMICAMENTE
+
+Existem casos onde você pode não saber o padrão exato que você precisa quando escreve seu código. Digamos que você queira buscar o nome de um usuário em um pedaço de texto e colocá-lo entre caracteres "\_" para destacá-lo. O nome será fornecido apenas quando o programa estiver sendo executado Podemos construir uma string e usar o construtor RegExp para isso:
+
+```js
+var name = 'harry';
+var text = 'Harry is a suspicious character.';
+var regexp = new RegExp('\\b(' + name + ')\\b', 'gi');
+console.log(text.replace(regexp, '_$1_')); // → _Harry_ is a suspicious character.
+```
+
+Ao criar os marcos de limite "\b", usamos duas barras invetidas, porque estamos escrevendo-os em uma string normal, não uma expressão regular com barras. As opções para a expressão regular pode ser inseridas como segundo argumento para o contrutor RegExp. Para contornar isso, adicionamos contrabarras antes de qualquer caractere que não confiamos. adicionar contrabarras antes de qualquer caractere alfabético é uma má ideia, porque coisas como "\b" ou "\n" possuem significa para uma expressão regular. Mas escapar tudo que não for alfanumerico ou espaço é seguro.
+
+```js
+var name = 'dea+hl[]rd';
+var text = 'This dea+hl[]rd guy is quite annoying.';
+var escaped = name.replace(/[^\w\s]/g, '\\$&');
+var regexp = new RegExp('\\b(' + escaped + ')\\b', 'gi');
+console.log(text.replace(regexp, '_$1_')); // → This _dea+hl[]rd_ guy is quite annoying.
+```
+
+O marcador "$&" na string de substituição age como se fosse "$1", mas será substituído em dodos os resultados ao invés do grupo encontrado.
+
+---
+
+## 9.15 - O MÉTODO SEACH
+
+Existe um outro método, _search_, que espera como argumento uma expressão regular, e como o indexOf, retorna o índice do primeiro resultado encontrado ou -1 se não encontra.
+
+```js
+console.log('word'.search(/\S/)); // → 2
+console.log(' '.search(/\S/)); // → -1
+```
+
+Infelizmente, não existe um modo de indicar onde a busca deve começar, com um índice, o que seria muito útil.
+
+---
+
+## 9.16 - A PROPRIEDADE LASTINDEX
+
+Expressões regulares possuem propriedades (como source que contém a string que originou a expressão). Uma dessas propriedades, lastIndex, controla, em algumas circunstâncias, onde a busca começará. Essas circunstâncias são que a expressão regular precisa ter a opção "global" (g) habilitada e precisa ser no método exec. Novamente, deveria ser da mesma maneira que permitir um argumento extra para o método exec, mas coesão não é uma característica que define a sintaxe de expressões regulares em JavaScript.
+
+```js
+var pattern = /y/g;
+pattern.lastIndex = 3;
+
+var match = pattern.exec('xyzzy');
+
+console.log(match.index); // → 4
+console.log(pattern.lastIndex); // → 5
+```
+
+A propriedade lastIndex é atualizada ao ser executada após encontrar algo. Quando não encontra nada, lastIndex é definida como zero, que também é o valor quando uma nova expressão é construída. Quando usada uma expressão regular global para múltiplas chamadas ao método exec, esta mudança da propriedade lastIndex pode causar problemas, sua expressão pode iniciar por acidente em um índice deixado na ultima vez que foi executada. Outro efeito interessante da opção global é que ela muda a maneira como o método match funciona em uma string. Quando chamada com uma expressão global, em vez de retornar um array semelhante ao retornado pelo exec, match encontrará todos os resultados do padrão na string e retornará um array contendo todas as strings encontradas.
+
+```js
+console.log('Banana'.match(/an/g)); // → ["an", "an"]
+```
+
+Um padrão comum é buscar todas as ocorrências de um padrão em uma string, com acesso a todos os grupos encontrados e ao índice onde foram encontrados, usando lastIndex e exec.
+
+```js
+var input = 'A text with 3 numbers in it... 42 and 88.';
+var re = /\b(\d+)\b/g;
+var match;
+while ((match = re.exec(input)))
+  console.log('Found', match[1], 'at', match.index);
+// → Found 3 at 12
+//Found 42 at 31
+//Found 88 at 38
+```
+
+Usa-se o fato que o valor de uma expressão de definição ('=') é o valor assinalado. Então usando-se `match = re.exec(input)` como a condição no bloco while , podemos buscar no início de cada iteração.
+
+---
+
+## 9.17 - ANALISANDO UM ARQUIVO .INI
