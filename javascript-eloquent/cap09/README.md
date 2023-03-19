@@ -404,3 +404,104 @@ Usa-se o fato que o valor de uma expressão de definição ('=') é o valor assi
 ---
 
 ## 9.17 - ANALISANDO UM ARQUIVO .INI
+
+Agora vamos ver um problema real que pede por uma expressão regular. Imagine que estamos escrevendo um programa que coleta informação automaticamente da internet dos nossos inimigos. Este arquivo tem a seguinte aparência:
+
+```txt
+searchengine=http://www.google.com/search?q=$1
+spitefulness=9.7
+
+; comments are preceded by a semicolon...
+; these are sections, concerning individual enemies
+[larry]
+fullname=Larry Doe
+type=kindergarten bully
+website=http://www.geocities.com/CapeCanaveral/11451
+
+[gargamel]
+fullname=Gargamel
+type=evil sorcerer
+outputdir=/home/marijn/enemies/gargamel
+```
+
+Nossa tarefa é converter uma string como essa em um array de objetos, cada uma com um nome e um array de pares nome/valor. Precisaremos de um objeto para cada seção e outro para as configurações de seção. Já que o formato precisa ser processado linha a linha, dividir em linhas separadas é um bom começo. Usamos o método split antes para isso, string.split("\n"). Entretanto alguns sistemas operacionais não usam apenas um caractere de nova linha para separar linhas, mas um caractere de retorno seguido por um de nova linha ("\r\n"). Desse modo o método split ,em uma expressão regular com /\r?\n/ permite separar os dois modos, com "\n"e "\r\n" enre linhas.
+
+```js
+function parseINI(texto) {
+  var categorias = [];
+  function novaCategoria(nome) {
+    var categ = { nome: nome, fields: [] };
+    categorias.push(categ);
+    return categ;
+  }
+  var categoriaAtual = novaCategoria('TOP');
+  texto.split(/\r?\n/).forEach(function (linha) {
+    var encontrados;
+    if (/^\s*(;.*)?$/.test(linha)) return;
+    else if ((encontrados = linha.encontrados(/^\[(.*)\]$/)))
+      categoriaAtual = novaCategoria(encontrados[1]);
+    else if ((encontrados = linha.encontrados(/^(\w+)=(.*)$/)))
+      categoriaAtual.fields.push({
+        nome: encontrados[1],
+        value: encontrados[2],
+      });
+    else throw new Error("Linha '" + linha + "' is invalid.");
+  });
+  return categorias;
+}
+```
+
+O código percorre cada linha no arquivo. Ele mantém um objeto "categoria atual", e quando encontra um diretiva
+normal, adiciona ela ao objeto. Quando encontra uma linha que inicia uma nova categoria, ela troca a categoria
+atual pela nova, para adicionar as diretivas seguintes. Finalmente, retorna um array contendo todas as categorias
+que encontrou.
+
+---
+
+## 9.18 - CARACTERES INTERNACIONAIS
+
+Algumas implementações de expressões regulares em outras linguagens de programação possuem uma sintaxe para buscar conjuntos específicos de caracteres Unicode, como todas as maiúsculas, todos de pontuação, caracteres de controle ou semelhantes. Existem planos para adicionar esse suporte ao JavaScript, mas infelizmente parece que isso não acontecerá tão cedo.
+
+## 9.19 - UMA OU MAIS OCORRÊNCIAS DO PADRÃO
+
+Expressões regulares são objetos que representam padrões em strings. Eles usam sua própria sintaxe para expressar esses padrões.
+
+```txt
+/abc/          Sequência de caracteres
+/[abc]/        Qualquer caractere do conjunto
+/[^abc]/       Qualquer caractere que não seja do conjunto
+/[0-9]/        Qualquer caractere no intervalo de caracteres
+/x+/           Uma ou mais ocorrências do padrão
+/x+?/          Uma ou mais ocorrências do padrão, não obrigatório
+/x*/           Zero ou mais ocorrências
+/x?/           Zero ou uma ocorrência
+/x{2,4}/       Entre duas e quatro ocorrências
+/(abc)+/       Agrupamento
+/a|b|c/        Padrões alternativos
+/\d/           Caracteres dígitos
+/\w/           Caracteres alfanuméricos ("caracteres palavra")
+/\s/           caracteres espaço em branco
+/./            Todos caracteres exceto quebras de linha
+/\b/           Limite de palavra
+/^/            Início da entrada
+/$/            Final da Entrada
+```
+
+Uma expressão regular possui um método test para testar quando um padrão é encontrado em uma string, um
+método exec que quando encontra um resultado retorna um array com todos os grupos encontrados e uma
+propriedade index que indica onde o resultado inicia.
+
+Strings possuem um método match para testá-las contra uma expressão regular e um método search para
+buscar por um resultado. O método replace pode substituir resultados encontrados por um padrão. Como
+alternativa, uma função pode ser passada para montar o texto que será substituído de acordo com que foi achado.
+
+Expressões regulares podem ter opções configuradas (flags), que são escritas após o fechamento da barra. A
+opção "i" faz a busca sem se importar se é maiúscula ou minúscula, a opção "g" faz a busca global, que, entre
+outras coisas, faz o método replace substituir todas as ocorrências, em vez de só a primeira.
+
+O construtor RegExp pode ser usado para criar uma expressão regular dinâmica a partir de uma string.
+
+Expressões regulares são uma ferramenta precisa mas com um manuseio estranho. Elas simplificarão muito
+algumas tarefas simples, mas rapidamente se tornarão inviáveis quando aplicadas a tarefas mais complexas.
+Saber quando usá-las é útil. Parte do conhecimento de saber quando usá-las é o conhecimento de saber como
+usá-las e quando desistir do seu uso e procurar uma abordagem mais simples.
