@@ -23,7 +23,7 @@
 | [Capítulo 07](./cap07/) | `Prática` - Vida Eletrônica                        |
 | [Capítulo 08](./cap08/) | Erros e Manipulações de Erros                      |
 | [Capítulo 09](./cap09/) | Expressões Regulares                               |
-|     [Capítulo 10]()     | Módulos                                            |
+| [Capítulo 10](./cap10/) | Módulos                                            |
 |     [Capítulo 11]()     | `Prática`: A linguagem de Programação              |
 |     [Capítulo 12]()     | JavaScript e o Navegador                           |
 |     [Capítulo 13]()     | Documente Object Model                             |
