@@ -186,4 +186,67 @@ Podemos encapsular o código para um módulo em uma função.
 
 ---
 
-## 10.8 - REQUIRE
+## 10.9 - REQUIRE
+
+SE a nova função construtora, usada pelo nosso módulo de carregamento, encapsula o código em uma função de qualquer forma, nós podemos omitir a função _namespace_ encapsuladora atual dos arquivos. Nós também vamos fazer _exports_ um argumento à função módulo, então o módulo não precisará declarar isso, pois isso remove um monte de barulho supérfluo do nosso módulo de exemplo:
+
+```js
+var names = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+];
+exports.name = function (number) {
+  return names[number];
+};
+exports.number = function (name) {
+  return names.indexOf(name);
+};
+```
+
+Essa é uma implementação mínima de require :
+
+```js
+function require(name) {
+  var code = new Function('exports', readFile(name));
+  var exports = {};
+  code(exports);
+  return exports;
+}
+console.log(require('weekDay').name(1));
+// → Monday
+```
+
+Quando usando este sistema, um módulo tipicamente começa com pequena declaração de variáveis que carregam os módulos que ele precisa.
+
+```js
+var weekDay = require('weekDay');
+var today = require('today');
+console.log(weekDay.name(today.dayNumber()));
+```
+
+A implementação de require acima tem diversos problemas. Primeiro, ela vai carregar e rodar um módulo todas as vezes que este for "require-d" (requisitado), então se diversos módulos têm a mesma dependência, ou uma chamada require é colocada dentro de uma função que vai ser chamada múltiplas vezes, tempo e energia serão desperdiçados. Isso pode ser resolvido armazenando os módulos que já tenham sido carregados em um objeto, e simplesmente retornando o valor existente se eles forem carregados novamente. O segundo problema é que não é possível para um módulo expor diretamente um valor simples. A solução tradicional para isso é fornecer outra variável, module , que é um objeto que tem a propriedade exports Essa propriedade inicialmente aponta para o objeto vazio criado por require, mas pode ser sobrescrita com outro valor para exportar algo a mais.
+
+```js
+function require(name) {
+  if (name in require.cache) return require.cache[name];
+  var code = new Function('exports, module', readFile(name));
+  var exports = {},
+    mod = { exports: exports };
+  code(exports, mod);
+  require.cache[name] = module.exports;
+  return module.exports;
+}
+require.cache = Object.create(null);
+```
+
+Agora temos um sistema de módulo que usa uma simples variável global ( require ) para permitir que módulos encontrem e usem um ao outro sem ter que ir para o escopo global. Este estilo de sistema de módulos é chamado "Módulos CommonJS", após o pseudo-padrão que o implementou pela primeira vez.
+Mais importante, eles tem uma forma muito mais inteligente de ir de um nome de módulo para uma parte de código real, permitindo ambos caminhos relativos e nomes de módulos registrados "globalmente".
+
+---
+
+## 10.10 - CARREGANDO MÓDULOS LENTAMENTE
