@@ -250,3 +250,118 @@ Mais importante, eles tem uma forma muito mais inteligente de ir de um nome de m
 ---
 
 ## 10.10 - CARREGANDO MÓDULOS LENTAMENTE
+
+Ler um arquivo na web é muito mais lento que ler este mesmo arquivo do seu disco rígido. JavaScript no navegador é obrigado a se comportar de tal forma que, enquanto um script esteja rodando, nada mais pode acontecer no site que ele está rodando. Existe maneiras de se trabalhar isso, por exemplo rodando outro programa em seu programa antes, que irá concatenar todas as dependências olhando todas as chamadas _require_, e colocando-as em juntas em um grande arquivo. Outra solução é encapsular os módulos numa função, carregá-los em segundo plano e apenas rodar essas funções quando todas as suas dependências forem carregadas.
+
+```js
+define(['weekDay', 'today'], function (weekDay, today) {
+  console.log(weekDay.name(today.dayNumber()));
+});
+```
+
+A função define é o conceito central nessa abordagem. Ela primeiro recebe um array com nomes de módulos, e então uma função que recebe um argumento para cada dependência. Ela vai carregar as dependências em segundo plano, permitindo que a página continue a trabalhar em quanto está esperando. Uma vez que todas as dependências estejam carregadas, ela vai carregar a função que foi passada, com as interfaces das dependências como argumentos. Os módulos que são carregados dessa forma devem conter uma chamada a define . O valor usado para sua interface é qualquer valor retornado pela função que é o segundo argumento passado nessa chamada.
+
+```js
+define([], function () {
+  var names = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ];
+  return {
+    name: function (number) {
+      return names[number];
+    },
+    number: function (name) {
+      return names.indexOf(name);
+    },
+  };
+});
+```
+
+Para mostrar uma simples implementação de define , vamos supor que também temos uma função _backgroundReadFile_ , que pega o nome do arquivo e uma função, e vai chamar a função com o conteúdo do arquivo assim que este for carregado.
+
+```js
+function define(depNames, moduleFunction) {
+  var deps = [],
+    myMod = define.currentModule;
+  depNames.forEach(function (name) {
+    if (name in define.cache) {
+      var depMod = define.cache[name];
+    } else {
+      var depMod = { exports: null, loaded: false, onLoad: [] };
+      define.cache[name] = depMod;
+      backgroundReadFile(name, function (code) {
+        define.currentModule = depMod;
+        new Function('', code)();
+      });
+    }
+    deps.push(depMod);
+    if (!depMod.loaded) depMod.onLoad.push(runIfDepsLoaded);
+  });
+  function runIfDepsLoaded() {
+    if (
+      !deps.every(function (m) {
+        return m.loaded;
+      })
+    )
+      return;
+    var args = deps.map(function (m) {
+      return m.exports;
+    });
+    var exports = moduleFunction.apply(null, args);
+    if (myMod) {
+      myMod.exports = exports;
+      myMod.loaded = true;
+      myMod.onLoad.every(function (f) {
+        f();
+      });
+    }
+  }
+  runIfDepsLoaded();
+}
+define.cache = Object.create(null);
+```
+
+O maior problema que este código lida é coletar os valores das interfaces das dependências do módulo. Para rastrear os módulos, e seus estados, um objeto é criado para cada módulo que é carregado por define . Este objeto armazena o valor exportado pelo módulo, um booleano indicando se o módulo já foi completamente carregado e um array de funções para ser chamado quando o módulo tiver sido carregado. Uma implementação real do AMD é, novamente, bem mais inteligente em relação a resolução dos nomes e suas URLs, e genericamente mais robusta. O projeto [RequireJS](http://requirejs.org) fornece uma implementação popular deste estilo que carregamento de módulos.
+
+---
+
+## 10.11 - PROJETO DE INTERFACES
+
+A melhor forma de aprender o valor de um bom projeto de interface é usar várias interfaces, algumas boas, algumas horríveis. Experiência vai ensinar a você o que funciona e o que não funciona. Nunca assuma que uma interface dolorosa de se usar é "da forma que ela deve ser". Conserte-a, ou encapsule-a em uma nova interface de forma que funcione melhor para você.
+
+### PREVISIBILIDADE
+
+Quando existe outro módulo ou parte do ambiente padrão JavaScript que faz algo similar ao que você está implementando, é uma boa ideia fazer sua interface se assemelhar a interface existente. Dessa forma, as pessoas que conhecem a interface existente vão se sentir em casa. Outra área que previsibilidade é importante é no comportamento do seu código. Pode ser tentador "empilhar inteligência" com a justificativa que isso torna a interface fácil de ser utilizada. Isso pode tornar o código construído em cima da sua interface um pouco menor, mas isso vai também tornar o código muito mais difícil para as pessoas manterem um modelo mental do comportamento do módulo em suas cabeças.
+
+### "COMPONIBILIDADE"
+
+Em suas interfaces, tente usar as estruturas de dados mais simples que funcionem e crie funções que façam algo simples e claro - sempre que possível, crie funções puras. Não é comum para módulos fornecerem suas prórpias coleções de objetos similares a arrays, com sua própria interface para contar e extrair elementos. Tais objetos não terão os métodos _map_ e _forEach_ , e qualquer função existente que espere um array real não será capaz de trabalhar com estas coleções. Este é um exemplo de componibilidade (composab ility) ruim - o módulo não pode ser facilmente composto com outro código.Outro exemplo seria um módulo verificação ortográfica de texto, que podemos necessitar se quisermos escrever um editor de texto. Se nós definirmos a interface do verificador ortográfico para que possamos passar simples strings e retornar a possível localização do erro, juntamente com um array de correções sugeridas, nós teremos uma interface que pode ser composta com outros sistemas, porque strings e arrays estarão sempre disponíveis.
+
+### INTERFACES EM CAMADAS
+
+Quando projetando uma interface para uma complexa parte de funcionalidade - digo, enviar email - você geralmente se depara com um dilema. Em uma mão, você não quer sobrecarregar o usuário da sua interface com detalhes. Na outra
+mão, você não quer esconder todos os detalhes - quando pessoas precisam fazer coisas complicadas com seu módulo, eles também devem ser capazes. Normalmente a solução é oferecer duas interfaces: uma de "baixo nível" detalhada para situações complexas e uma de "alto nível" simples para uso rotineiro. A segunda pode ser construída de forma simples utilizando as ferramentas fornecidas pela primeira camada.
+
+---
+
+## RESUMO
+
+Módulos fornecem estrutura para programas grandes, separando o código em diferentes arquivos e namespaces.
+Dando a estes módulos interfaces bem definidas os tornam fáceis de se utilizar, reusando-os em contextos
+diferentes, e continuando os usando mesmo quando evoluem.
+
+Mesmo que a linguagem JavaScript não auxilie muito quando se trata de módulos, as flexíveis funções e objetos
+que ela fornece fazem que seja possível definir úteis sistemas de módulo. Escopo de função pode ser utilizado
+como namespace interno para o módulo, e objetos podem ser usados para armazenar blocos de valores
+exportados.
+
+Existem duas abordagens populares para tais módulos. Uma é chamada "Módulos CommonJS", e funciona em
+torno da função require que busca um módulo pelo seu nome e retorna sua interface. A outra abordagem é
+chamada "AMD", e usa a função assíncrona define que recebe um array de nome de módulos e uma função, e
+depois de carregar os módulos, roda a função com suas interfaces e argumentos.
