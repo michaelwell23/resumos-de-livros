@@ -125,3 +125,158 @@ Funcionou! Ele não nos dá informação muito útil quando há falhas e não ar
 ---
 
 ## O AVALIADOR
+
+O que podemos fazer com uma árvore de sintaxe de um programa, é executá-lo. É isso que o avaliador faz. Você entrega uma árvore de sintaxe de um objeto _environment_ que associa nomes com valores, e ele irá avalaiar a expressão que a árvore representa e retornar o valor que esta produz.
+
+```js
+function evaluate(expr, env) {
+  switch (expr.type) {
+    case 'value':
+      return expr.value;
+    case 'word':
+      if (expr.name in env) return env[expr.name];
+      else throw new ReferenceError('Undefined variable: ' + expr.name);
+    case 'apply':
+      if (expr.operator.type == 'word' && expr.operator.name in specialForms)
+        return specialForms[expr.operator.name](expr.args, env);
+      var op = evaluate(expr.operator, env);
+      if (typeof op != 'function')
+        throw new TypeError('Applying a non-function.');
+      return op.apply(
+        null,
+        expr.args.map(function (arg) {
+          return evaluate(arg, env);
+        })
+      );
+  }
+}
+var specialForms = Object.create(null);
+```
+
+O avaliador possui código para cada um dos tipos de expressão. A expressão de valor literal simplesmenete produz o seu valor. Para uma variável é preciso verficar se ele está realmente definido no _environment atua_, e estiver, busca o valor da variável. Iremos usar os valores de uma função simples em JavaScript para representar os valores de função em Egg. A estrutura recursiva de um avaliador se assemelha à estrutura de um analisador. Ambos espelham a estrutura da própria linguagem. Além, disso, seria possível integrar o analisador com o avaliador e avaliar durante a análise mais dividindo-se desta forma torna o programa mais legível. Isso é tudo que precisamos para interpretar Egg.É simples assim. Mas sem definir algumas formas especiais e adicionar alguns valores úteis para o environment
+você não pode fazer nada com essa linguagem ainda.
+
+---
+
+## FORMAS ESPECIAIS
+
+O objecto _specialForms_ é utilziado para definir sintaxe especial em Egg. Ele associa palavras com funções que avaliam essas formas especiais.
+
+```js
+specialForms['if'] = function (args, env) {
+  if (args.length != 3) throw new SyntaxError('Bad number of args to if');
+  if (evaluate(args[0], env) !== false) return evaluate(args[1], env);
+  else return evaluate(args[2], env);
+};
+```
+
+**Egg** - _if_ espera exatamente três argumentos. Ele avalia o primeiro, se o resultado for falso ele irá avaliar o segundo. Caso contrário a terceira fica avaliada. Isso é uma expressão e não uma indicação que produz um valor, ou seja, o resultado do segundo ou terceiro argumento. **Egg** diferente de JavaScript na forma de como ele lida com o valor de uma condição com o valor de if. Ele não vai tratar as coisas como zero ou cadeia vazia como falsa, somente valores precisos são falsos. A razão especial é que nós precisamos representar o _if_ como uma forma especial, ao invés de uma função regular onde todos os argumentos para funções são avaliados antes que a função seja chamada, ao passo que se deve avaliar apenas seu segundo ou terceito argumento, dependendo do valor do primeiro.
+
+A forma do _while_ é semelhante:
+
+```js
+specialForms['while'] = function (args, env) {
+  if (args.length != 2) throw new SyntaxError('Bad number of args to while');
+  while (evaluate(args[0], env) !== false) evaluate(args[1], env);
+  // Since undefined does not exist in Egg, we return false,
+  // for lack of a meaningful result.
+  return false;
+};
+```
+
+Outro bloco na construção básico é fazer que executa todos os seus argumentos de cima para baixo. O seu valor
+é o valor produzido pelo último argumento.
+
+```js
+specialForms['do'] = function (args, env) {
+  var value = false;
+  args.forEach(function (arg) {
+    value = evaluate(arg, env);
+  });
+  return value;
+};
+```
+
+Para ser capaz de criar variáveis e dar-lhes novos valores, vamos criar um _specialForms_ chamado _define_. Ele
+espera uma palavra como primeiro argumento de uma expressão que produz o valor a ser atribuído a essa palavra que sera seu segundo argumento. Vamos definir sendo tudo uma expressão e ela deve retornar um valor.
+
+```js
+specialForms['define'] = function (args, env) {
+  if (args.length != 2 || args[0].type != 'word')
+    throw new SyntaxError('Bad use of define');
+  var value = evaluate(args[1], env);
+  env[args[0].name] = value;
+  return value;
+};
+```
+
+---
+
+## AMBIENTE
+
+Para ser capaz de usar _if_ que acabamos de definir teremos de ter acesso aos valores _booleanos_ . Uma vez que existem apenas dois valores, nós não precisamos de sintaxe especial para eles. Nós vaos ligar duas variáveis em _topEnv_ para valores verdadeiros e falsos e dai então usá-los.
+
+```js
+var topEnv = Object.create(null);
+
+topEnv['true'] = true;
+topEnv['false'] = false;
+```
+
+Agora podemos avaliar uma expressão simples que nega um valor booleano.
+
+```js
+var prog = parse('if(true, false, true)');
+console.log(evaluate(prog, topEnv)); // → false
+```
+
+Para suprir os operadores aritméticos e comparações básicas vamos adicionar alguns valores para função de _environment_.
+
+```js
+['+', '-', '*', '/', '==', '<', '>'].forEach(function (op) {
+  topEnv[op] = new Function('a, b', 'return a ' + op + ' b;');
+});
+```
+
+É muito útil fazer uma maneira para que valores de saída sejam vizualidos, por isso vamos colocar alguns
+console.log na função e executa-lo para imprimir.
+
+```js
+topEnv['print'] = function (value) {
+  console.log(value);
+  return value;
+};
+```
+
+Isso ja nos proporcionou uma ferramenta elementar e suficiente para escrever programas simples. A seguinte
+função run fornece uma maneira conveniente de escrever e executá-los. Ele cria um analisa e avalia as String
+enviroment em tempo real, que damos como um programa único.
+
+```js
+function run() {
+  var env = Object.create(topEnv);
+  var program = Array.prototype.slice.call(arguments, 0).join('\n');
+  return evaluate(parse(program), env);
+}
+```
+
+O uso de _Array.prototype.slice.call_ é um truque para transformar um objeto de matriz como argumentos em uma
+matriz real; de modo que podemos chamar e juntar cada pedaço.
+
+```js
+run(
+  'do(define(total, 0),',
+  '   define(count, 1),',
+  '   while(<(count, 11),',
+  '     do(define(total, +(total, count)),',
+  '        define(count, +(count, 1)))),',
+  '   print(total))'
+);
+// → 55
+```
+
+Este é o programa que já vimos várias vezes antes que calcula a soma dos números de 1 a 10 escrito em Egg.
+
+---
+
+## FUNÇÕES
