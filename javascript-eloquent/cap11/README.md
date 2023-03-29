@@ -280,3 +280,69 @@ Este é o programa que já vimos várias vezes antes que calcula a soma dos núm
 ---
 
 ## FUNÇÕES
+
+Não é difícil para adicionar _fun_ a nossa lingaugem, que vai tratar todos os argumentos antes do último como nomes de argumentos da função e seu último argumento como corpo da função.
+
+```js
+specialForms['fun'] = function (args, env) {
+  if (!args.length) throw new SyntaxError('Functions need a body');
+  function name(expr) {
+    if (expr.type != 'word') throw new SyntaxError('Arg names must be words');
+    return expr.name;
+  }
+  var argNames = args.slice(0, args.length - 1).map(name);
+  var body = args[args.length - 1];
+  return function () {
+    if (arguments.length != argNames.length)
+      throw new TypeError('Wrong number of arguments');
+    var localEnv = Object.create(env);
+    for (var i = 0; i < arguments.length; i++)
+      localEnv[argNames[i]] = arguments[i];
+    return evaluate(body, localEnv);
+  };
+};
+```
+
+Funções em Egg tem seu próprio _enviroment_ local assim como JavaScript. Usamos Object.create para fazer um novo objeto que tem acesso às variáveus do ambiente externo mas que também pode conter novas variáveis sem modificar esse escopo externo. A função criada pela _especialForm fun_ cria em ambito local e adiciona as variáveis de argumento para isso, avaliando o corpo da função neste ambiente e retorna o resultado.
+
+```js
+run('do(define(plusOne, fun(a, +(a, 1))),', ' print(plusOne(10)))'); // → 11
+
+run(
+  'do(define(pow, fun(base, exp,',
+  '  if(==(exp, 0),',
+  '    1,',
+  '   *(base, pow(base, -(exp, 1)))))),',
+  ' print(pow(2, 10)))'
+); // → 1024
+```
+
+---
+
+## COMPILAÇÃO
+
+A compilação é o processo de adicionar mais um passo entre a análise e a execução de um programa; que transforma o programa em algo que possa ser avaliado de forma mais eficiente fazendo o trabalho tanto quanto possível com anteedência. Tradicionalmente, compilação envolve a conversão do programa para código de márquina no formato _raw_ que o processaor de um computador pode executar. Qualquer processo que converte um programa de uma representação diferente pode ser encarado como compilação. Seria possível escrever uma estratégia de avaliação para Egg, aquele que primeiro converte o programa para um programa JavaScript utilziando a nova função para chamar o compilador JavaScript, e em seguida executar o resultado.
+
+---
+
+## CHEATING
+
+E quando se trata de conseguir fazer algo, o cheating é o jeito mais eficaz de fazer tudo sozinho. Embora a linguagem que brincamos neste capítulo não faz nada de melhor que o JavaScript possui, existem situações em que a escrever pequenas línguas ajuda no entendimento verdadeiro do trabalho. Essa língua não possui semelhanças com uma linguagem típica de programação. Se o JavaScript não vêm equipado com expressões regulares você pode escrever seu próprio analisador e avaliador para tal sub linguagem. Ou imagine que você está construindo um dinossauro robótico gigante e precisa programar o seu comportamento. JavaScript pode não ser a forma mais eficaz de fazer isso. Você pode optar por uma linguagem que se parece com isso:
+
+```txt
+behavior walk
+  perform when
+    destination ahead
+  actions
+    move left-foot
+    move right-foot
+
+behavior attack
+  perform when
+    Godzilla in-view
+  actions
+    fire laser-eyes
+    launch arm-rockets
+```
+
+Isto é o que geralmente é chamado de linguagem de domínio específica, uma linguagem adaptada para expressar um estreito conhecimento de um domínio. Essa linguagem pode ser mais expressiva do que uma linguagem de um propósito geral. Isto porque ela é projetada para expressar exatamente as coisas que precisam serem expressadas no seu domínio e nada mais.
