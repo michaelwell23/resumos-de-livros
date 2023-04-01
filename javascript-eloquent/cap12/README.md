@@ -25,3 +25,71 @@ A primeira parte nos diz que esta URL usa o protocolo HTTP. Então vem a parte q
 ---
 
 ## 12.3 - HTML
+
+HTML, que sginifica Hypertext Markup Language (LInguagem de marcação de hipertexto), é o formato de documento usado para as páginas web. UM documento HTML contém texto, bem como tags que fornecem estrutura para esse texto, descreveno como links, parágrafos e cabeçalhos.
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My home page</title>
+  </head>
+  <body>
+    <h1>My home page</h1>
+    <p>Hello, I am Marijn and this is my home page.</p>
+    <p>
+      I also wrote a book! Read it
+      <a href="http://eloquentjavascript.net">here</a>.
+    </p>
+  </body>
+</html>
+```
+
+As tags, definidas entre os sinais de menor e maior que `(< e >)`, fornecem informações sobre a estrutura do documento. O conteúdo restante é apenas texto puro. O documento começa com `<!DOCTYPE html>`, que diz ao navegador para interpretá-lo como HTML moderno. Documentos HTML possuem um _head_ (cabeça), e um _body_ (corpo). O head contém informações osbre o documento, o _body_ contém o documento em si.
+
+Tags aparecem em diversas forma. Um elemento, como o `<body>`, um parágrafo ou um link, começa com uma tag de abertura como em `<p>` e termina com uma tag de fechamento como em `</p>`. Algumas tags de abertura como aquela para links (`<a>`), contém informações na forma de pares _nome="valor"_. Estes são chamados de atributos. No caso da tag link é indicado atributo `href=""`, que significa referência de hipertexto. Alguns tipos de tags não englobam conteúdo e assim necessitam de uma tag de fechamento. Um exemplo seria `<img src="http://example.com/image.jpg">`, que irá mostrar a imagem encontrada na URL informada no atributo _src_.
+
+O HTML é interpretado de uma forma notavel tolerante a erros. Se uma tag é omitida, o navegador ira inseri-la. A forma com que isso é feito foi pradonizada, você confiar em todos os navegadore modernos para realizar tal tarefa.
+
+```html
+<!doctype html>
+<title>My home page</title>
+<h1>My home page</h1>
+<p>Hello, I am Marijn and this is my home page.
+<p>I also wrote a book! Read it
+<a href=http://eloquentjavascript.net>here</a>.
+```
+
+---
+
+## 12.4 - HTML E JAVASCRIPT
+
+A tag mais importante do HTML é `<script>`. Essa tag nos permite incluir trechos de JavaScript em um documento.
+
+```html
+<h1>Testing alert</h1>
+<script>
+  alert('hello!');
+</script>
+```
+
+Esse script executando assim que a tag `<script>` for encontrada enquanto o navegador interpreta o HTML. Incluir programas grande diretamente no documento HTML é impraticável. A tag script pode receber um atributo src a fim de buscar um arquivo de script a partir de uma URL.
+
+```html
+<h1>Testing alert</h1>
+<script src="hello.js"></script>
+```
+
+Quando uma página HTML referencia outra URLs como parte de si, os navegadores irão buscá-los imediatamente e incluí-los na página. Uma tag de script deve sempre ser fechada com a tag /script, mesmo quando fizer referência para um arquivo externo e não contenha nenhum código.
+
+Alguns atributos podem conter um programa JavaScript. A tag button possui um atributo _onclick_, cujo conteúdo será executado sempre que o botão for clicado.
+
+```html
+<button onclick="alert('Boom!');">DO NOT PRESS</button>
+```
+
+Pareceba que é preciso utilizar aspas simples para a string do atributo porque aspas duplas já estão sendo usadas para envolver o valor do atributo.
+
+---
+
+## 12.5 - NA CAIXA DE AREIA
