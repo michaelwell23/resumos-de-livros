@@ -93,3 +93,15 @@ Pareceba que é preciso utilizar aspas simples para a string do atributo porque 
 ---
 
 ## 12.5 - NA CAIXA DE AREIA
+
+a atração da Web é que você pode navegar sem necessariamente confiar nas páginas que visita. Esse é o motivo pelo qual os navegadores limitam severamente as funções que um programa JavaScript pode fazer: eles não podem bisbilhotar os arquivos do seu computador ou modificar qualquer coisa que não esteja relacionada a página em que foi incorporado. O isolamento de um ambiente de programação dessa maneira é chamado de sandb oxing, a ideia é que o programa é inofensivo "brincando" em uma "caixa de areia". Mas você deve imaginar esse tipo específico de caixas de areia como tendo sobre si uma gaiola de grossas barras de aço, o que as torna um pouco diferentes das caixas de areia típicas de playgrounds.
+
+A parte difícil do sandb oxing é permitir que os programas tenham espaço suficiente para serem úteis e ao mesmo tempo impedi-los de fazer qualquer coisa perigosa. Várias funcionalidades úteis, como se comunicar com outros servidores ou ler o conteúdo da área de transferência, podem ser usadas para tarefas problemáticas ou invasivas à privacidade.
+
+De vez em quando, alguém aparece com uma nova forma de burlar as limitações de um navegador e fazer algo prejudicial, variando de vazamentos de alguma pequena informação pessoal até assumir o controle total da máquina onde o navegador está sendo executado. Os desenvolvedores de navegadores respondem "tapando o buraco", e tudo está bem novamente —até que o próximo problema seja descoberto e divulgado.
+
+---
+
+## 12.6 - COMPATIBILIDADE E A GUERRA DOS NAVEGADORES
+
+Frequentemente chamada de "guerra dos navegadores". Os desenvolvedores web não tiveram uma web unificada, mas sim duas ou três plataformas incompatíveis. Para piorar as coisas, os navegadores usados por volta de 2003 eram cheios de b ugs, e, é claro que esses b ugs foram diferentes para cada navegador. A vida era difícil para aqueles que escreviam páginas web. O Mozilla Firefox, uma ramificação sem fins lucrativos do Netscape, desafiou a hegemonia do Internet Explorer no final dos anos 2000. A Microsoft não estava particularmente interessada em se manter competitiva nessa época, o Firefox levou uma parcela do mercado para longe do IE. Pela mesma época, a Google introduziu seu navegador Chrome, e o navegador Safari da Apple ganhou popularidade, levando-nos a uma situação onde existiam quatro grandes "competidores" nesse seguimento ao invés de um. Os novos navegadores possuíam uma postura mais séria sobre a questão dos padrões e de melhores práticas de engenharia, diminuindo as incompatibilidades e bugs. A Microsoft, vendo sua cota de mercado se esfarelar, começou a adotar essas atitudes.
