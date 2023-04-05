@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <html>
+    <head>
+      <title>Minha home page</title>
+    </head>
+    <body>
+      <h1>Minha home page</h1>
+      <p>Olá, eu sou Marijn e essa é minha home page.</p>
+      <p>
+        Eu também escrevi um livro! leia-o
+        <a href="http://eloquentjavascript.net">aqui</a>.
+      </p>
+
+      <p>Minha avestruz Gertrude:</p>
+      <p><img id="gertrude" src="img/ostrich.png" /></p>
+
+      <script>
+        var link = document.body.getElementsByTagName('a')[0];
+        console.log(link.href);
+
+        var ostrich = document.getElementById('gertrude');
+        console.log(ostrich.src);
+      </script>
+    </body>
+  </html>
+</html>
