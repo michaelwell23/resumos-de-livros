@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <html>
+    <head>
+      <title>Minha home page</title>
+    </head>
+    <body>
+      <p>
+        The <img src="img/cat.png" alt="Cat" /> in the
+        <img src="img/hat.png" alt="Hat" />.
+      </p>
+      <p><button onclick="replaceImages()">Substituir</button></p>
+
+      <blockquote id="quote">
+        Nenhum livro pode ser terminado. Enquanto trabalhos nele nós aprendemos
+        apenas o suficiente para considerá-lo imaturo no momento em que damos as
+        costas a ele.
+      </blockquote>
+
+      <script>
+        function replaceImages() {
+          var images = document.body.getElementsByTagName('img');
+          for (var i = images.length - 1; i >= 0; i--) {
+            var image = images[i];
+            if (image.alt) {
+              var text = document.createTextNode(image.alt);
+              image.parentNode.replaceChild(text, image);
+            }
+          }
+        }
+
+        var arrayish = { 0: 'um', 1: 'dois', length: 2 };
+        var real = Array.prototype.slice.call(arrayish, 0);
+        real.forEach(function (elt) {
+          console.log(elt);
+        });
+        // → um
+        // dois;
+
+        function elt(type) {
+          var node = document.createElement(type);
+          for (var i = 1; i < arguments.length; i++) {
+            var child = arguments[i];
+            if (typeof child == 'string')
+              child = document.createTextNode(child);
+            node.appendChild(child);
+          }
+          return node;
+        }
+        document
+          .getElementById('quote')
+          .appendChild(
+            elt(
+              'footer',
+              '—',
+              elt('strong', 'Karl Popper'),
+              ', prefácio da segunda edição de ',
+              elt('em', 'A Sociedade Aberta e Seus Inimigos'),
+              ', 1950'
+            )
+          );
+      </script>
+    </body>
+  </html>
+</html>

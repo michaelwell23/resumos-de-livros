@@ -123,3 +123,145 @@ Quase tudo na estrutura de dados DOM pode ser alterado. O método _removeChild_ 
 Todas as operações que inserem um nó em algum lugar irão, como efeito colateral, fazer com que ele seja removido de sua posição atual (caso ele tenha uma). O método _replaceChild_ é usado para substituir um nó filho por outro. Ele aceita como argumentos dois nós: um novo nó e o nó à ser substituído. O nó substituído deverá ser um filho do elemento com o qual o método é chamado. Note que ambos _replaceChild_ e _insertBefore_ esperam o seu novo nó como primeiro argumento.
 
 ---
+
+## 13.7 - CRIANDO NÓS
+
+NO exemplo seguinte, queremo escrever um script que substitua todas as imagens (tags img) no documento pelo texto que elas possuem no seu atributo alt, o qual especifica uma alternativa textual para representação da imagem. Isso envolve não só remover as imagens, mas adicionar um novo nó de texto para substituí-las. Para isso, será usado o método _document.createTextNode_.
+
+```html
+<p>
+  The <img src="img/cat.png" alt="Cat" /> in the
+  <img src="img/hat.png" alt="Hat" />.
+</p>
+<p><button onclick="replaceImages()">Substituir</button></p>
+
+<script>
+  function replaceImages() {
+    var images = document.body.getElementsByTagName('img');
+    for (var i = images.length - 1; i >= 0; i--) {
+      var image = images[i];
+      if (image.alt) {
+        var text = document.createTextNode(image.alt);
+        image.parentNode.replaceChild(text, image);
+      }
+    }
+  }
+</script>
+```
+
+Se preferir um conjunto sólido de nós, em oposição a um conjunto em tempo real, você pode converte o conjunto para um array de verdade, chamando o método _slice_.
+
+```js
+var arrayish = { 0: 'um', 1: 'dois', length: 2 };
+var real = Array.prototype.slice.call(arrayish, 0);
+real.forEach(function (elt) {
+  console.log(elt);
+}); // → um // dois;
+```
+
+Para criar nós comuns de elementos (tipo 1), você pode usar o método _document.createElement_. Esse método pega o nome de uma tag e retorna um novo nó vazio do tipo fornecido. O exemplo à seguir define uma função _elt_, a qual cria um nó de elemeto e trata dos algumentos como filhos para aquele nó. Essa função é depois usada para adicionar uma simples atribuição para uma citação.
+
+```html
+<blockquote id="quote">
+  Nenhum livro pode ser terminado. Enquanto trabalhos nele nós aprendemos apenas
+  o suficiente para considerá-lo imaturo no momento em que damos as costas a
+  ele.
+</blockquote>
+<script>
+  function elt(type) {
+    var node = document.createElement(type);
+    for (var i = 1; i < arguments.length; i++) {
+      var child = arguments[i];
+      if (typeof child == 'string') child = document.createTextNode(child);
+      node.appendChild(child);
+    }
+    return node;
+  }
+  document
+    .getElementById('quote')
+    .appendChild(
+      elt(
+        'footer',
+        '—',
+        elt('strong', 'Karl Popper'),
+        ', prefácio da segunda edição de ',
+        elt('em', 'A Sociedade Aberta e Seus Inimigos'),
+        ', 1950'
+      )
+    );
+</script>
+```
+
+---
+
+## 13.8 - ATRIBUTOS
+
+Alguns atributos de elementos, como `href` para links, pode ser acessados através de uma proprieadade com o mesmo nome do objeto DOM do elemento. Esse é o caso para um conjunto limitado de atributos padrões comumente usados. HTML permite que você defina qualquer atributo que você queira em nós. Isso pode ser útil, pois pode permitir que você guarde informações extras em um documento. Se você quiser fazer seus próprios nomes de atributos, porém, esses atributos não estarão presentes como uma propriedade no nó do elemento. Ao invés disso, você terá que usar os métodos _getAttribute_ e _setAttribute_ para trabalhar com eles.
+
+```html
+<p data-classified="secret">O código de lançamento é 00000000.</p>
+<p data-classified="unclassified">Eu tenho dois pés.</p>
+<script>
+  var paras = document.body.getElementsByTagName('p');
+  Array.prototype.forEach.call(paras, function (para) {
+    if (para.getAttribute('data-classified') == 'secret')
+      para.parentNode.removeChild(para);
+  });
+</script>
+```
+
+Eu recomendo prefixar os nomes dos atributos inventados com data-, para certificar-se que eles não irão entrar em conflito com outros atributos. Como um simples exemplo, nós iremos escrever um "destacador de sintaxe" que procura por tags `<pre>` com um atributo _data-linguage_ e tenta destacar as palavras chaves para aquela linguagem.
+
+```js
+function highlightCode(node, keywords) {
+  var text = node.textContent;
+  node.textContent = ''; // Limpa o nó.
+  var match,
+    pos = 0;
+  while ((match = keywords.exec(text))) {
+    var before = text.slice(pos, match.index);
+    node.appendChild(document.createTextNode(before));
+    var strong = document.createElement('strong');
+    strong.appendChild(document.createTextNode(match[0]));
+    node.appendChild(strong);
+    pos = keywords.lastIndex;
+  }
+  var after = text.slice(pos);
+  node.appendChild(document.createTextNode(after));
+}
+```
+
+Nós podemos sublinhar automaticamente todos os códigos de programas na página fazendo um looping entre todos os elementos `<pre>` que possuem o atributo _data-language_ e então chamando a função highlightCode em cada um e depois aplicando uma expressão regular adequada para a linguagem que se quer destacar.
+
+```js
+var languages = {
+  javascript: /\b(function|return|var)\b/g /* … etc */,
+};
+function highlightAllCode() {
+  var pres = document.body.getElementsByTagName('pre');
+  for (var i = 0; i < pres.length; i++) {
+    var pre = pres[i];
+    var lang = pre.getAttribute('data-language');
+    if (languages.hasOwnProperty(lang)) highlightCode(pre, languages[lang]);
+  }
+}
+```
+
+Por exemplo:
+
+```html
+<p>Aqui está, a função identidade:</p>
+<pre data-language="javascript">
+function id(x) { return x; }
+</pre>
+<script>
+  highlightAllCode();
+</script>
+```
+
+Existe um atributo comumente usado, _class_, o qual é uma palavra reservada na linguagem JavaScript. Por razões
+históricas a propriedade usada para acessar esse atributo é chamada de _className_. VocEê também pode acessá-la pelo seu nome real, "class", usando os métodos _getAttribute_ e _setAttribute_.
+
+---
+
+## 13.9 - LAYOUT
