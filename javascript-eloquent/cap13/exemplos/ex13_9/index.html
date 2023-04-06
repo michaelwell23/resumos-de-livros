@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <p style="border: 3px solid red">Estou encaixotado em</p>
+    <p><span id="one"></span></p>
+    <p><span id="two"></span></p>
+
+    <script>
+      var para = document.body.getElementsByTagName('p')[0];
+      console.log('clientHeight:', para.clientHeight);
+      console.log('offsetHeight:', para.offsetHeight);
+
+      function time(name, action) {
+        var start = Date.now(); // Tempo atual milissegundos
+        action();
+        console.log(name, 'took', Date.now() - start, 'ms');
+      }
+      time('naive', function () {
+        var target = document.getElementById('one');
+        while (target.offsetWidth < 2000)
+          target.appendChild(document.createTextNode('X'));
+      });
+      // → naive levou 32 ms
+      time('clever', function () {
+        var target = document.getElementById('two');
+        target.appendChild(document.createTextNode('XXXXX'));
+        var total = Math.ceil(2000 / (target.offsetWidth / 5));
+        for (var i = 5; i < total; i++)
+          target.appendChild(document.createTextNode('X'));
+      });
+      // → clever levou 1 ms
+    </script>
+  </body>
+</html>

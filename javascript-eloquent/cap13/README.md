@@ -265,3 +265,81 @@ históricas a propriedade usada para acessar esse atributo é chamada de _classN
 ---
 
 ## 13.9 - LAYOUT
+
+Você provavelmente notou que tipos diferentes de elementos são dispostos de maneira diferente. Alguns, como parágrafos ou cabeçalhos, ocupa toda a alargura do documento e são mostrados em linhas separadas. Esses são chamados de elementos de bloco. Outros, como links ou elemento `<strong>`, são mostrados na mesma linha, juntament com o texto que o cerca. Esses elemento são chamados elementos _inline_. O tamanho e posição de um elemento pode ser acessado através de JavaScript. As propriedades _offseWidth_ e _offsetHeigth_ irão fornecer à você o espaço que o elemento ocupa em pixel.
+Eles forncece o espaço dentro do elemento, ignorando a largura da borda.
+
+```html
+<p style="border: 3px solid red">Estou encaixotado em</p>
+
+<script>
+  var para = document.body.getElementsByTagName('p')[0];
+  console.log('clientHeight:', para.clientHeight);
+  console.log('offsetHeight:', para.offsetHeight);
+</script>
+```
+
+A maneira mais efetiva de encontrar a posição precisa de um elemento na tela é o método _getBoundingClientReact_. Ele retorna um objeto com as propriedades top, bottom, left e right, que correspondem às posições dos pixels em relaç~ao ao canto esquerdo da tela. Se você quiser que eles sejam relativos ao documento como um todo, você deverá adicionar a posição de rolagem, encontrada à partir das variáveis globais _pageXOffset_ e _pageYOffset_. Um programad que repetidamente altera entre ler infomrações sobre a organização do DOM e alterá-lo, força muitas reoganizações e consequentemente compromete o desempenho. O código à seguir mostra um exemplo disso. Ele contém dois programads diferentes que constroem uma linha "X" caracteres com 2000 pixels de comprimento e mede quatro tempo cada um leva.
+
+```html
+<p><span id="one"></span></p>
+<p><span id="two"></span></p>
+
+<script>
+  function time(name, action) {
+    var start = Date.now(); // Tempo atual milissegundos
+    action();
+    console.log(name, 'took', Date.now() - start, 'ms');
+  }
+  time('naive', function () {
+    var target = document.getElementById('one');
+    while (target.offsetWidth < 2000)
+      target.appendChild(document.createTextNode('X'));
+  });
+  // → naive levou 32 ms
+  time('clever', function () {
+    var target = document.getElementById('two');
+    target.appendChild(document.createTextNode('XXXXX'));
+    var total = Math.ceil(2000 / (target.offsetWidth / 5));
+    for (var i = 5; i < total; i++)
+      target.appendChild(document.createTextNode('X'));
+  });
+  // → clever levou 1 ms
+</script>
+```
+
+---
+
+## 13.10 - ESTILIZANDO
+
+A meneira que uma tag `img` mostra uma imagem, e a maneira que uma tag `a` faz com que o link seja acessado quando é clicado, estão ligadas ao tipo de elemento. Assim como a cor de texto ou sublinhado, pode ser mudado por nós.
+
+```html
+<p><a href=".">Normal link</a></p>
+<p><a href="." style="color: green">Link verde</a></p>
+```
+
+Um atributo style pode conter um ou mais declarações, as quais são propriedades. Caso existam múltiplas declarações, elas deverão ser separadas por pontos e vírgulas. Existem muitos aspectos que podem ser influenciados através dessa estilização. Por exemplo, a propriedade _display_ controla quando um elemento é mostrado como um bloco ou em linha.
+
+```html
+Esse texto é mostrado <strong>em linha</strong>,
+<strong style="display: block">como um bloco</strong>, e
+<strong style="display: none">não é mostrado</strong>.
+```
+
+Código JavaScript pode manipular diretamente o estilo de um elemento através da propriedade style do nó. Essa propriedade carrega um objeto que possui todas as propriedades possíveis para o atributo style. Os valores dessas propriedades são strings, os quais nós podemos escrever para mudar um aspecto em particular do estilo do elemento.
+
+```html
+<p id="para" style="color: purple">Texto bonito</p>
+<script>
+  var para = document.getElementById('para');
+  console.log(para.style.color);
+  para.style.color = 'magenta';
+</script>
+```
+
+Alguns nomes de propriedades de estilo contêm traços, como _font-family_. Devido ao fato desses nomes de propriedades serem estranhos para serem trabalhados em JavaScript, os nomes de propriedades no objeto style, nestes casos, têm seus traços removidos e a letra após eles é tornada maiúscula (style.fontFamily).
+
+---
+
+## 13.11 - ESTILO EM CASCATA
