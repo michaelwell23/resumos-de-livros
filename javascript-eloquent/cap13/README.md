@@ -343,3 +343,103 @@ Alguns nomes de propriedades de estilo contêm traços, como _font-family_. Devi
 ---
 
 ## 13.11 - ESTILO EM CASCATA
+
+O sistema de estilo para HTML é chamado de CSS, que é uma abreviação para Cascading Style Sheets (Folha de Estilo em Cascata). Uma folha de estilo é um conjunto de regras de como estilizar os elementos do documento. Ela pode ser fornecida dentro de uma tag `<style>`.
+
+```html
+<style>
+  strong {
+    font-style: italic;
+    color: grey;
+  }
+</style>
+<p>Agora <strong>textos com tag strong</strong> são itálicos e cinza.</p>
+```
+
+A palavra cascata no nome refere-seao fato de que múltplas regras são combinadas para produzier o estilo final de um elemento, aplicando-se em "cascata". Quando múltiplas regras definem um valor para a mesma propriedade, a regra lida mais recentemente tem uma nível preferência maior e vence. É possivel selecionar outras coisas além de nomes de tags em regras CSS. Uma regra para `.abc` aplica-se para todos os elementos com "abc" no atributo `class`. Uma regra para `#xyz`aplica-se para o elemento com um atributo `id` de "xyz".
+
+```css
+.subtle {
+  color: grey;
+  font-size: 80%;
+}
+#header {
+  background: blue;
+  color: white;
+} /* Elementos p, com classes a e b, e id main */
+p.a.b#main {
+  margin-bottom: 20px;
+}
+```
+
+A regra de preferência favorece a regra mais recente definida é válida somente quando as regras possuem a mesma especificidade. A especificidade de uma regra é uma medida de o quão precisamente ela descreve os elementos que seleciona, sendo determinada por um número e um tipo de aspecto do elemento que requer. Por exemplo, p.a é mais específico que apenas um p ou apenas um .a, então uma regra composta como essa teria preferência. A notação `p > a {...}`
+aplica os estilos passados para todas as tags `<a>` que são filhos diretos de tags `<p>`. DO mesmo modo, `p a{...}` aplica-se à todas as tags `<a>` dentro de tags `<p>`, sejam elas filhos diretos ou indiretos.
+
+---
+
+## 13.12 - SELETORES DE BUSCA
+
+A razão principal pala qual eu introduzi a sintaxe de seletores é que nós podemos usar essa mesma mini linguagem para definir uma maneira eficaz de encontrar elementos do DOM. O método `querySelectorAll`, que é definido em tanto no objetivo document quando nos nós de elementos, leva apenas uma string seletora e retorna um objeto parecendo um array, contendo todos os elementos que encontra.
+
+```html
+<p>Se você sair por aí caçando <span class="animal">coelhos</span></p>
+<p>E você souber que vai cair</p>
+<p>
+  Diga à eles que
+  <span class="character"
+    >enquanto fumava narguilé, <span class="animal">uma lagarta</span></span
+  >
+</p>
+<p>Lhe deu a ordem</p>
+<script>
+  function count(selector) {
+    return document.querySelectorAll(selector).length;
+  }
+  console.log(count('p'));
+  // Todos os elementos <p>
+  // → 4
+  console.log(count('.animal'));
+  // Classe animal
+  // → 2
+  console.log(count('p .animal'));
+  // Animal dentro de <p>
+  // → 2
+  console.log(count('p > .animal')); // Filhos diretos de <p>
+  // → 1
+</script>
+```
+
+Diferente do método como `getElementsByTagName`, o objeto retornado pelo _querySelectorAll_ não será atualizado em tempo real. Ele não irá mudar quando você mudar o documento. O método `querySelector` é útil para quando você quisr um único e específico elemento. Ele retorna apenas o primeiro elemento coincidente com a busca ou null se nenhum elemento for encontrado.
+
+---
+
+## 13.13 - POSICIONAMENTO E ANIMANDO
+
+A propriedade de estilo _position_ influencia o layout de uma maneira muito poderosa. Por padrão, essa propriedade tem o valor _static_, significando que o elemento fica em seu lugar "absoluto", estático. Quando essa propriedade é definida como _relative_, o elemento ainda ocupa espaço no documento, mas agora as proprieades _top_ e _left_ podem ser usadas para movê-lo em relação ao seu lugar original. Quando _position_ é definida como absolute o elemento é removido do fluxo normal do documento e suas propriedades top e _left_ podem ser usadas para posicioná-lo de maneira absoluta em relação ao canto superior esquerdo do elemento fechado mais próximo cuja propriedade _position_ não é estática. Se não houver tal elemento, ele é posicionado em relação ao documento. Nós podemos usar essa téncnica para criar uma animação.
+
+```html
+<p style="text-align: center">
+  <img src="img/cat.png" style="position: relative" />
+</p>
+<script>
+  var cat = document.querySelector('img');
+  var angle = 0,
+    lastTime = null;
+  function animate(time) {
+    if (lastTime != null) angle += (time - lastTime) * 0.001;
+    lastTime = time;
+    cat.style.top = Math.sin(angle) * 20 + 'px';
+    cat.style.left = Math.cos(angle) * 200 + 'px';
+    requestAnimationFrame(animate);
+  }
+  requestAnimationFrame(animate);
+</script>
+```
+
+---
+
+## RESUMO
+
+Programas JavaScript podem inspecionar e interferir com o documento atual cujo navegador está mostrando através de uma estrutura de dados chamada DOM. Essa estrutura representa o modelo do documento feito pelo navegador e um programa JavaScript pode modificá-la para mudar o documento que está sendo mostrado. O `DOM` é organizado como uma árvore, na qual elementos são organizados hierarquicamente de acordo com a estrutura do documento. Os objetos representando elementos possuem propriedades como `childNodes` e `parentNode` , que podem ser usadas para navegar pela árvore.
+
+A maneira com que um documento é mostrada pode ser influenciada através da estilização, tanto anexando estilos diretamente à um nó ou definindo regras que aplicam-se à certos nós. Existem muitas propriedades de estilo diferentes, assim como através de sua propriedade `color` ou `display`. JavaScript pode manipular o estilo de um elemento diretamente `style`

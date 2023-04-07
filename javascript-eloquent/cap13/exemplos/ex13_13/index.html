@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <style>
+    body {
+      background-color: #87ceeb;
+    }
+  </style>
+
+  <body>
+    <p style="text-align: center">
+      <img
+        src="https://images.vexels.com/media/users/3/154846/isolated/preview/30bd73068f637f7dd3135cfe15ad524c-previsao-de-nuvens-de-ilustracao-de-nuvens.png"
+        style="position: relative"
+      />
+    </p>
+
+    <script>
+      var cat = document.querySelector('img');
+      var angle = 0,
+        lastTime = null;
+      function animate(time) {
+        if (lastTime != null) angle += (time - lastTime) * 0.001;
+        lastTime = time;
+        cat.style.top = Math.sin(angle) * 20 + 'px';
+        cat.style.left = Math.cos(angle) * 200 + 'px';
+        requestAnimationFrame(animate);
+      }
+      requestAnimationFrame(animate);
+    </script>
+  </body>
+</html>

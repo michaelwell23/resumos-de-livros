@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <p>Se você sair por aí caçando <span class="animal">coelhos</span></p>
+    <p>E você souber que vai cair</p>
+    <p>
+      Diga à eles que
+      <span class="character"
+        >enquanto fumava narguilé, <span class="animal">uma lagarta</span></span
+      >
+    </p>
+    <p>Lhe deu a ordem</p>
+
+    <script>
+      function count(selector) {
+        return document.querySelectorAll(selector).length;
+      }
+      console.log(count('p'));
+      // Todos os elementos <p>
+      // → 4
+      console.log(count('.animal'));
+      // Classe animal
+      // → 2
+      console.log(count('p .animal'));
+      // Animal dentro de <p>
+      // → 2
+      console.log(count('p > .animal')); // Filhos diretos de <p>
+      // → 1
+    </script>
+  </body>
+</html>
