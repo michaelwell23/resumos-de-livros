@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        height: 200px;
+        background: beige;
+      }
+      .dot {
+        height: 8px;
+        width: 8px;
+        border-radius: 4px; /* rounds corners */
+        background: blue;
+        position: absolute;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      addEventListener('click', function (event) {
+        var dot = document.createElement('div');
+        dot.className = 'dot';
+        dot.style.left = event.pageX - 4 + 'px';
+        dot.style.top = event.pageY - 4 + 'px';
+        document.body.appendChild(dot);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <p>This page turns violet when you hold the V key.</p>
+    <p>Press Ctrl-Space to continue.</p>
+    <p>Focus this page and type something.</p>
+
+    <script>
+      addEventListener('keydown', function (event) {
+        if (event.keyCode == 86) document.body.style.background = 'violet';
+      });
+      addEventListener('keyup', function (event) {
+        if (event.keyCode == 86) document.body.style.background = '';
+      });
+
+      console.log('Violet'.charCodeAt(0)); // → 86
+      console.log('1'.charCodeAt(0)); // → 49
+
+      addEventListener('keydown', function (event) {
+        if (event.keyCode == 32 && event.ctrlKey) console.log('Continuing!');
+      });
+
+      addEventListener('keypress', function (event) {
+        console.log(String.fromCharCode(event.charCode));
+      });
+    </script>
+  </body>
+</html>
