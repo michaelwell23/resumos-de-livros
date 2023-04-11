@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      addEventListener('message', function (event) {
+        postMessage(event.data * event.data);
+      });
+
+      var squareWorker = new Worker('code/squareworker.js');
+      squareWorker.addEventListener('message', function (event) {
+        console.log('The worker responded:', event.data);
+      });
+      squareWorker.postMessage(10);
+      squareWorker.postMessage(24);
+    </script>
+  </body>
+</html>
