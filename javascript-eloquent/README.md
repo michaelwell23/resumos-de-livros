@@ -28,11 +28,11 @@
 | [Capítulo 12](./cap12/) | JavaScript e o Navegador                           |
 | [Capítulo 13](./cap13/) | Documente Object Model                             |
 | [Capítulo 14](./cap14/) | Manipulando Eventos                                |
-|     [Capítulo 15]()     | `Projeto`: PLataforma de Jogo                      |
-|     [Capítulo 16]()     | Desenhando no Canvas                               |
-|     [Capítulo 17]()     | HTTP                                               |
-|     [Capítulo 18]()     | Formulários e Campos Formulários                   |
-|     [Capítulo 19]()     | `Projeto`: Um Programa de Pintura                  |
-|     [Capítulo 20]()     | Node.js                                            |
-|     [Capítulo 21]()     | `Projeto`: Website de Comportamento de Habilidades |
-|     [Capítulo 22]()     |                                                    |
+| [Capítulo 15](./cap15/) | `Projeto`: PLataforma de Jogo                      |
+| [Capítulo 16](./cap16/) | Desenhando no Canvas                               |
+| [Capítulo 17](./cap17/) | HTTP                                               |
+| [Capítulo 18](./cap18/) | Formulários e Campos Formulários                   |
+| [Capítulo 19](./cap19/) | `Projeto`: Um Programa de Pintura                  |
+| [Capítulo 20](./cap20/) | Node.js                                            |
+| [Capítulo 21](./cap21/) | `Projeto`: Website de Comportamento de Habilidades |
+| [Capítulo 22](./cap22/) |                                                    |
