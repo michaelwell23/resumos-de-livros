@@ -323,24 +323,80 @@ var arrows = trackKeys(arrowCodes);
 
 function runLevel(level, Display, andThen) {
   var display = new Display(document.body, level);
-  runAnimation(function (step) {
+  var running = 'yes';
+  function handleKey(event) {
+    if (event.keyCode == 27) {
+      if (running == 'no') {
+        running = 'yes';
+        runAnimation(animation);
+      } else if (running == 'pausing') {
+        running = 'yes';
+      } else if (running == 'yes') {
+        running = 'pausing';
+      }
+    }
+  }
+  addEventListener('keydown', handleKey);
+  var arrows = trackKeys(arrowCodes);
+
+  function animation(step) {
+    if (running == 'pausing') {
+      running = 'no';
+      return false;
+    }
+
     level.animate(step, arrows);
     display.drawFrame(step);
     if (level.isFinished()) {
       display.clear();
+      // Here we remove all our event handlers
+      removeEventListener('keydown', handleKey);
+      arrows.unregister(); // (see change to trackKeys below)
       if (andThen) andThen(level.status);
       return false;
     }
-  });
+  }
+  runAnimation(animation);
 }
 
+function trackKeys(codes) {
+  var pressed = Object.create(null);
+  function handler(event) {
+    if (codes.hasOwnProperty(event.keyCode)) {
+      var state = event.type == 'keydown';
+      pressed[codes[event.keyCode]] = state;
+      event.preventDefault();
+    }
+  }
+  addEventListener('keydown', handler);
+  addEventListener('keyup', handler);
+
+  // This is new -- it allows runLevel to clean up its handlers
+  pressed.unregister = function () {
+    removeEventListener('keydown', handler);
+    removeEventListener('keyup', handler);
+  };
+  // End of new code
+  return pressed;
+}
+
+// EXERCICIO 1 - GAME OVER
 function runGame(plans, Display) {
-  function startLevel(n) {
+  function startLevel(n, lives) {
     runLevel(new Level(plans[n]), Display, function (status) {
-      if (status == 'lost') startLevel(n);
-      else if (n < plans.length - 1) startLevel(n + 1);
-      else console.log('You win!');
+      if (status == 'lost') {
+        if (lives > 0) {
+          startLevel(n, lives - 1);
+        } else {
+          console.log('Game over');
+          startLevel(0, 3);
+        }
+      } else if (n < plans.length - 1) {
+        startLevel(n + 1, lives);
+      } else {
+        console.log('You win!');
+      }
     });
   }
-  startLevel(0);
+  startLevel(0, 3);
 }
