@@ -173,3 +173,189 @@ _moveTo_ ou iniciar um novo _path_.
 ---
 
 ## 16.6 - DESENHO DE UM GRÁFICO DE PIZZA
+
+Imagina ter que desenhar um gráfico de pizza dos resultados de uma pesquisa de satisfação de cliente. A variável results contém uma matriz de objetos que representam as respostas desta pesquisa.
+
+```js
+var results = [
+  { name: 'Satisfied', count: 1043, color: 'lightblue' },
+  { name: 'Neutral', count: 563, color: 'lightgreen' },
+  { name: 'Unsatisfied', count: 510, color: 'pink' },
+  { name: 'No comment', count: 175, color: 'silver' },
+];
+```
+
+Para desenhar um gráfico de pizza, temos que traçar um número de fatias, onde cada uma é composta por um arco e um par de linhas para o centro desse arco. Então, podemos calcular o âgulo ocupado por cada arco dividindo um círculo completo pelo número total de respostas, em seguida multiplicamos esse númeor pelo número de pessoas que fizeram determinadas escolhas.
+
+```html
+<canvas width="200" height="200"></canvas>
+<script>
+  var cx = document.querySelector('canvas').getContext('2d');
+  var total = results.reduce(function (sum, choice) {
+    return sum + choice.count;
+  }, 0);
+  // Start at the top
+  var currentAngle = -0.5 * Math.PI;
+  results.forEach(function (result) {
+    var sliceAngle = (result.count / total) * 2 * Math.PI;
+    cx.beginPath();
+    // center=100,100, radius=100
+    // from current angle, clockwise by slice's angle
+    cx.arc(100, 100, 100, currentAngle, currentAngle + sliceAngle);
+    currentAngle += sliceAngle;
+    cx.lineTo(100, 100);
+    cx.fillStyle = result.color;
+    cx.fill();
+  });
+</script>
+```
+
+Mas um gráfico que não nos diz o que significa não é útil. Nós precisamos de uma maneira para desenhar o texto na tela.
+
+---
+
+## 16.7 - TEXTO
+
+Um contexto de desenho em canvas 2D fornece os métodos _filtText_ e _strokeText_. Este último pode ser útil para delinear as letras mas geralmente _fillText_ é o que vai encher o texto com a cor atual de _fillColor_.
+
+```html
+<canvas></canvas>
+<script>
+  var cx = document.querySelector('canvas').getContext('2d');
+  cx.font = '28px Georgia';
+  cx.fillStyle = 'fuchsia';
+  cx.fillText('I can draw text, too!', 10, 50);
+</script>
+```
+
+Você pode espeificar o tamanho, estilo e tipo de letra do texto com a propriedade _font_. Os dois últimos argumentos para _fillText_ (e strokeText) fornecem a posição em que a fonte é desenhado. Por padrão a posição do início da linha indica a base alfabética do texto, que é a linha que as letras ficam não tendo partes perduradas; em letras como j ou p que pode mudar a posição horizontal definindo a propriedade _textAlign_ para _end_ ou _center_ou posicionamento vertical definindo \_textBaseline_ para _top_, _middle_ ou _bottom_.
+
+---
+
+## 16.8 - IMAGENS
+
+O método _drawImag_ nos permite desenhar dados de pixel em canvas. Este dados de pixel pode ter origem a partir de uma tag _img_ ou _canvas_, e nem todos são visíveis no documento atual. O exemplo a seguir cria um elemento _img_ e carrega um arquivo de imagem nele. Mas não é iniciado imediatamente; a elaboração desta imagem ocorre porque o browser ainda não buscou por isso. Para lidar com tal situação registramos um manipulador de eventos("load") para fazer o desenho depois que a imagem for carregada.
+
+```html
+<canvas></canvas>
+<script>
+  var cx = document.querySelector('canvas').getContext('2d');
+  var img = document.createElement('img');
+  img.src = 'img/hat.png';
+  img.addEventListener('load', function () {
+    for (var x = 10; x < 200; x += 30) cx.drawImage(img, x, 10);
+  });
+</script>
+```
+
+Por padrão, _drawImage_ pode receber dois argumento adicionais para ditar largura e altura diferentes. Ele também recebe nove argumentos, que pode ser utilizado para desenhar apenas um fragmento de uma imagem. Do segundo ao quinto argumento indicam o retângulo na imagem de origem que deve ser copiado, do sexto ao nono argumentos indica o retângulo em que deve ser copiado. Isso pode ser usado para embalar várias sprites emum único arquivo de imagem, em seguida desenhar apenas a parte que é necessária. Ao alterar a pose que traçamos, podemos mostrar uma animação que simula o movimento de andar de um personagem. Para animar a imagem em uma tela o método _clearRect_ é util. Assemelha-se a _filterRect_ mas ao invés de colorir o retângulo, torna-se tranparente removendo os pixels previamente desenhados. O código a seguir carrega as imagens, e em seguida define um intervalo para desenhar os quardros seguintes:
+
+```html
+<canvas></canvas>
+<script>
+  var cx = document.querySelector('canvas').getContext('2d');
+  var img = document.createElement('img');
+  img.src = 'img/player.png';
+  var spriteW = 24,
+    spriteH = 30;
+  img.addEventListener('load', function () {
+    var cycle = 0;
+    setInterval(function () {
+      cx.clearRect(0, 0, spriteW, spriteH);
+      cx.drawImage(
+        img,
+        // source rectangle
+        cycle * spriteW,
+        0,
+        spriteW,
+        spriteH,
+        // destination rectangle
+        0,
+        0,
+        spriteW,
+        spriteH
+      );
+      cycle = (cycle + 1) % 8;
+    }, 120);
+  });
+</script>
+```
+
+A variável _cycle_ mapeia nossa posição na animação. A cada quadro ele é incrementado e em seguida cortado de volta para o intervalo de 0 a 7 usando o operador restante. Esta variável é usada para calcular a coordenada x que o sprite tem para a pose atual da imagem.
+
+---
+
+## 16.9 - TRANFORMAÇÕES
+
+Se queremos que um personagem ande para a esquerda, podemos instruir a tela para desenhar a imagem de outra maneira. O método _scale_ fará com que qualquer coisa desenhada depois possa ser escalado. Este método tem dois parâmetros, um para definir uma escala horizontal e um para definir uma escala vertical.
+
+```html
+<canvas></canvas>
+<script>
+  var cx = document.querySelector('canvas').getContext('2d');
+  cx.scale(3, 0.5);
+  cx.beginPath();
+  cx.arc(50, 50, 40, 0, 7);
+  cx.lineWidth = 3;
+  cx.stroke();
+</script>
+```
+
+Para transformar uma imagem em torno não podemos simplesmente adicionar cx.scale(-1,1) antes da chamada _drawImage_ pois irá mover a imagem fora da tela onde não será possível vê-la. As coordenadas dadas a _drawImagem_ podem ser ajustadas para compensar o desenho. Outra solução é ajustar o eixo em torno do qual a escala acontece. Há vários outros métodos além de _scale_ que influencia no sistema de coordenadas para o _canvas_. Para inverter uma imagem em torno da linha vertical em uma determinada posição x podemos fazer o seguinte:
+
+```js
+function flipHorizontally(context, around) {
+  context.translate(around, 0);
+  context.scale(-1, 1);
+  context.translate(-around, 0);
+}
+```
+
+Isto mostra o sistemas de coordenadas antes e após o espelhamento do outro lado da linha central. Agora podemos desenhar um personagem espelhado na posição (100,0) rodando o mundo em torno do centro vertical do personagem.
+
+```html
+<canvas></canvas>
+<script>
+  var cx = document.querySelector('canvas').getContext('2d');
+  var img = document.createElement('img');
+  img.src = 'img/player.png';
+  var spriteW = 24,
+    spriteH = 30;
+  img.addEventListener('load', function () {
+    flipHorizontally(cx, 100 + spriteW / 2);
+    cx.drawImage(img, 0, 0, spriteW, spriteH, 100, 0, spriteW, spriteH);
+  });
+</script>
+```
+
+---
+
+## 16.10 - ARMAZENAR E LIMPANDO TRANFORMAÇÕES
+
+É possível salvar a transformação atual, fazer algum desenho e transformar e em seguida restaurar a velho transformação. Isso geralmente é a coisa certa a fazer para uma função que necessita se transformar temporariamente o sistema de coordenadas. Os salvar e o restaurar nos métodos em contexto canvas 2D realizam um tipo de gerenciamento na transformação. Eles conceitualmente mantém uma pilha de estados de transformação. Quando você chama o salvar o estado atual é colocado na pilha, e quando você chama o restaurar, o estado no topo da pilha é retirado e utilizado a transformação atual do contexto. A função de ramificação no exemplo a seguir ilustra o que você pode fazer com uma função que altera a transformação e em seguida chama outra função que continua a desenhar com a transformação dada no desenho anterior. Esta função desenha uma forma que lembra um desenho de uma árvore com linhas; movendo o sistema de coordenadas do centro para o fim da linha, e chamando ele novamente.
+
+```html
+<canvas width="600" height="300"></canvas>
+<script>
+  var cx = document.querySelector('canvas').getContext('2d');
+  function branch(length, angle, scale) {
+    cx.fillRect(0, 0, 1, length);
+    if (length < 8) return;
+    cx.save();
+    cx.translate(0, length);
+    cx.rotate(-angle);
+    branch(length * scale, angle, scale);
+    cx.rotate(2 * angle);
+    branch(length * scale, angle, scale);
+    cx.restore();
+  }
+  cx.translate(300, 0);
+  branch(60, 0.5, 0.8);
+</script>
+```
+
+Se as chamadas para salvar e restaurar não estivessem lá, a segunda chamada recursiva dos galho acabariam com a mesma posição de rotação criado pela primeira chamada. Não estariam ligados ao ramo atual, mas estaria a direita do ramo desenhado pela primeira chamada. A forma resultante também poderia ser interessante mas não é definitivamente uma árvore.
+
+---
+
+## 16.11 - DEVOLTA PARA O JOGO

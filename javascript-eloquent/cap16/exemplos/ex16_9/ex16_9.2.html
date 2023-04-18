@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas></canvas>
+    <script>
+      var cx = document.querySelector('canvas').getContext('2d');
+      var img = document.createElement('img');
+      img.src = 'img/player.png';
+      var spriteW = 24,
+        spriteH = 30;
+      img.addEventListener('load', function () {
+        flipHorizontally(cx, 100 + spriteW / 2);
+        cx.drawImage(img, 0, 0, spriteW, spriteH, 100, 0, spriteW, spriteH);
+      });
+    </script>
+  </body>
+</html>

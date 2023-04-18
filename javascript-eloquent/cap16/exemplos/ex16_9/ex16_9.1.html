@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas></canvas>
+    <script>
+      var cx = document.querySelector('canvas').getContext('2d');
+      cx.scale(3, 0.5);
+      cx.beginPath();
+      cx.arc(50, 50, 40, 0, 7);
+      cx.lineWidth = 3;
+      cx.stroke();
+
+      function flipHorizontally(context, around) {
+        context.translate(around, 0);
+        context.scale(-1, 1);
+        context.translate(-around, 0);
+      }
+    </script>
+  </body>
+</html>
