@@ -359,3 +359,208 @@ Se as chamadas para salvar e restaurar não estivessem lá, a segunda chamada re
 ---
 
 ## 16.11 - DEVOLTA PARA O JOGO
+
+Podemos definir um tipo de objeto _CanvasDisplay_, suportando a mesma interface que _DOMDisplay_ apartir do capítulo 15, ou seja os métodos _drawFrame_ e _clear_. Este objeto mantém um pouco mais de informação do que DOMDisplay. Ao invés de usar a posição de rolagem do seu elemento DOM, ele controla o seu próprio visor, que nos diz qual parte do nível atualmente que estamos olhando. Ele também rastreia o tempo e usa isso para decidir qual quadro da animação deve ser usado. E finalmente ele mantém uma propriedade _flipPlayer_ de modo que mesmo quando o jogador ainda está de pé ele continua voltada para a direção do último movimento.
+
+```js
+function CanvasDisplay(parent, level) {
+  this.canvas = document.createElement('canvas');
+  this.canvas.width = Math.min(600, level.width * scale);
+  this.canvas.height = Math.min(450, level.height * scale);
+  parent.appendChild(this.canvas);
+  this.cx = this.canvas.getContext('2d');
+  this.level = level;
+  this.animationTime = 0;
+  this.flipPlayer = false;
+  this.viewport = {
+    left: 0,
+    top: 0,
+    width: this.canvas.width / scale,
+    height: this.canvas.height / scale,
+  };
+  this.drawFrame(0);
+}
+CanvasDisplay.prototype.clear = function () {
+  this.canvas.parentNode.removeChild(this.canvas);
+};
+```
+
+A nova função _drawFrame_ será utilizada para controlar o tempo de modo que possa alterar entre quadros de animação com base no tempo atual.
+
+```js
+CanvasDisplay.prototype.drawFrame = function (step) {
+  this.animationTime += step;
+  this.updateViewport();
+  this.clearDisplay();
+  this.drawBackground();
+  this.drawActors();
+};
+```
+
+Diferente do controle de tempo, o método atualiza a janela de exibição para a posição atual do jogador, preenche toda a tela com uma cor de fundo, desenha o fundo e os atores. Como as formas em uma tela são apenas pixels, depois que atrído, não há nenhuma maneira de removê-los. A única maneira de atualizar a eibição de tela é limpar e redesenhar a cena. O método _updateViewport_ é semelhante ao método de scrollPlayerIntoView no DOMDisplay. Ele verifica se o jogador está demasiado perto da borda da tela e move a janela de exibição quando for o caso.
+
+```js
+CanvasDisplay.prototype.updateViewport = function () {
+  var view = this.viewport,
+    margin = view.width / 3;
+  var player = this.level.player;
+  var center = player.pos.plus(player.size.times(0.5));
+  if (center.x < view.left + margin) view.left = Math.max(center.x - margin, 0);
+  else if (center.x > view.left + view.width - margin)
+    view.left = Math.min(
+      center.x + margin - view.width,
+      this.level.width - view.width
+    );
+  if (center.y < view.top + margin) view.top = Math.max(center.y - margin, 0);
+  else if (center.y > view.top + view.height - margin)
+    view.top = Math.min(
+      center.y + margin - view.height,
+      this.level.height - view.height
+    );
+};
+```
+
+As chamadas para _Math.max_ e _Math.min_ garante que a janela de exibição não cabe mostrando espaço fora do nível. Math.mas(x, 0) tem o efeito de assegurar que o número resultante não seja inferior a zero. Ao limpar a tela vamos usar uma cor ligeiramente diferente dependendo se o jogado for ganho(mais claro) ou perdido(mais escura).
+
+```js
+CanvasDisplay.prototype.clearDisplay = function () {
+  if (this.level.status == 'won') this.cx.fillStyle = 'rgb(68, 191, 255)';
+  else if (this.level.status == 'lost') this.cx.fillStyle = 'rgb(44, 136, 214)';
+  else this.cx.fillStyle = 'rgb(52, 166, 251)';
+  this.cx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+};
+```
+
+Para desenhar o plano de fundo, corremos por entre as telhas que são visíveis na janela de exibição atual, usando o mesmo truque usado em _obstacleAt_ no capítulo anterior.
+
+```js
+var otherSprites = document.createElement('img');
+otherSprites.src = 'img/sprites.png';
+CanvasDisplay.prototype.drawBackground = function () {
+  var view = this.viewport;
+  var xStart = Math.floor(view.left);
+  var xEnd = Math.ceil(view.left + view.width);
+  var yStart = Math.floor(view.top);
+  var yEnd = Math.ceil(view.top + view.height);
+  for (var y = yStart; y < yEnd; y++) {
+    for (var x = xStart; x < xEnd; x++) {
+      var tile = this.level.grid[y][x];
+      if (tile == null) continue;
+      var screenX = (x - view.left) * scale;
+      var screenY = (y - view.top) * scale;
+      var tileX = tile == 'lava' ? scale : 0;
+      this.cx.drawImage(
+        otherSprites,
+        tileX,
+        0,
+        scale,
+        scale,
+        screenX,
+        screenY,
+        scale,
+        scale
+      );
+    }
+  }
+};
+```
+
+Azuleijos que não estão vazias são desenhos com drawImage. A imagem _otherSprites_ contém os outros elementos do jogo. Como os azuleijos da parede, a tela de lava, e o sprite para a moeda. O carácter para caminhar que foi utilizado, sera usado para representar o jogador. O código que chama ele
+precisa pegar a posição da sprite com base no movimento atual do jogador. Os primeiros oito sprites contém uma animação curta. Quando o jogador está se movendo ao longo de um chão os ciclos são alternados entre as propriedades de _animationTime_ da tela. Este é medido em segundos, e queremos mudar os quadros 12 vezes por segundo, assim que o tempo é multiplicado por 12. Quando o jogador está parado, vamos traçar a nona Sprite.
+Durante saltos que são reconhecidos pelo fato de que a velocidade vertical não é zero, nós usamos o décimo elemento que esta na sprite mais a direita. Os sprites são ligeiramnete mais largo do que o jogador para garantir algum espaço para os pés e braços em movimento, o método tem de ajustar coordenada x e largura por um determinado montante (playerXOverlap);
+
+```js
+var playerSprites = document.createElement('img');
+playerSprites.src = 'img/player.png';
+var playerXOverlap = 4;
+
+CanvasDisplay.prototype.drawPlayer = function (x, y, width) {
+  var sprite = 8,
+    player = this.level.player;
+  width += playerXOverlap * 2;
+  x -= playerXOverlap;
+  if (player.speed.x != 0) this.flipPlayer = player.speed.x < 0;
+  if (player.speed.y != 0) sprite = 9;
+  else if (player.speed.x != 0)
+    sprite = Math.floor(this.animationTime * 12) % 8;
+  this.cx.save();
+  if (this.flipPlayer) flipHorizontally(this.cx, x + width / 2);
+  this.cx.drawImage(
+    playerSprites,
+    sprite * width,
+    0,
+    width,
+    height,
+    x,
+    y,
+    width,
+    height
+  );
+  this.cx.restore();
+};
+```
+
+O método _drawPlayer_ é chamado por _drawActors_, que é responsável pela elaboração de todos os atores no jogo.
+
+```js
+CanvasDisplay.prototype.drawActors = function () {
+  this.level.actors.forEach(function (actor) {
+    var width = actor.size.x * scale;
+    var height = actor.size.y * scale;
+    var x = (actor.pos.x - this.viewport.left) * scale;
+    var y = (actor.pos.y - this.viewport.top) * scale;
+    if (actor.type == 'player') {
+      this.drawPlayer(x, y, width, height);
+    } else {
+      var tileX = (actor.type == 'coin' ? 2 : 1) * scale;
+      this.cx.drawImage(
+        otherSprites,
+        tileX,
+        0,
+        width,
+        height,
+        x,
+        y,
+        width,
+        height
+      );
+    }
+  }, this);
+};
+```
+
+Ao desenhar algo que não é o jogador, verificamos o seu tipo para encontrar o deslocamento correto na sprite. A telha de lava é encontrado no deslocamento 20 o sprite moeda é encontrada em 40. Nós temos que subtrair a posição da janela de exibição ao computar a posição do ator, (0,0) corresponde ao canto superior esquerdo da janela da exibição do nosso _canvas_ na parte superior esquerda do _level_. Nós também poderíamos ter usado o _translate_ para isso. De qualquer maneira funcionaria. O documento minúscilo mostra a seguir conecta o novo display em _runGame_.
+
+```html
+<body>
+  <script>
+    runGame(GAME_LEVELS, CanvasDisplay);
+  </script>
+</body>
+```
+
+---
+
+## 16.12 - ESCOLENDO UMA INTERFACE GRÁFICA
+
+Sempre que você precisar gerar gráficos no navegador, você pode escolher entre HTML, SVG, e canvas. HTML tem a vantagem de ser simples. Ele se integra bem com textos. Ambos SVG e Canvas permitem que você desenhe texto mas eles não ajudam no posicionamento ou envolvimento quando ocupam mais de uma linha. Em uma imagem baseada em HTML é fácil incluir blocos de texto. SVG pode ser usado para produzir gráficos nítidos que ficam bem em qualquer nível de zoom. É mais difícil de usar do que HTML mas também é muito mais potente. Ambos SVG e HTML podem construírem uma estrutura de dados(DOM) que represente uma imagem. Isto torna possível modificar os elementos depois de serem desenhados. O DOM também nos permite registrar manipuladores de eventos de mouse sobre cada elemento da imagem(mesmo em formas desenhadas com SVG). E isso não pode ser feito em canvas. Mas a abordagem orientada a pixel da tela pode ser uma vantagem quando o desenho usa uma enorme quantidade de elementos minúsculos. O fato de não se criar uma estrutura de dados, mas de apenas chamá-los repetidamente sobre a mesma superfície de pixel, canvas dá um menor custo em performance.Para aplicações que não exigem muito, não importa muito por qual interface você ira escolher. A segunda exibição feita para o nosso jogo neste capítulo poderia ter sido implementado com qualquer uma dessas três tecnologias de gráficos, uma vez que não precisamos desenhar texto nem lidar com a interação do mouse ou trabalhar com um número extraordinariamente grande de elementos.
+
+---
+
+## SUMÁRIO
+
+Neste capítulo, discutimos as técnicas para desenhar gráficos no navegador, com foco no elemento `<canvas>`.
+
+Um nó `canvas` representa uma área em um documento que o nosso programa pode desenhar. Este desenho é feito através do contexto do objeto de desenho, criado com o método `getContext`.
+
+A interface de desenho em 2D nos permite preencher e traçar várias formas. Propriedade `fillStyle` do contexto determina como as formas são preenchidas. As propriedades `strokeStyle` e `lineWidth` controlam a forma de como as linhas são desenhadas.
+
+Retângulos e pedaços de texto podem ser tiradas com uma única chamada de método. Os métodos `fillRect` e `strokeRect` desenham retângulos e os métodos `fillText` e `strokeText` desenham texto. Para criar formas personalizadas é preciso primeiro construir um `path`.
+
+Chamando `beginPath` inicia um novo caminho. Uma série de outros métodos podem adicionar linhas e curvas para o `path` atual. Por exemplo `lineTo` pode adicionar uma linha reta. Quando um caminho é terminado ele pode ser preenchido com o método `fill` ou traçado com o método `stroke`.
+
+Mover os pixels de uma imagem ou de outra tela no nosso `canvas` é realizado com o método `drawImage`. Por padrão esse método desenha a imagem da origem por inteiro, mas passando mais parâmetros você pode copiar uma área específica da imagem. Usamos isso para o nosso jogo onde copiamos poses individuais do personagem do jogo a partir de uma imagem que tinha muitas cenas.
+
+Transformações permitem que você desenhe uma forma de múltiplas orientações. Um contexto de desenho em 2D tem uma transformação em curso que pode ser alterado com os métodos `translate`, `scale` e `rotate`. Estes irão afetar todas as operações dos desenhos subsequentes. Um estado de transformação podem ser salvas com o método `save` e restaurado com o método `restore`.
+
+Ao desenhar uma animação sobre uma tela, o método `clearRect` pode ser usado para limpar parte da tela antes de redesenhá-la novamente.
