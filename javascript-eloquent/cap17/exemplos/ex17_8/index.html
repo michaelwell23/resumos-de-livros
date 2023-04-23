@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function backgroundReadFile(url, callback) {
+        var req = new XMLHttpRequest();
+        req.open('GET', url, true);
+        req.addEventListener('load', function () {
+          if (req.status < 400) callback(req.responseText);
+        });
+        req.send(null);
+      }
+
+      try {
+        backgroundReadFile('example/data.txt', function (text) {
+          if (text != 'expected') throw new Error('That was unexpected');
+        });
+      } catch (e) {
+        console.log('Hello from the catch block');
+      }
+
+      function getURL(url, callback) {
+        var req = new XMLHttpRequest();
+        req.open('GET', url, true);
+        req.addEventListener('load', function () {
+          if (req.status < 400) callback(req.responseText);
+          else callback(null, new Error('Request failed: ' + req.statusText));
+        });
+        req.addEventListener('error', function () {
+          callback(null, new Error('Network error'));
+        });
+        req.send(null);
+      }
+
+      getURL('data/nonsense.txt', function (content, error) {
+        if (error != null)
+          console.log('Failed to fetch nonsense.txt: ' + error);
+        else console.log('nonsense.txt: ' + content);
+      });
+    </script>
+  </body>
+</html>

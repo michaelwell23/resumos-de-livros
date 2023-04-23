@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var req = new XMLHttpRequest();
+      req.open('GET', 'example/data.txt', false);
+      req.send(null);
+      console.log(req.responseText); // → This is the content of data.txt
+
+      var req = new XMLHttpRequest();
+      req.open('GET', 'example/data.txt', false);
+      req.send(null);
+      console.log(req.status, req.statusText); // → 200 OK
+      console.log(req.getResponseHeader('content-type')); // → text/plain
+    </script>
+  </body>
+</html>

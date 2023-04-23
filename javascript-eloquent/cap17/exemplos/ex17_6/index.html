@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <fruits>
+      <fruit name="banana" color="yellow" />
+      <fruit name="lemon" color="yellow" />
+      <fruit name="cherry" color="red" />
+    </fruits>
+
+    <script>
+      var req = new XMLHttpRequest();
+      req.open('GET', 'example/fruit.xml', false);
+      req.send(null);
+      console.log(req.responseXML.querySelectorAll('fruit').length); // → 3
+
+      var req = new XMLHttpRequest();
+      req.open('GET', 'example/fruit.json', false);
+      req.send(null);
+      console.log(JSON.parse(req.responseText)); // → {banana: "yellow", lemon: "yellow", cherry: "red"}
+    </script>
+  </body>
+</html>
