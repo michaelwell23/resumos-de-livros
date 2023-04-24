@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="checkbox" id="purple" />
+    <label for="purple">Make this page purple</label>
+
+    <input type="radio" name="color" value="mediumpurple" /> Purple
+    <input type="radio" name="color" value="lightgreen" /> Green
+    <input type="radio" name="color" value="lightblue" /> Blue
+
+    <script>
+      var checkbox = document.querySelector('#purple');
+      checkbox.addEventListener('change', function () {
+        document.body.style.background = checkbox.checked ? 'mediumpurple' : '';
+      });
+
+      var buttons = document.getElementsByName('color');
+      function setColor(event) {
+        document.body.style.background = event.target.value;
+      }
+      for (var i = 0; i < buttons.length; i++)
+        buttons[i].addEventListener('change', setColor);
+    </script>
+  </body>
+</html>
