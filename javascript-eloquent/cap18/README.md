@@ -244,4 +244,122 @@ select.addEventListener('change', function () {
 
 ---
 
-## 18.8 - CAMPO ARQUIVO
+## 18.8 - CAMPO ARQUIVO (Campo File)
+
+Os campos de arquivo, foram originalmente cncebidos como uma maneira de fazer upload de arquivos de uma máquina do navegador através de um formulário. Em navegadores modernos, eles também fornecem uma maneira de ler esses arquivos a partir de programas de JavaScript. Um campo file geralmente parece um botão rotulado com algo como "escolha o arquivo" ou "procurar", com informações sobre o arquivo escolhido ao lado dele.
+
+```html
+<input type="file" />
+
+<script>
+  var input = document.querySelector('input');
+  input.addEventListener('change', function () {
+    if (input.files.length > 0) {
+      var file = input.files[0];
+      console.log('You chose', file.name);
+      if (file.type) console.log('It has type', file.type);
+    }
+  });
+</script>
+```
+
+A propriedade _files_ de um elemento campo file é um objeto de array-like que contém os arquivos escolhidos no campo. Objetos na propriedae file tê propriedades como name, size e type. O que ele não tem é uma propriedade que contém o conteúdo do arquivo.Desde a leitura de um arquivo do dsco pode levar tempo, ainterface terá de ser assincrona para evitar o congelamento do documento. Você pode pensar no construtor `FileReader` como sendo semelhante a `XMLHttpRequest`, mas para arquivos.
+
+```html
+<input type="file" multiple />
+
+<script>
+  var input = document.querySelector('input');
+  input.addEventListener('change', function () {
+    Array.prototype.forEach.call(input.files, function (file) {
+      var reader = new FileReader();
+      reader.addEventListener('load', function () {
+        console.log(
+          'File',
+          file.name,
+          'starts with',
+          reader.result.slice(0, 20)
+        );
+      });
+      reader.readAsText(file);
+    });
+  });
+</script>
+```
+
+O exemplo usa `Array.prototype.forEach` para iterar o array, uma vez em um loop (laço) normal, seria estranho obter os objetos file e read a partir de um manipulador de eventos. As variáveis poderiam compartilhar todas as iterações do loop. FileReaders também aciona um evento "error" ao ver o arquivo falhar por algum motivo. O próprio objeto de erro vai acabar na propriedade de "error" de leitura.
+
+---
+
+## 18.9 - ARMAZENAMENTO DE DADOS CLIENTE-SIDE
+
+Você pode armazenar dados de string data de uma forma que ainda continue ao carregar a página, colocando-o no objeto localStorage. Este objetivo permite-lhe apresentar valores de strings sob nomes.
+
+```js
+localStorage.setItem('username', 'marijn');
+console.log(localStorage.getItem('username')); // → marijn
+localStorage.removeItem('username');
+```
+
+Um valor em localStorage continua na página até que seja substituído, ele é removido com _removerItem_, ou o usuário apaga seus dados locais. Sites de domínios diferentes obtém diferentes espaços de armazenamento. Isso significa que os dados armazenados em localStorage por um determinado site pode, a princípio, ser lido (e sobrescritos) por scripts desse mesmo site.O código a seguir implementa uma simples aplicação de anotações. Ele mantém notas do usuário como um objeto, associando títulos de notas com strings de conteúdo. Este objeto é codificado como JSON e armazenados
+em localStorage. O usuário pode selecionar uma nota de um campo `<select>`e muda o texto da nota em um `<textarea>`. A nota pode ser adicionado clicando em um botão.
+
+```html
+<select id="list"></select>
+<button onclick="addNote()">new</button><br />
+<textarea id="currentnote" style="width: 100%; height: 10em"></textarea>
+```
+
+```js
+var list = document.querySelector('#list');
+function addToList(name) {
+  var option = document.createElement('option');
+  option.textContent = name;
+  list.appendChild(option);
+}
+// Initialize the list from localStorage
+var notes = JSON.parse(localStorage.getItem('notes')) || {
+  'shopping list': '',
+};
+for (var name in notes) if (notes.hasOwnProperty(name)) addToList(name);
+function saveToStorage() {
+  localStorage.setItem('notes', JSON.stringify(notes));
+}
+var current = document.querySelector('#currentnote');
+current.value = notes[list.value];
+list.addEventListener('change', function () {
+  current.value = notes[list.value];
+});
+current.addEventListener('change', function () {
+  notes[list.value] = current.value;
+  saveToStorage();
+});
+function addNote() {
+  var name = prompt('Note name', '');
+  if (!name) return;
+  if (!notes.hasOwnProperty(name)) {
+    notes[name] = '';
+    addToList(name);
+    saveToStorage();
+  }
+  list.value = name;
+  current.value = notes[name];
+}
+```
+
+Quando o usuário adiciona uma nova nota, o código deve atualizar o campo de texto explicitamente, mesmo que o campo `<select>` tenha um manipulador de "change" que faz a mesma coisa. Isso é necessário porque o eventos "change" disparam apenas quando o usuário altera o valor do campo, e não quando um script executa. Há um outro objeto semelhante para conteúdo de `LocalStorage` chamado `sessionStorage`. A diferença entre as duas é que o
+`sessionStorage` é esquecido no fim de cada sessão, o que para a maioria dos navegadores significa quando o navegador é fechado.
+
+---
+
+## SUMÁRIO
+
+HTML pode expressar vários tipos de campos de formulário, tais como text fields, checkboxes, campos multiple-choice, e file pickers.
+
+Esses campos podem ser inspecionados e manipulados com JavaScript. Eles acionam o evento "change" quando alterado, o evento "input" quando o texto é digitado, e vários eventos de teclado. Estes eventos permitem-nos a perceber quando o usuário está interagindo com os campos. Propriedades como value (para texto e seleção campos) ou checked (para checkboxes e radio buttons)são usados para ler ou definir o conteúdo do campo.
+
+Quando um formulário é enviado, o evento "submit" dispara. Um manipulador de JavaScript pode chamar preventDefault para impedir que que dispare o evento submit. Elementos de campo de formulário não precisam ser envolvidos em tags `<form>`.
+
+Quando o usuário tenha selecionado um campo de seu sistema de arquivos local em um campo picker field, a interface FileReader pode ser usado para acessar o conteúdo deste arquivo a partir de um programa de JavaScript.
+
+Os objetos LocalStorage e sessionStorage pode ser usado para guardar informações de uma forma que continue mesmo recarregando a página. O primeiro salva os dados para sempre (ou até que o usuário decida limpá-la), e o segundo salvá-lo até que o navegador é fechado.

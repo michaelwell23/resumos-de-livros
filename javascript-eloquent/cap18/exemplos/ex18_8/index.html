@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="file" />
+    <input type="file" multiple />
+
+    <script>
+      var input = document.querySelector('input');
+      input.addEventListener('change', function () {
+        if (input.files.length > 0) {
+          var file = input.files[0];
+          console.log('You chose', file.name);
+          if (file.type) console.log('It has type', file.type);
+        }
+      });
+
+      var input2 = document.querySelector('input');
+      input2.addEventListener('change', function () {
+        Array.prototype.forEach.call(input2.files, function (file) {
+          var reader = new FileReader();
+          reader.addEventListener('load', function () {
+            console.log(
+              'File',
+              file.name,
+              'starts with',
+              reader.result.slice(0, 20)
+            );
+          });
+          reader.readAsText(file);
+        });
+      });
+
+      function readFile(file) {
+        return new Promise(function (succeed, fail) {
+          var reader = new FileReader();
+          reader.addEventListener('load', function () {
+            succeed(reader.result);
+          });
+          reader.addEventListener('error', function () {
+            fail(reader.error);
+          });
+          reader.readAsText(file);
+        });
+      }
+    </script>
+  </body>
+</html>
