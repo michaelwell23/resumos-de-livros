@@ -1,4 +1,3 @@
-// CONSTRUINDO O DOM
 function elt(name, attributes) {
   var node = document.createElement(name);
   if (attributes) {
@@ -14,28 +13,31 @@ function elt(name, attributes) {
   return node;
 }
 
-// A FUNDAÇÃO
 var controls = Object.create(null);
+
 function createPaint(parent) {
   var canvas = elt('canvas', { width: 500, height: 300 });
   var cx = canvas.getContext('2d');
   var toolbar = elt('div', { class: 'toolbar' });
   for (var name in controls) toolbar.appendChild(controls[name](cx));
+
   var panel = elt('div', { class: 'picturepanel' }, canvas);
   parent.appendChild(elt('div', null, panel, toolbar));
 }
 
-// FERRAMENTA DE SELEÇÃO
 var tools = Object.create(null);
+
 controls.tool = function (cx) {
   var select = elt('select');
   for (var name in tools) select.appendChild(elt('option', null, name));
+
   cx.canvas.addEventListener('mousedown', function (event) {
     if (event.which == 1) {
       tools[select.value](event, cx);
       event.preventDefault();
     }
   });
+
   return elt('span', null, 'Tool: ', select);
 };
 
@@ -59,6 +61,7 @@ function trackDrag(onMove, onEnd) {
 
 tools.Line = function (event, cx, onEnd) {
   cx.lineCap = 'round';
+
   var pos = relativePos(event, cx.canvas);
   trackDrag(function (event) {
     cx.beginPath();
@@ -76,7 +79,6 @@ tools.Erase = function (event, cx) {
   });
 };
 
-// COR E TAMANHO DO PINCEL
 controls.color = function (cx) {
   var input = elt('input', { type: 'color' });
   input.addEventListener('change', function () {
@@ -98,7 +100,6 @@ controls.brushSize = function (cx) {
   return elt('span', null, 'Brush size: ', select);
 };
 
-// SALVANDO
 controls.save = function (cx) {
   var link = elt('a', { href: '/' }, 'Save');
   function update() {
@@ -118,7 +119,6 @@ controls.save = function (cx) {
   return link;
 };
 
-// CARREGANDO ARQUIVOS DE IMAGEM
 function loadImageURL(cx, url) {
   var image = document.createElement('img');
   image.addEventListener('load', function () {
@@ -134,7 +134,7 @@ function loadImageURL(cx, url) {
   image.src = url;
 }
 
-ontrols.openFile = function (cx) {
+controls.openFile = function (cx) {
   var input = elt('input', { type: 'file' });
   input.addEventListener('change', function () {
     if (input.files.length == 0) return;
@@ -158,12 +158,11 @@ controls.openURL = function (cx) {
   );
   form.addEventListener('submit', function (event) {
     event.preventDefault();
-    loadImageURL(cx, form.querySelector('input').value);
+    loadImageURL(cx, input.value);
   });
   return form;
 };
 
-// FINALIZANDO
 tools.Text = function (event, cx) {
   var text = prompt('Text:', '');
   if (text) {
@@ -177,6 +176,7 @@ tools.Spray = function (event, cx) {
   var radius = cx.lineWidth / 2;
   var area = radius * radius * Math.PI;
   var dotsPerTick = Math.ceil(area / 30);
+
   var currentPos = relativePos(event, cx.canvas);
   var spray = setInterval(function () {
     for (var i = 0; i < dotsPerTick; i++) {
