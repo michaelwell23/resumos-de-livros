@@ -80,3 +80,133 @@ Existem muito mais coisas no NPM além de `npm install`. Ele pode ler arquivos `
 ---
 
 ## 20.6 - O MÓDULO DE ARQUIVOS DE SISTEMA
+
+Um dos módulos integrados mais comuns que vêm com o Node é o modulo `"fs"`, que significa _file system_. Esse módulo fornce funções para o trabalho com arquivos de diretórios.
+
+```js
+var fs = require('fs');
+fs.readFile('file.txt', 'utf8', function (error, text) {
+  if (error) throw error;
+  console.log('The file contained:', text);
+});
+```
+
+O segundo argumento passado para `readFile` indica a codificação de caracteres usaa para decodificar o arquivo em string. Se não passado uma codificaão, o Node retorna um objeto `buffer` binário, ao invés de uma string. O que por sua vez, é um objeto _array-like_ que contém números representando os bytes nos arquivos.
+
+```js
+var fs = require('fs');
+fs.readFile('file.txt', function (error, buffer) {
+  if (error) throw error;
+  console.log(
+    'The file contained',
+    buffer.length,
+    'bytes.',
+    'The first byte is:',
+    buffer[0]
+  );
+});
+```
+
+Uma função similar, `writeFile`, é usada para escrever um arquivo no disco.
+
+```js
+var fs = require('fs');
+fs.writeFile('graffiti.txt', 'Node was here', function (err) {
+  if (err) console.log('Failed to write file:', err);
+  else console.log('File written.');
+});
+```
+
+O módulo `"fs"` contém muitas outras funções úteis: `readdir` que vai retornar os arquivos em um diretório como um array string, `stat` busca informações sobre um arquivo, `rename`retorn um arquivo, `unlink` remove um arquivo, e assim por diante. Muitas funções em `"fs"` vêm com variantes síncronas e assíncronas. Por exemplo, existe uma versão síncroca de `readFile` chamada `readFileSync`.
+
+```js
+var fs = require('fs');
+console.log(fs.readFileSync('file.txt', 'utf8'));
+```
+
+Funções síncronas requerem menos formalismo na sua utilização e podem ser úteis em alguns scripts, onde a extra velocidade oferecida pela assincronia I/O é irrelevante. Mas note que enquanto tal operação síncrona é executada, seu programa fica totalmente parado. Se nesse período ele deveria responder ao usuário ou a outras máquinas na rede, ficar preso com um I/O síncrono pode acabar produzindo atrasos inconvenientes.
+
+---
+
+## 20.7 - O MÓDULO HTTP
+
+Outro principal é o `http`. Ele fornece funcionalidade para rodar servidores HTTP e realizar requisições HTTP.
+
+```js
+var http = require('http');
+var server = http.createServer(function (request, response) {
+  response.writeHead(200, { 'Content-Type': 'text/html' });
+  response.write(
+    '<h1>Hello!</h1><p>You asked for <code>' + request.url + '</code></p>'
+  );
+  response.end();
+});
+server.listen(8000);
+```
+
+A função passada como argumento para `createServer`é chamada toda vez que um cliente tenta se conectar ao servidor. AS variáveis `request`e `response` são os objetos que representam a informação que chega a sai. Para enviar algumas coisas de volta, você chama métodos do objeto `response`. O primeiro. `writeHead`, vai escrever os cabeçalhos de resposta. Em seguida, o corpo da respota é enviado com `response.write`. Podemos chamar esse método quantas vezes for necessário para enviar a resposta peça por peça, possibilitando que a informação seja transmitida para o cliente assim que ela steja disponível. Para parar de rodar um script Node, é só apertar Ctrl+C. Um servidor real normalmente faz mais do que o que nós vimos no exemplo anterior — ele olha o método da requisição para ver que ação o cliente está tentando realizar e olha também a URL da requisição para descobrir que recurso essa ação está executando. Para agir como um cliente HTTP, nós podemos usar a função request no módulo `"http"`.
+
+```js
+var http = require('http');
+var request = http.request(
+  {
+    hostname: 'eloquentjavascript.net',
+    path: '/20_node.html',
+    method: 'GET',
+    headers: { Accept: 'text/html' },
+  },
+  function (response) {
+    console.log('Server responded with status code', response.statusCode);
+  }
+);
+request.end();
+```
+
+O primeiro parâmetro passado para `request` configura a requisição. O segundo parâmetro é a função que deverá ser chamada quando uma resposta chegar. Assim como o objeto `response` que vimos no servidor, o objeto `request` nos permite transmitir informação na requisição com o método `write` e finalizar a requisição com o método `end`. O exemplo não usa `write` porque requisições `GET` não devem conter informação no corpo da requisição. Para fazer requisições para URLs HTTP seguras (HTTPS), o Node fornece um pacote chamado `https`, que contém sua própria função `request`, parecida a `http.request`.
+
+---
+
+## 20.8 - STREAMS
+
+_Streams_ são, consecutivamente, o objeto de resposta no qual o servidor pode escrever e o objetivo de requisição que foi retornado do `http.request`. É possível criar strams de gravação que apontam para um arquivo com a função `fs.createWritebleStream`. Então você pode usar o método `write` no objeto resultando para escrever o arquivo peça por peça, ao invés de escrever tudo de uma só vez com o `fs.writeFile`. _Streams_ de leitura são um pouco mais fechados. Em ambos a variável `request` que foi passada para a função de _callback_ do servidor HTTP e a variável `response` para o cliente HTTP são _streams_ de leitura. Para ler de um stream usamos manipuladores de eventos, e não métodos. Objetos que emitem eventos no Node têm um método chamado `on` que é similar ao método `addEventListener` no navegador. Você dá um nome de evento e então
+uma função, e isso irá registrar uma função para ser chamada toda vez que um dado evento ocorrer. _Streams_ de leitura possuem os eventos `"data"` e `"end"`. O primeiro é acionado sempre que existe alguma informação chegando, e o segundo é chamado sempre que a _stream_ chega ao fim. Esse modelo é mais adequado para um _streamming_ de dados, que pode ser imediatamente processado, mesmo quando todo documento ainda não está disponível. Um arquivo pode ser lido como uma _stream_ de leitura usando a função `fs.createReadStream`. O seguinte código cria um servidor que lê o corpo da requisição e o devolve em caixa alta para o cliente via _stream_:
+
+```javascript
+var http = require('http');
+http
+  .createServer(function (request, response) {
+    response.writeHead(200, { 'Content-Type': 'text/plain' });
+    request.on('data', function (chunk) {
+      response.write(chunk.toString().toUpperCase());
+    });
+    request.on('end', function () {
+      response.end();
+    });
+  })
+  .listen(8000);
+```
+
+O seguinte trecho de código, se rodado enquanto o servidor que transforma letras em caixa alta estiver rodando, vai enviar uma requisição para esse servidor e retornar a resposta que obtiver:
+
+```javascript
+var http = require('http');
+var request = http.request(
+  {
+    hostname: 'localhost',
+    port: 8000,
+    method: 'POST',
+  },
+  function (response) {
+    response.on('data', function (chunk) {
+      process.stdout.write(chunk.toString());
+    });
+  }
+);
+request.end('Hello server');
+```
+
+O exemplo escreve no `process.stdout` (a saída padrão de processos, como uma _stream_ de escrita) ao invés de usar `console.log`. Nós não podemos usar `console.log` porque isso adicionaria uma linha extra depois de cada pedaço de texto escrito, o que é adequado no nosso exemplo.
+
+---
+
+## 20.9 - Um servidor de arquivos simples
