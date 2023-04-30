@@ -35,4 +35,3 @@
 | [Capítulo 19](./cap19/) | `Projeto`: Um Programa de Pintura                  |
 | [Capítulo 20](./cap20/) | Node.js                                            |
 | [Capítulo 21](./cap21/) | `Projeto`: Website de Comportamento de Habilidades |
-| [Capítulo 22](./cap22/) |                                                    |
