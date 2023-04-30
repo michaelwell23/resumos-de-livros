@@ -210,3 +210,70 @@ O exemplo escreve no `process.stdout` (a saída padrão de processos, como uma _
 ---
 
 ## 20.9 - Um servidor de arquivos simples
+
+Quando lidamos com arquivos de recursos HTTP, os métodos HTTP podem ser usados respectivamente, para ler, escrever e apagar arquivos. Vamo interpretar o caminho na requisição como o caminho do arquivo referido por aquela requisição. Podemos construir um programa peça por peça, usando um objeto chamado `methods` para guardar as funções que tratam os vários métodos HTTP. O script completo para o servidor está disponível [AQUI]().
+A primeira requisição feita para o arquivo `file.txt` falha pois o arquivo ainda não existe. A requisição `PUT` cria o arquivo, para que então a próxima requisição consiga encontrá-lo com sucesso. Depois de deletar o arquivo com uma requisição `DELETE`, o arquivo passa a não ser encontrado novamente.
+
+---
+
+## 20.10 - TRATAMENTO DE ERROS
+
+Se nós quisermos tratar todas as exceções levantadas durante o tratamento de uma requisição, para ter certeza que enviamos uma resposta, precisamos adicionar blocos de 281 `try/catch` para todos os callbacks. Outra abordagem é usar promessas, que foram introduzidas no Capítulo 17. Promessas capturam as exceções levantadas por funções de callb ack e propagam elas como falhas. É possível carregar uma biblioteca de promessa no Node e usá-la para administrar seu controle assíncrono. O excelente módulo `"promise"` do NPM contém uma função chamada `denodeify`, que converte uma função assíncrona como a `fs.readFile` para uma função de retorno de promessa.
+
+```javascript
+var Promise = require('promise');
+var fs = require('fs');
+
+var readFile = Promise.denodeify(fs.readFile);
+readFile('file.txt', 'utf8').then(
+  function (content) {
+    console.log('The file contained: ' + content);
+  },
+  function (error) {
+    console.log('Failed to read file: ' + error);
+  }
+);
+```
+
+A título de comparação, eu escrevi uma outra versão do servidor de arquivos baseado em promessas, que você pode encontrar [AQUI]()
+Essa versão é um pouco mais clara pois as funções podem retornar seusresultados, ao invés de ter que chamar _callbacks_, e a rota de exceções está
+implícito, ao invés de explícito. O objeto `fsp` que é usado por esse código contém estilos de promessas variáveis para determinado número de funções `fs`, envolvidas por `Promise.denodeify`. O objeto retornado, com propriedades `code` e `body`, vai se tornar o resultado final de uma cadeia de promessas, e vai ser usado para determinar que tipo de resposta vamos mandar pro cliente.
+
+```javascript
+methods.GET = function (path) {
+  return inspectPath(path).then(function (stats) {
+    if (!stats)
+      // Does not exist
+      return { code: 404, body: 'File not found' };
+    else if (stats.isDirectory())
+      return fsp.readdir(path).then(function (files) {
+        return { code: 200, body: files.join('\n') };
+      });
+    else
+      return {
+        code: 200,
+        type: require('mime').lookup(path),
+        body: fs.createReadStream(path),
+      };
+  });
+};
+
+function inspectPath(path) {
+  return fsp.stat(path).then(null, function (error) {
+    if (error.code == 'ENOENT') return null;
+    else throw error;
+  });
+}
+```
+
+A função `inspectPath` simplesmente envolve o `fs.stat`, que trata o caso de arquivo não encontrado. Nesse caso, nós vamos substituir a falha por um sucesso que representa `null`. Todos os outros erros são permitidos a propagar. Quando a promessa retornada desses manipuladores falha, o servidor HTTP responde com um status 500.
+
+---
+
+## Resumo
+
+Node é um sistema bem íntegro e legal que permite rodar JavaScript em um contexto fora do navegador. Ele foi originalmente concebido para tarefas de rede para desempenhar o papel de um _nó_ na rede. Mas ele se permite a realizar todas as tarefas de script, e se escrever JavaScript é algo que você gosta, automatizar tarefas de rede com Node funciona de forma maravilhosa.
+
+O NPM disponibiliza bibliotecas para tudo que você possa imaginar, e permite que você atualize e instale essas bibliotecas rodando um simples comando. Node também vêm com um bom número de módulos embutidos, incluindo o módulo `"fs"`, para trabalhar com sistema de arquivos e o `"http"`, para rodar servidores HTTP e fazer requisições HTTP.
+
+Toda entrada e saída no Node é feita de forma assíncrona, a menos que você explicitamente use uma variante síncrona da função, como a `fs.readFileSync`. Você fornece as funções de _callback_ e o Node vai chamá-las no tempo certo, quando o _I/O_ que você solicitou tenha terminado.
