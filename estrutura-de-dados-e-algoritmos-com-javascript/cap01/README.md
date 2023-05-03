@@ -49,3 +49,69 @@ Para começar, precisamos criar um arquivo HTML para escrever os códigos, podem
 ---
 
 ## 1.5 - ESCOPO DASVARIÁVEIS
+
+- Escopo se refere ao local em que podemos acessar a variável no algoritmo;
+- As variáveis pode ser loais ou globais;
+- Variáveis globais em JavaScript são prejudiciais;
+- A qualidade do código-fonte JavaScript é avaliada de acordo com o número de variáveis e funções globais;
+- Sempre que possível, é bom evitar as variáveis globais.
+
+---
+
+## 1.6 - OPERADORES
+
+- Operadores são utilizados para realizar qualquer operação em uma linguagem de programação;
+- Os tipois de operadores são:
+  - aritméticos;
+    - `+` : adição
+    - `-` : subtração
+    - `*` : multiplicação
+    - `/` : divisão
+    - `%` : módulo (resto de uma operação de divisão)
+    - `++` : incremento
+    - `--` : decremento
+  - atribuição;
+    - `=`: atribuição
+    - `+=`: atribuição de soma
+    - `-=`: atribuição de subtração
+    - `*=`: atribuição de multiplicação
+    - `/=`: atribuição de divisão
+    - `%=`: atribuição de resto
+  - comparação;
+    - `==`: igual a
+    - `===`: igual extrito (tanto o valor quanto o tipo do objeto)
+    - `!=`: diferente de
+    - `>`: maior que
+    - `>=`: maior ou igual a
+    - `<=`: menor que
+    - `<=`: menor ou igual a
+  - lógicos;
+    - `&&`: E
+    - `||`: Ou
+    - `!`: Negação
+  - bit a bit;
+    - `&`: E
+    - `|`: Ou
+    - `~`: Negação
+    - `^`: Ou exclusivo (xor)
+    - `<<`: Deslocamento para a esquerda
+    - `>>`: Deslocamento para a direita
+  - unários;
+- operador `typeof` devolve o tipo de variável ou expressão;
+- há dois tipos de dados em JavaScript:
+  - tipos primitivos;
+    - null (nulo), undefined (indefinido), string,number (número), boolean (booleano) e symbol (símbolo);
+  - tipos de dados derivados/objetos;
+    - objetos JavaScript, incluindo funções, arrays e expressões regulares;
+- a linguagem JavaScript também aceita o operador `delete`, que apaga uma propriedade de um objeto;
+
+---
+
+## 1.7 - VERDADEIRO OU FALSO
+
+- Em JavaScript `true` e `false` são um pouco complicados;
+- Uma string é valida como true;
+
+---
+
+## 1.8 - FUNÇÕES DOS OPERADORES DE IGUALDADE
