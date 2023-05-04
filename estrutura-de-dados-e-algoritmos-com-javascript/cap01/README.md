@@ -115,3 +115,64 @@ Para começar, precisamos criar um arquivo HTML para escrever os códigos, podem
 ---
 
 ## 1.8 - FUNÇÕES DOS OPERADORES DE IGUALDADE
+
+- Quando `==` é usado, os valore poderão ser considerados iguais mesmo se forem de tipos diferentes.
+
+|     TYPE(X)      | TYPE(Y)          | RESULTADO           |
+| :--------------: | :--------------- | ------------------- |
+|       null       | undefined        | true                |
+|    undefined     | null             | true                |
+|      Number      | String           | x == toNumber(y)    |
+|      String      | Number           | toNumber(x) == y    |
+|     Boolean      | Any              | toNumber(x) == y    |
+|       Any        | Boolean          | x == toNUmber(y)    |
+| String ou Number | Object           | x == toPrimitive(y) |
+|      Object      | String ou Number | toPrimitive(x) == y |
+
+- Se x e y forem do mesmo tipo, então JavaScript usará o método `equals` para comparar os dois valores ou objetos;
+- Qualquer outra combinação não listada, resultará em `false`;
+- Quanto ao operador `===`, é muito mais simples.
+- Se estivermos comparando dois valores de tipos diferentes, o resultado será sempre `false`.
+
+| TYPE(X) | VALORES                                   | RESULTADO |
+| :-----: | :---------------------------------------- | --------- |
+| Number  | x tem o mesmo valor que y (mas não é NaN) | true      |
+|  Strig  | x e y tê caracteres idênticos             | true      |
+| Boolean | x e y são ambos true ou são ambos false   | true      |
+| Object  | x e y referenciam o mesmo objeto          | true      |
+
+---
+
+## 1.9 - ESTRUTURA DE CONTROLE
+
+- Instruções condicionais são tratadas com `if...else` e `switch`;
+- Laços são tratados com as construções `while`, `do...while` e `for`;
+
+---
+
+## 1.10 - INSTRUÇÕES CONDICIONAIS
+
+- Temos a instrução condicional `if..else`;
+  - Podemos usar a instrução `if` se quisermos executar um bloco de código somente se a condição for `true`;
+  - Podemos usar a instrução `if...else` se quisermos executar um bloco de código e a condição for true,ou outro quando caso a condição for `false`;
+  - Intruções `if...else` também pode ser representadas por um operador ternário (`? = if`, `: = else`);
+  - Se tivermos várias expreções, podemos usar `if...else` diversas vezes para executar blocos de código diferente de acordo com condições distintas;
+- Também temos a condicional `switch`;
+  - `Switch` utiliza das palavras reservadas `case` e `break`;
+    - a `case` determina se o valor `switch` é igual ao valor da cláusula;
+    - a instrução `break`impede que a instrução `switch` execute o restante da instrução;
+  - Também temos o `default`, que executa por padrão caso nenhuma condição das intruções `case`seja `true`;
+
+---
+
+## 1.11 - LAÇOS
+
+- Os laços são usados com frequência quando trabalhamos com arrays;
+  - O laço `for` é constituido de um contador de laço que recebe um valor numérico; em seguida, a variável é comparada com outro valor. E por fim, o valor numérico é incrementado ou decrementado;
+  - No laço `while`, o bloco dentro do código será executado enquanto a condição for verdadeira;
+  - Já no laço `do...while`, é muito parecido com o laço `while`, a diferença é que no `while` a condição é avaliada antes da execução do bloco, enquanto no laço `do...while`, ela é avaliada depois do bloco ter sido executado;
+    - Além disso, o laço `do...while` garante que o bloco seja executado pelo menos uma vez;
+
+--
+
+## 1.12 - FUNÇÕES
