@@ -173,6 +173,130 @@ Para começar, precisamos criar um arquivo HTML para escrever os códigos, podem
   - Já no laço `do...while`, é muito parecido com o laço `while`, a diferença é que no `while` a condição é avaliada antes da execução do bloco, enquanto no laço `do...while`, ela é avaliada depois do bloco ter sido executado;
     - Além disso, o laço `do...while` garante que o bloco seja executado pelo menos uma vez;
 
---
+---
 
 ## 1.12 - FUNÇÕES
+
+- Funções são muito importantes quando trabalhamos com JavaScript. Podemos definir uma função da seguinte forma:
+
+```js
+function sayHello() {
+  console.log('Hello');
+}
+
+sayHello(); //execução da função
+```
+
+- Podemos passar argumentos para a função. Argumento são variáveis com as quais se supõe que a função fará algo.
+
+```js
+function output(text) {
+  console.log(text);
+}
+
+output('Hello'); //execução da função
+```
+
+- Uma função também pode devolver um valor, por exemplo: calcular a soma de dois numero espeficados e devolver o resultado. E podemos usá-la dessa forma:
+
+```js
+function sum(num1, num2) {
+  return num1 + num2;
+}
+
+var result = sum(23, 56);
+output(result);
+```
+
+---
+
+## 1.13 - PROGRAMAÇÃO ORIENTADA A OBJETOS EM JAVASCRIPT
+
+- Objetos JavaScript são coleções bem símples de pares nome-valor. Há duas maneiras de criar um objeto simples em JavaScript:
+
+```js
+var obj = new Object(); //primeira forma
+var ob = {}; // segunda forma
+
+// objeto completo
+obj = {
+  name: {
+    first: 'Gandalf',
+    last: 'the Gray'
+  },
+  address: 'Middle Earth';
+}
+```
+
+- Para declarar um objeto , pares [chave, valor], são usados, no quais a chave pode ser considerada um atributo do objeto, e o valor é o valor da propriedade.
+
+- Em POO (Programaçãi Orientada a Objetos), um objeto é uma instência de uma classe. Uma classse define as características do objeto.
+
+- Podemos declarar uma clase (construtor), além de instaciá-lo e por fim, acessar as suas propriedades e atualizá-la deste modo:
+
+```js
+function Book(title, page, isbn) {
+  this.title = title;
+  this.page = page;
+  this.isbn = isbn;
+}
+
+// instanciando classes
+var book = new Book('title', 'pag', 'isbn');
+
+// acessando e atualizando propriedades
+console.log(book.title); // exibe o titulo do livro
+book.title = 'new title'; // atualizado o valor do título do livro
+console.log(book.title); // exibe o valor atualizado
+```
+
+- Uma classe também pode contr funções (chamado de `métodos`). Podemos declarar e usar uma função/método conforme mostra o código e declarar funções diretamente na definição da classe a seguir:
+
+```js
+Book.prototype.printTitle = function () {
+  console.log(this.title);
+};
+
+// funções declaradas diretamente na definição da classe
+function Book(title, pages, isbn) {
+  this.title = title;
+  this.pages = pages;
+  this.isbn = isbn;
+  this.printIsbn = function () {
+    console.log(this.isbn);
+  };
+}
+book.printIsbn();
+```
+
+---
+
+## 1.14 - DEPURAÇÃO E FERRAMENTAS
+
+- A deupração é muito útil para ajudar a encontar bugs em um código, mas também pode ajudar a executar o código mais lentamente, a fim de que seja possível ver tudo que está acontecendo;
+- Firefox, Safari, Edge e Chrome têm suporta para deupração;
+- Podemos usar qualquer editor de textos, há outras ferramentes ótimas que podem ser utilizadas e ajudá-lo a ser mais produtivo quando trabalhar com JavaScript. São elas: `WebStorm`, `Sblime Text`, `Atom` e `Visual Studio Code`.
+
+---
+
+## 1.15 - DEPURAÇÃO COM O VSCODE
+
+1. No editor, abra o arquivo JavaScript que você quer depurar, passe o ponteiro do mouse próximo aos números das linhas e clique na linha para adicionar um breakpoint (conforme mostrado pelo 1 na imagem de tela anterior). É nesse local que o depurador vai parar para que possamos analisar o código.
+
+2. Depois que o Web Server estiver pronto e executando, clique na view de Debug (2), selecione Chrome (3) e clique no ícone Play (Executar) para iniciar o processo de depuração.
+
+3. O Chrome será aberto automaticamente. Navegue para o exemplo
+   desejado a fim de evocar o código que queremos depurar. Depois que alinha na qual adicionamos o breakpoint for alcançada pelo depurador, o processo será interrompido e o editor receberá o foco.
+
+4. Podemos controlar como o código é depurado usando a barra de
+   ferramentas superior (4). É possível retomar o processo, ir para uma chamada de método ou para a próxima linha, reiniciar e parar o processo. É o mesmo comportamento que temos no depurador do Chrome e em outros navegadores.
+
+5. A vantagem de usar essa funcionalidade de depuração embutida é que podemos fazer tudo a partir do editor (escrever código, depurar e testar). Além disso, temos as variáveis declaradas e a pilha de chamadas (call stack), podemos observar variáveis e expressões (5), passar o mouse sobre uma variável para ver o seu valor atual (6) e observar a saída do console (7).
+
+---
+
+## RESUMO
+
+Neste capítulo, aprendemos a configurar o ambiente de desenvolvimento para que possamos criar ou executar os exemplos deste livro. Também vimos o básico sobre a linguagem JavaScript, necessário para dar início ao desenvolvimento dos algoritmos e das estruturas de dados incluídos neste livro.
+No próximo capítulo, conheceremos as novas funcionalidades introduzidas no JavaScript a partir de 2015, e veremos como tirar proveito da tipagem
+estática e da verificação de erros usando TypeScript.
