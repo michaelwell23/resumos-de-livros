@@ -1,4 +1,4 @@
-# CAAPÍTULO 01: JAVASCRIPT – UMA VISÃO GERAL RÁPIDA
+# CAPÍTULO 01: JAVASCRIPT – UMA VISÃO GERAL RÁPIDA
 
 - JavaScript é extremamente eficaz;
 - É utilizado no frontend e também no backend, utiliando o NodeJS;
