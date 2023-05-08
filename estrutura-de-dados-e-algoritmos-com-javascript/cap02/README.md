@@ -71,3 +71,71 @@
 - Ao trabalhar com objetos, uma constante (`const`), permite que as propriedades do objetos recebam novos valores, mas a refeência de memória da variável em si, não pode ser alterado,o que significa que ela não pode receber um novo valor;
 
 ---
+
+## 2.7 - ESCOPO DE VARIÁVEIS COM LET E CONST
+
+- Há dois tipos de escopo, `escopo global` e `escopo local`;
+- `Escopo global` é toda variável que está sendo declarada fora de um bloco de código limitado por chaves (instruções if, funções e estrutura de repetições). Ela pode ser acessada em qualquer parte do código, inclusive dentro de um bloco de código.
+- Escopo Local, são variáveis que foram declaradas dentro de um bloco de código limitado por chaves. A existencia dessa variável só existe dentro do bloco e ela não pode ser acessível fora do bloco;
+
+---
+
+## 2.8 - TEMPLATES LITERAIS
+
+- Tamplates literais são um recurso que podemos criar strings sem a necessidade de concatenar os valores;
+- Tamplates literais devem estar escritos com crases(`), envez de aspas simples ou duplas;
+- Para interpolar um valor de variável, podemos definir um sinal de cifrão e chaves (`${}`);
+- Os templates também podem ser usados para strings multilinhas, basta precionar `Enter` para gerar uma quebra de linha;
+
+---
+
+## 2.9 - FUNÇÕES DE SETA
+
+- Funções de seta (arrow functions) são uma ótima maneira de simplificar a sintaxe das funções na ES2015;
+- Podemos simplificar a sintaxe do código na qual podemos omitir a palavra reservada `function` usando `=>`;
+- Se a função tiver uma única instrução,podemos usar uma versão mais simples, omitindo a palavra reservada `return` e as chaves;
+- Se a função não recebe nenhum argumento, usamos parênteses vazios, comumente usados na ES5;
+
+---
+
+## 2.10 - VALORES DEFAULT PARA PARÂMETROS DE FUNÇÕES
+
+- Com o ES2015 , podemos também definir valores default para os parãmetros das funções;
+- As funções possui um objeto embutido chamado `arguments`. Esse objeto é um array dos argumentos usados quando a função é chamada.
+  - Podemos acessar dinamicamente os argumento e usá-los, mesmo que saibamos o nome deles;
+- Com a ES2015, podemos economizar algumas linhas de código usando a funcionalidade de valores default para parâmetros;
+
+---
+
+## 2.11 - DECLARANDO OS OPERADORES DE ESPALHAMENTO E REST
+
+- O ES5 podemos transformar arrays em parâmetros usando a função `apply()`;
+- No ES2015 existe um operador de espalhamento (spread operation) representado por `...`;
+- O operador de espalhamento pode ser usado como um parâmetro rest em funções para substituir `arguments`;
+
+---
+
+## 2.12 - PROPRIEDADES MELHORADAS DE OBJETOS
+
+- A ES6 introduiu um conceito chamado de `desestruturação de array`, é uma maneira de inicializar variáveis de uma só vez;
+- A destruturação de array também pode ser usada para trocar valores de uma só vez, sem a necessidade de criar variáveis `temp`;
+- Esse recurso pode ser muito utilizado em algoritmos de ordenação, pois essa troca de valores são muito comuns;
+- Há também outra funcionalidade chamada de `abreviação de propriedades`, que é outra maneira de executar a desestruturação de objetos;
+- Outra funcionalidade é a chamada `nomes de métodos abreviados`. Ela permite que osdesenvolvedores declarem funções dentro de objetos, como se elas fossem propriedades;
+
+---
+
+## 2.13 - PROGRAMAÇÃO ORIENTADA A OBJETOS COM CLASSES
+
+- Com a ES2015, podemos simplificar a sintaxe de classes;
+- podemos usar a palavra reservada `class` e declarar uma classe com uma função `constructor`;
+- As classes da ES2015 são açucar sintático para a sintaxe baseada em protótipo;
+
+---
+
+## 2.14 - HERANÇA
+
+- Na ES2015, há também uma sintaxe simplificada para usar herança entre classes;
+- Podemos estender outra classe e herdar o seu comportamento usando a palavra reservada `extends`.
+- No constructor, podemos usar a referencia `super`;
+- Embora a sintaxe dessa nova forma de declarar classes seja muito parecida com outras linguagens, vale lembrar que a programação orientado a objetos em JavaScript é feita por meio de um protótipo;
