@@ -42,3 +42,32 @@
 ---
 
 ## 2.4 - USANDO BABEL.JS
+
+- O Babel é um transpilador JavaScript;
+- Também é conhecido como compilado de fonte para fonte;
+- Ele converte código JavaScript com recursos da linguagem ECMAScript em um código equivalente que usa recursos da linguagem da especificação ES5.
+- O Babel pode ser instalado de acordo com as configurações ou pode ser usado diretamente no navegador utilizando a opção `Try it Out`
+
+---
+
+## 2.5 - FUNCIONALIDADE DAS VERSÕES ECMASCRIPT 2015+
+
+- variáveis com let e const;
+- templates literais;
+- desestruturação (destructuring);
+- operador de espalhamento (spread operator);
+- funções de seta (arrow functions) usando =>;
+- classes;
+- módulos.
+
+---
+
+## 2.6 - LET E CONST NO LUGAR DE VAR
+
+- Ter duas variáveis com o mesmo nome, pode ser perigoso e pode levar o código a gerar um resultado incorreto;
+- Para resolver esse problema, no ES2015, uma nova palavra reservada chamada `let` foi introduzida;
+- Agora podemos substituir a palavra `var` por `let`;
+- A ES2015 também introduziu a palavra `const`, que tem o mesmo comportamento que a palavra `let`, a diferença é que constantes tem um valor somente para leitura;
+- Ao trabalhar com objetos, uma constante (`const`), permite que as propriedades do objetos recebam novos valores, mas a refeência de memória da variável em si, não pode ser alterado,o que significa que ela não pode receber um novo valor;
+
+---
