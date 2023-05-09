@@ -139,3 +139,79 @@
 - Podemos estender outra classe e herdar o seu comportamento usando a palavra reservada `extends`.
 - No constructor, podemos usar a referencia `super`;
 - Embora a sintaxe dessa nova forma de declarar classes seja muito parecida com outras linguagens, vale lembrar que a programação orientado a objetos em JavaScript é feita por meio de um protótipo;
+
+---
+
+## 2.15 - TRABALHANDO COM GETTER E SETTERS
+
+- É possível criar fonções getters e setters para s atributos de classe com a ES2015;
+- Para declarar uma função `get` e uma função `set`, basta usar a palavra get e set na frente do nome da função;
+- Podemos declarar os atributos da classe com o mesmo nome, ou podemos usar um underscores na frente do atributo para transparecer que esse atributo é privado;
+- Para usar as funções get e set, podemos simplismente referenciar seus nomes ocmo se fossem atributos simples;
+
+---
+
+## 2.16 - OPERADORES DE EXPONENCIAL
+
+- O operador de exponecial pode ser conveniete quando trabalhamos com matemática;
+- A função `Math.pow` pode ser usada para calcular a área de um círculo;
+- A ES2016 introduziu o operador `**`, concebido para ser o novo operado de exponencial;
+- As versões ES2015+ também tem outras funcionalidade:
+  - interadores
+  - arrays tipados
+  - Set
+  - Map
+  - WeakSet
+  - WeakMap
+  - chamadas de cauda (tail calls)
+  - for..of
+  - Symbal
+  - Array.prototype.includes
+  - vírgulas no final
+  - preenchimento de string
+  - métodos estáticos de objetos
+
+## 2.17 - MÓDULOS
+
+- O AMD é um padrão JavaScript para módulos;
+- O `RequireJS` é a implementação mais conhecida de AMD.
+- Basicamente, os módulos são um código JavaScript declarado em arquivos separado;
+- Podemos importar as funções, as variáveis e as classes de outros arquivos diretamente no código JavaScript;
+- Os módulos nos permitem organizar melhor o código, quando trabalhados em um projeto grande ou criando bibliotecas;
+- Há a opção de usar o membro exportado com um nome diferente;
+- Ou podemos renomear as funções quando elas forem exportadas;
+- Há algumas formas diferentes para importar as funções em um módulo distinto;
+- Podemos importar o módulo todo como uma única variável e chamar os membros exportados como se fossem atributos ou métodos de uma classe;
+- Também é possível adicionar a palavra reservada `export` na frente de cada função ou variável que queremos expor;
+
+---
+
+## 2.18 - EXECUTANDO MÓDULOS ES2015 NO NAVEGADOR E COM O NODE.JS
+
+- Na execução do código podemos perceber que o Node.js não suporta a sintaxe `import`, por isso é necessário a utilização da palavra reservada `require`;
+
+---
+
+## 2.19 - USANDO IMPORTAÇÕES NATIVAS DO ES2015 NO NODE.JS
+
+- A partir do Node 8.5 podemos usar importações da ES2015 no Node.js como uma funcionalidade experimental;
+- Par isso podemos utilizar no nome da extensão `.mjs` em vez de usar `.js`;
+
+---
+
+## 2.20 - EXECUTANDO MÓDULOS ES2015 NO NAVEGADOR
+
+- Há diferentes abordagens para executar um código com ES2015 no navegador;
+  - A primeira é disponibilizar o bundle tradicional utilizando usando ferramentas populares, como `Browserify` e `Webpack`;
+  - A segunda forma, é importar os módulos criados e adicionar `type="module"` dentro da tag `script;
+  - Para manter a compatibilidade com versões anteriores de navegadores que não aceitam essa funcionalidade, podemos usar `nomodule`;
+
+---
+
+## 2.21 - COMPATIBILIDADE DE VERSÕES ANTERIORES A ES2015+
+
+As versões ES2015+ são superconjuntos da linguagem JavaScript. Tudo que foi padronizado como ES5 continuará funcionando como hoje. No entanto, você pode começar a usar versões ES2015+ para tirar proveito da nova sintaxe e deixar o seu código mais simples e mais fácil de ler.
+
+---
+
+## 2.22 - INTRODUÇÃO AO TYPESCRIPT
