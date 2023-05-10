@@ -215,3 +215,66 @@ As versões ES2015+ são superconjuntos da linguagem JavaScript. Tudo que foi pa
 ---
 
 ## 2.22 - INTRODUÇÃO AO TYPESCRIPT
+
+- TypeScript é um superconjunto `gradualmente tipado` de JavaScript, com código aberto, criado pela Microsoft;
+- Foi criado para permitir que os desenvolvedores potencializassem a linguagem JavaScript;
+- Além disso, também foi desenvolvido para facilitar que as aplicações fossem escaladas.
+- Entre os principais recursos está a possibilidade de usar tipagem em variáveis JavaScript;
+- Os tipos em JavaScript permitem verificar estática, facilitando, assim, refatorar o código e encontrar bugs;
+- O TypeScript compila gerando código JavaScript simples;
+- Para começar a usá-lo, é necessário instalá-lo usando: `npm install -g typescript`;
+- Depois é preciso criar um arquivo com a extensão `.ts`;
+- Embora o TypeScript faça toda a verificação de tipos e de erros em tempo de compilação, ele não impede que o compilador gere código JavaScript. Isso pode ser uma vantagem para os desenvolvedores que podem obter um código JavaScript com menos chance de ter erros ou bugs;
+
+---
+
+## 2.23 - INFERÊNCIA DE TIPO
+
+- O TypeScript nos permite atribuir um tipo a uma variável;
+- A linguagem tem inferência de tipos, o que significa que ele verifica e aplica um tipo a uma variável automaticamente, com base no valor atribuído a ela;
+- Se declararmos a variável e não a inicializarmos com um valor, é recomendável atribuir-lhe um tipo;
+- Se não for atribuido um tipo para uma variiável, ela será automaticamente tipada como `any`, o que significa que poderá receber qualquer valor, como ocorre em JavaScript;
+
+---
+
+## 2.24 - INTERFACES
+
+- Em TypeScript, há dois conceitos de interfaces;
+  - O primeiro está relacionado à atribuição de um tipo a uma variável;
+    - Esse conceito de interface em TypeScript é que uma interface deve existir.
+    - É uma descrição de atributos e de métodos que um objeto dever ter;
+  - O segundo conceito de interface no TypeScript está relacionado à programação orientado a objetos;
+    - Uma interface é um contrato;
+    - Nele, podemos definir o comportamento que as classes ou as interfaces que implementarão esse contrato devem ter;
+
+---
+
+## 2.25 - GENÉRICOS
+
+- Outro recurso eficaz do TypeScript, é útil em estrutura de dados e algoritmos, é o conceitode genérico;
+- Com ele podemos definir o tipo de objeto e passar um T dinamicamente para a interface usando um operador `<>`, especificando o tipo do argumento da função;
+- Esse recurso é útil para qu possamos garantir que estamos comparando objetos do mesmo tipo;
+- Ao usar essa funcionalidade, também teremos o recurso de preenchimento de código no editor;
+
+---
+
+## 2.26 - OUTRAS FUNCIONALIDADES DO TYPESCRIPT
+
+- Essa foi uma introdução muito rápida ao TypeScript. A documentação do TypeScript é um ótimo local para conhecer todas as outras funcionalidades e explorar os detalhes;
+- O TypeScript também tem um playground online em https://www.typescriptlang.org/play/index.html, o qual pode ser usado para executar alguns exemplos de código;
+
+---
+
+## 2.27 - VERIFICAÇÕES DO TYPESCRIPT EM TEMPO DE COMPILAÇÃO EM ARQUIVOS JAVASCRIPT
+
+- Alguns desenvolvedores ainda preferem usar JavaScript puro para desenvolver o seu código, em vez de utilizar o TypeScript;
+- A boa notícia é que o TypeScript apresenta uma funcionalidade especial que nos permite ter essa verificação de erros e de tipos em tempo de compilação! Para usá-la, precisamos do TypeScript instalado globalmente em nosso computador;
+- A verificação de tipos é ativada quando adicionamos JSDoc;
+
+---
+
+## RESUMO
+
+Neste capítulo, apresentamos uma visão geral de algumas das funcionalidades das versões ECMAScript 2015+, que nos ajudarão a
+simplificar a sintaxe dos exemplos que veremos no futuro. Também apresentamos o TypeScript para nos ajudar a tirar proveito da tipagemestática e da verificação de erros. No próximo capítulo, veremos a nossa primeira estrutura de dados, o array
+– a estrutura de dados mais básica que existe, aceita de modo nativo por muitas linguagens, incluindo o JavaScript.
