@@ -7,3 +7,5 @@ Array.prototype.insertFirstPosition = function (value) {
   this[0] = value;
 };
 numbers.insertFirstPosition(-1);
+
+console.log(numbers);

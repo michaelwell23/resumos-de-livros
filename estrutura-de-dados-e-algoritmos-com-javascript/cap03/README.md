@@ -86,3 +86,43 @@ A classe array de JavaScript também tem um método chamado `unshift`, que inser
   - Essa forma, utilizando o laço, é somente usado como finalidade pedagógica, não deve ser utilizado em projetos de verdade;
 
 ## 3.11 - USANDO O MÉTODO SHIFT
+
+- Para remover um elemento do início do array, use o método `shift`;
+- Os métodos `shift` e `unshift` permitem que um array emule uma estrutura de dados básica de fila (queue);
+
+---
+
+## 3.12 - ADICIONANDO E REMOVENDO ELEMENTOS DE UMA POSIÇÃO ESPECÍFICA
+
+- O método `splice` pode ser usado para remover um elemento de um array simplesmente especificado a posição/índice a partir do qual queremos fazer a remoção e a quantidade de elementos que gostaríamos de remover;
+- Assim como em arrays e objetos JavaScript, também podemos usar o operador `delete` para remover um elemento de um array;
+
+---
+
+## 3.13 - ARRAYS BIDIMENSIONAIS E MULTIDIMENSIONAIS
+
+- Uma `matriz` pode ser usada para armazenar informações;
+- JavaScript aceita apenas arrays unidimencionais, não possui suporte para matrizes;
+- Podemo implementar qualquer arra multidimencional, usando array de arrays;
+
+---
+
+## 3.14 - ITERANDO PELOS ELEMENTOS DE ARRAYS BIDIMENCIONAIS
+
+- Para ver a saída de uma array de arrays, podemos criar uma função genérica;
+- É necessário percorrer todas as linhas e colunas com um laço;
+- Devemos usar um laço for aninhado, em que a variável `i` representa as linhas e `j` representa as colunas;
+- o valor de parâmetro da função representa um array, que precisamos iterar pelas posições dela no laço aninhado;
+- Para exibir um array bidimencional no console do navegador, podemos também usar a instrução `console.table(averageTemp)`. Com ela, teremos uma saída mais elegante;
+
+---
+
+## 3.15 - ARRAYS MULTIDIMENSIONAIS
+
+- É possível também trabalhar com arrays multidimensionais em JavaScript;
+- Não importa quantas dimensões temos na estrutura de dados, precismoas percorrer cada dimensão com um laço a fim de acessar a célula;
+- Se tivéssemos uma matriz `3 x 3 x 3 x 3`, teríamos quatro instruções `for` aninhadas em nosso código;
+
+---
+
+## 3.16 - REFERÊNCIAS PARA MÉTODOS DE ARRAY EM JAVASCRIPT
