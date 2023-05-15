@@ -126,3 +126,65 @@ A classe array de JavaScript também tem um método chamado `unshift`, que inser
 ---
 
 ## 3.16 - REFERÊNCIAS PARA MÉTODOS DE ARRAY EM JAVASCRIPT
+
+- Os arrays em JavaScript são objetos modificados, que significa que todo array que criamos terá alguns métodos disponíveis para uso;
+- Os arrays em JavaScript são muito eficazes e tê mais recursos disponíveis que os arrays primitivos em outra linguagens;
+- Podemos escrever funções básicas por conta própria, como acrescentar e remover elementos no meio da estrutura de dados;
+
+Abaixo, há uma lista dos métodos essenciais disponíveis em um objeto array:
+
+|   Método   | Descrição                                                                                                    |
+| :--------: | :----------------------------------------------------------------------------------------------------------- |
+|   concat   | Junta vários aarrays e devolve uma cópia dos arrays concatenados                                             |
+|   every    | Itera por todos os elementos do array, verificando uma condição desejada até que `false` seja devolvido      |
+|   filter   | Cria um array com todos os elementos avaliados com `true` pela função especifica                             |
+|  foreach   | Executa uma função específica em cada elemento do array.                                                     |
+|    join    | Reúne todos os elementos do array em uma string.                                                             |
+|  indexOf   | Pesquisa o array em busca de elementos específicos e devolve a sua posição.                                  |
+| lasIndesOf | Devolve a posição do último item do array que corresponda ao critério de pesquisa.                           |
+|    map     | Cria outro array a partir de uma função que contém o critério/condição e devolve os elementos do array que   |
+|            | correspondam ao critério.                                                                                    |
+|  reverse   | Inverte o array, de modo que o último item se torne o primeiro, e vice-versa.                                |
+|   slice    | Devolve um novo array a partir do índice especificado.                                                       |
+|    some    | Itera por todos os elementos do array, verificando a condição desejada (função) até que true seja devolvido. |
+|    sort    | Organiza o array em ordem alfabética ou de acordo com a função especificada.                                 |
+|  toString  | Devolve o array na forma de uma string.                                                                      |
+|  valueOf   | É semelhante ao método toString e devolve o array na forma de uma string.                                    |
+
+Alguns desses métodos são muito úteis quando tralhados com `programação funcional
+
+---
+
+## 3.17 - JUNTANDO VÁRIOS ARRAYS
+
+- Considere um cenário em que há vários arrays diferentes e precisamos juntar todos eles em um único array;
+- A linguagem JavaScript já tem um método chamado `concat` capaz de fazer isso;
+- Ele pode receber quantos arrays e objetos/elementos forem necessários para o array;
+- Os arrays são concatenados no arra especificado na ordem em que os argumento forem passado para o método;
+
+---
+
+## 3.18 - FUNÇÕES DE INTERAÇÃO
+
+- Ás vezes, precisamos iterar pelos elementos de um array, e podemos fazer isso usando um laço;
+- A linguagem JavaScript tem alguns métodos de iteração embutidos, que podem ser usado com arrays;
+- Podemo exemplificar uma condição utilizando `?` caso a condição for _true_ ou `:` caso a condição for _false_;
+- Também podemos utilizar a ` função de de seta` para deixar a função ainda mais curta e legivel;
+
+---
+
+## 3.19 - ITERANDO COM O MÉTODO EVERY
+
+- O primeiro método que analisaremos é o `every`, o qual itera pelos elementos do array até a função devolva o primeiro `false`, e assim a iteração é interrompida
+
+---
+
+## 3.20 - ITERANDO COM O MÉTODO SOME
+
+- O método `some` apresenta um comportamento contrário ao método `every`;
+- O método `some` itera pelos elementos do array até que a função devolva `true`;
+- Após o returno de `true` a interação é interrompida;
+
+---
+
+## 3.21 - ITERANDO COM FOREACH
