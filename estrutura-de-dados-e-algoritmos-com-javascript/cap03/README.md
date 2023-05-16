@@ -188,3 +188,103 @@ Alguns desses métodos são muito úteis quando tralhados com `programação fun
 ---
 
 ## 3.21 - ITERANDO COM FOREACH
+
+- Também podemos fazer uma ineração em todo o array utilizando a função `forEach`. O resultado será o mesmo que usar um laço for com o código da função dentro dele;
+
+---
+
+## 3.22 - USANDO MAP E FILTER
+
+- A liguagem JavaScript tem outros dois métodos iteradores que devolve um novo array com um resultado;
+- O primeiro é o `map`. Ele retorna um array com o resultado da função passada como parâmetro dentro do método, podendo saber o resultado de cada iteração;
+- O outro método é o `filter`, o qual devolve um novo array com os elementos para os quais a função devolveu `true`;
+
+---
+
+## 3.23 - USANDO O MÉTODO REDUCE
+
+- Por fim, temos o método `reduce`;
+- Podemos usar essa função para devolver um valor que será somado a uma acumulador, o qual será devolvido depois que o método `reduce` parar de executar.
+- Isso pode ser útil ao somar todos os valores de um array;
+
+- Os métodos `map`, `filter` e `reduce` constituem a base da programação funcional em JavaScript;
+
+---
+
+## 3.24 - ECMASCRIPT 6 E AS NOVAS FUNCIONALIDADE DE ARRAY
+
+- A linguagem JavaScript tem novas funcionalidade baseadas nas especificações do `ECMAScript 2015 (ES6 OU ES2015)` ou em especificações mais recentes;
+- Abaixo, há uma lista dos novos métodos adicionados:
+
+|   Método   | Descrição                                                                                                                                            |
+| :--------: | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
+| @@iterator | Devolve um objeto iterador que contém os pares chave/valor do array; pode ser chamado sincronamente para obter a chave/valor dos elementos do array. |
+| copyWithir | Copia uma sequência de valores do array na posição de um índice de início.                                                                           |
+|  entries   | Devolve @@iterator, que contém pares chave/valor.                                                                                                    |
+|  includes  | Devolve true caso um elemento seja encontrado no array, e false caso contrário. Foi adicionado na ES2016.                                            |
+|    find    | Busca um elemento no array, dada uma condição desejada (função de callback), e devolve o elemento caso seja encontrado.                              |
+| findIndex  | Busca um elemento no array, dada uma condição desejada (função de callback), e devolve o índice do elemento caso seja encontrado.                    |
+|    fill    | Preenche o array com um valor estático.                                                                                                              |
+|    from    | Cria um novo array a partir de um array existente.                                                                                                   |
+|    keys    | Devolve @@iterator, contendo as chaves do array.                                                                                                     |
+|     of     | Cria um novo array a partir dos argumentos passados para o método.                                                                                   |
+|   values   | Devolve @@iterator, contendo os valores do array.                                                                                                    |
+
+- Junto com esses métodos, a API de Array também provê uma forma de iterar pelo array com o objeto `Iterator`, que pode ser obtido da instância do array e usado no laço `for...of`;
+
+---
+
+## 3.25 - ITERANDO COM O LAÇO FOR...OF
+
+- A ES2015 introduziu o laço `for...of` para iterar pelos valores de um array;
+
+---
+
+## 3.26 - USANDO O OBJETO @@iterator
+
+- A classe Array tem uma propriedade chamada @@iterator introduzida na ES2O15;
+- Para utilizá-la, é necessário acessar a propriedade `Symbol.iterator` do array;
+- Podemos chamar individualmente o método `next` do iterador para obter o valor seguinte do array;
+- Também podemos aprensetar todos os valores de um array usando o métodp `for...of`;
+- Quando fizermos a iteração pelo array e não houver mais valores para iterar, o código `iterator.next()` retornará `undefined`;
+
+---
+
+## 3.27 - MÉTODOS ENTRIES, KEYS E VALUES DE ARRAY
+
+- A ES2015 também introduziu três formas de obter interadores de um array;
+  - A primeira é o método `entries` que devolve `@@iterator` que contém pares chave/valor;
+    - Ser capaz de obter pares chave/valor é muito conveniente quando se está trabalhando com conjuntos, dicionários e maras de hash;
+  - O método `keys` devolve `@@iterator`, que contém as chaves do array;
+    - Quando não há mais valores para iterar, o código `aKeys.next()` devolverá `undefined` como value e done como true. Se done tiver valor false,significa que ainda há mais chaves para iterar no array;
+  - O método `values` que devolve `@@iterator`, que contém os valores do array;
+- É bom lembrar que nem todas as funcionalidades da ES2015 são tratadas pelos navegadores. Por esse motivo, a melhor maneira de testar esse código é com o Babel;
+
+---
+
+## 3.28 - USANDO O MÉTODO FROM
+
+- O método `Array.from` cria outro array a pertir de um array existente;
+- Também é possível passar uma função para que possamos determinar quais valores queremos mapear;
+
+---
+
+## 3.29 - USANDO O MÉTODO ARRAY.of
+
+- O método `Array.of` cria um outro array a partir dos argumento passados para o método;
+- Também podemos usar esse método para fazer uma cópia de um array existente;
+
+---
+
+## 3.30 - USANDO MÉTODO FILL
+
+- O método `fill` peenche o array com um valor;
+- Podemos preencher o array com s vales inseridos como argumento;
+- Se for inserido um único valor todos os valores do array terão aquele valor;
+- Podemos passar dois valores onde o primeir valor representa a valor e o segundo valor representa o a chave, fazendo com que todos os valores restantes daquela posição sejam preenchidos com o valor da primeira posição;
+- Também é possível passar um terceiro valor, para determinar o índice final do valor, fazendo com que os valores entre o segundo argumento e o terceiro argumento seja preenchidos com o valor do primeiro argumento;
+- O método `fill` é ótimo se quisermos criar um array e inicializar seus valores;
+
+---
+
+## 3.31 -USANDO MÉTODO copyWithin
