@@ -288,3 +288,85 @@ Alguns desses métodos são muito úteis quando tralhados com `programação fun
 ---
 
 ## 3.31 -USANDO MÉTODO copyWithin
+
+- O método `copyWithin copia uma sequência de valores do array para a posição de um índice de ínicio;
+- Soponhamos que queremos copiar os valores 4,5,6 para as primeiras três posições do array, o resultado no array será [4,5,6,4,5,6].
+
+---
+
+## 3.32 - ORDENANDO ELEMENTOS
+
+- O JavaScript possui um método de ordenação e dois métodos de pesquisa disponíveis;
+- o método `reverse` pode ser aplicado, o último item será o primeiro e vice-versa;
+- Também podemos utilizar o `sort`;
+  - Ele não ordena numeros corretamente;
+  - Isso ocorre por que o método `sort` deixa os elementos em ordem lexicogáfica e pressupões quee todos so elemento são strings;
+  - O `sort` pode recever um pârametro de função, assim podemos criar uma função e passá-la para o `sort`e ter como resultado um array em ordem crescente;
+
+---
+
+## 3.33 - ORDENAÇÃO PERSONALIZADA
+
+- Podemos ordenar um array que tena qualquer tipo de objeto e passar para o `sort`uma função que compara os elementos de acordo com o que for necessário;
+- Suponhamos que queremos ordenar um objeto de pessoa de acordo com a idade;
+- Podemos criar uma função que compara as idades de cada elemento do array e depois passá-la como parametro do método `sort`;
+
+---
+
+## 3.34 - ORDENANDO STRINGS
+
+Um dos problemas das comparações me JavaScript é que ea linguagem compara os caracteres de acordo com o seu valor `ASCII`. Nessa forma de comparação, as letras são convertidas para um numero que representa os caracteres nesse valor, depois o método compara esses numeros de acordo com a ordem. Por exemplo, A,J,a e j têm os seguintes valores ASCII decimais: A: 65, J: 74, a: 97 e j: 106. Como podemos perceber, as letras maíusculas vêm primeiro nos valores ASCII. A melhor forma de ordenar os elementos do array é utilizando o método `laceleCompare` dentro da função `sort`;
+
+---
+
+## 3.35 - PESQUISA
+
+Temos duas opções para pesquisa: o método `indexOf`, que devolve o índice do primeiro elemento correspondente ao argumento passado, e `lastIndexOf`, que devolve o índice do último elemento encontrado, correspondente ao argumento passado.
+
+---
+
+## 3.36 - ECMASCRIPT 2015 - OS MÉTODOS FIND E FINDINDEX
+
+Os métodos find e findIndex recebem uma função de callback, a qual buscará um valor que satisfaça a condição presente na função de teste. A diferença entre find e findIndex é que o método find devolve o primeiro valor do array que satisfaça a condição proposta. O método findIndex, por outro lado, devolve o índice do primeiro valor do array que satisfaça a condição. Caso o valor não seja encontrado, undefined serádevolvido.
+
+---
+
+## 3.37 - ECMASCRIPT 2016 - USANDO O MÉTODO INCLUDES
+
+- O método includes devolve true caso um elemento seja encontrado no array, e false caso contrário;
+- Também podemos passar um índice a partir do qual queremo que o array faça a pesquisa do valor;
+
+---
+
+## 3.38 - CONVRTENDO UM ARRAY EM UMA STRING
+
+- Se quisermos exibir todos os elementos de um array em uma única string, podemos usar o método `toString`;
+- Se quisermos separar os elementos com um separador diferente da vírgula, podemos utilizar o `join`;
+
+---
+
+## 3.39 - CLASSE TYPEARRAY
+
+Podemos armazenar qualquer tipo de dado em arrays JavaScript. Isso se deve ao fato de os arrays JavaScript não serem fortemente tipados.
+`TypedArray` foi criado para que pudéssemos trabalhar com arrays contendo um único tipo de dado. A sua sintaxe é `let myArray = new TypedArray`(length), em que `TypedArray` deve ser substituído por uma classe `TypedArray`, conforme especificado na tabela a seguir:
+
+![Tabela typepArray](/cap03/img/img3_40.png)
+
+---
+
+## 3.40 - ARRAY EM TYPESCRIPT
+
+- Todo o código-fonte deste capítulo é um código TypeScript válido. A diferença é que o TypeScript fará verificação de tipos em tempo de compilação para garantir que estejamos manipulando somente arrays nos quais todos os valores tenham o mesmo tipo de dado.
+- Por causa da inferência de tipo, o TypeScript entende que a declaração do array numbers é igual a `const numbers: number[]`. Por esse motivo, não precisamos sempre declarar explicitamente o tipo da variável se ela for inicializada em sua declaração.
+
+---
+
+## RESUMO
+
+Neste capítulo, descrevemos a estrutura de dados mais usada em programação: os arrays. Vimos como declarar, inicializar e atribuir valores, assim como acrescentar e remover elementos. Conhecemos os arrays bidimensionais e multidimensionais, bem como os principais métodos de um array, os quais serão muito úteis quando começarmos a criar os nossos próprios algoritmos em capítulos futuros.
+
+Também conhecemos os novos métodos e funcionalidades acrescentados na classe Array nas especificações ECMAScript 2015 e 2016.
+
+Por fim, vimos também como garantir que o array contenha somente valores do mesmo tipo usando TypeScript ou o seu recurso de verificação em tempo de compilação, para arquivos JavaScript.
+
+No próximo capítulo, veremos as pilhas, que podem ser tratadas como arrays com um comportamento especial.
