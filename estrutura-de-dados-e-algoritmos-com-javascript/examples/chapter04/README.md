@@ -89,3 +89,57 @@
 ---
 
 ## 4.9 - CRIANDO UMA CLASSE JAVASCRIPT STACK BASEADA EM OBJETO
+
+- AO trabalhar com um conjunto grande de dados, também é necessário analisar qual é o modo mais eficaz de manipular os dados;
+- Para a maioria dos métodos, devemos iterar pelo array até encontrarmos o elmento que estamos procurando e, no cenário de pior caso, faremos a iteração por todas as posições do array, considerando que `n` é o tamanho do array;
+- Se o array tiver mais elementos, demorará mais para iterar pelos elementos, em comparação com um array com menos elementos;
+- Um array é um conjunto ordenado de elementos, e para mentê-los assim, seria necessário ter mais espaço na memória também;
+- Seria melhor se pudéssemos acessar diretamente o elemento, usar menos espaço de memória e continuar tendo todos os elementos organizados conforme fosse necessário;
+- No cénario de uma estrutura de dados de pilha, é possível usar um objeto para armazenar os elementos da pilha, mentê-los em ordem e obedercer igualmente ao princópio LIFO;
+- Nessa versão da classe `Stack`, usaremos uma propriedade `count` para ajudar a manter o controle do tamnho da pilha;
+
+---
+
+## 4.10 - PUSH DE ELEMENTOS NA PILHA
+
+- Como estamos trabalhando com um objeto, essa versão do método `push` permite fazer push somente de um único elmento de cada vez;
+- Em JavaScript, um objeto é um conjunto de pares `chave` e `valor`. Para adicionar `element` à pilha, podemos usar a variável `count` como a chave do objeto `items`, e `element` será o seu valor;
+- Depois de fazer push do elemento na pilha, incrementamos `count`;
+
+---
+
+## 4.11 - VERFICANDO SE A PILHA ESTÁ VAZIA E O SEU TAMANHO
+
+- A propriedade `count` também funciona como o tamanho da pilha;
+- Para o método `size`, podemos simplesmente devolver a propriedade `count`;
+- Para verificar se a pilha está vazia, podems compara se o valor de `count` é 0;
+
+---
+
+## 4.12 - POP DE LEMENTOS DE PILHA
+
+- Por não utilizarmos array para armaznar os elementos teremos que implementar a lógica para remover um elemento;
+- O método `pop` pode retornar o elemento que foi removido da pilha;
+- Para remover um elemento inicialmente devemos:
+  - verificar se a pilha está vazia, e se estiver vazia devolver o valor `undefined`;
+  - Se a pilha não estiver vazia decrementamos a propriedade `count`;
+  - Armazenar o valor do topo da pilha para ser devolvido depois que o elemento for removido;
+- Como estamos trabalhando com um objeto, para remover um valor específico de um objeto, podemos usar o operador `delete`;
+- Para acessar o elemento do topo da pilha (último elemento adicionado: 8), precisamos acessar a chave com o valor 1. Então decrementamos a variável count de 2 para 1. Podemos acessar items[1], apagá-lo e devolver o seu valor;
+
+---
+
+## 4.13 - DANDO UMA ESPIDA NO TOPO E LIMPANDO A PILHA
+
+- Para limpar a pilha, basta reiniciá-la com os mesmo valores usados no contrutor;
+- Também poderíamos usar uma lógica utilizando o `while` para remover todos os elementos da pilha, respeitando o comportamento de LIFO;
+
+---
+
+## 4.14 - CRIANDO O MÉTODO toString
+
+- Para essa versão com objeto, criamos um método `toString` para que possamos exibir o conteúdo da pilha, de modo semelahnte a um array;
+- Se a pilha estiver vazia, basta devolver uma string vazia. Se não estiver, iniciamos a string com o primeiro elemento, que está na base da pilha;
+- Então fazemos uma iteração por todas as chaves da pilha, até o seu topo, adicionando uma vírgula, seguida do próximo elemento;
+- Se a pilha contiver um único elemento, a verficação da pilha e a interação por todas as chaves da pilha, não será executada;
+- Com o método toString, concluímos essa versão da classe Stack. Esse é também um exemplo de como ter diferentes versões de código. Para o desenvolvedor que usar a classe Stack, não importa se a versão com array ou com objeto será usada; ambas têm a mesma funcionalidade, mas, internamente, o comportamento é muito diferente;
