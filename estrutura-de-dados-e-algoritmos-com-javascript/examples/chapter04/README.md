@@ -143,3 +143,37 @@
 - Então fazemos uma iteração por todas as chaves da pilha, até o seu topo, adicionando uma vírgula, seguida do próximo elemento;
 - Se a pilha contiver um único elemento, a verficação da pilha e a interação por todas as chaves da pilha, não será executada;
 - Com o método toString, concluímos essa versão da classe Stack. Esse é também um exemplo de como ter diferentes versões de código. Para o desenvolvedor que usar a classe Stack, não importa se a versão com array ou com objeto será usada; ambas têm a mesma funcionalidade, mas, internamente, o comportamento é muito diferente;
+
+---
+
+## 4.15 - PROTEGENDO OS ELEMENTOS INTERNOS DA ESTRUTURA DE DADOS
+
+- Ao criar uma estrutura de dados ou um objeto que outros desenvolvedores poderão usar também, devemos proteger os elementos internos para que somente os métodos que expusermos sejam usados para modificar a estrutura interna;
+- Precisamos garantir que os elementos sejam adicionados no topo da pilha e que não sejam possível adicionar elementos em sua base nem em qualquer outra posição aleatória;
+- Usaremos a sintaxe ES2015 para criar a classe;
+- As classes ES2015 são baseadas em protótipo;
+- Embora uma classe baseada economize memória e escale melhor que as classes baseadas em funções, essa abordagem não nos permite declarar propriedades ou métodos `private`;
+- Agora vamos explorar outras abordagens que nos permite ter propriedades `private` em JavaScript;
+
+---
+
+## 4.16 - CONVENÇÃO DE NOMENCLATURA COM UNDESCORE
+
+- Alguns desenvolvedores preferem usar a convensão de nomenclatura com underscore para marcar um atributo como `private`;
+
+```js
+class Stack {
+  constructor() {
+    this._count = 0;
+    this._items = {};
+  }
+}
+```
+
+- Essa convenção consiste em inserir um underscore (\_) como prefixo no nome do atributo;
+- No entanto, essa opção é apenas uma convenção;
+- Ela não protege os dados e dependemos do bom senso do desenvolvedor que usará o nosso código;
+
+---
+
+## 4.17 - CLASSES ES2015 COM SÍMBOLOS NO ESCOPO
