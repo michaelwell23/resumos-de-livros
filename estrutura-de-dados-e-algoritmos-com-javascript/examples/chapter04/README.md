@@ -177,3 +177,69 @@ class Stack {
 ---
 
 ## 4.17 - CLASSES ES2015 COM SÍMBOLOS NO ESCOPO
+
+- A ES2015 indroduziu um tipo primitivo chamado `Symbol` que é imutável e pode ser usado como propriedade de um objeto;
+- Podemos declara a variável `_items` como um Symbol;
+- Inicializá-la com o valor no `constructor` da classe;
+- Para acessar a variável, basta susbtituir todas as ocorrências de `this.items` por `this[_items]`;
+- Essa abordagem oferece uma propriedade `private` false para a classe, pois o método `Object.getOwnPropertySymbols` tembám foi introduzido na ES6 e pode ser usado para obter todos os símbolos de propriedades declaradas na classe;
+- Como a propriedade `_items` é um array, podemos executar qualquer operação de array. Todavia não é isso que quermos, pois estamos trabalhando com uma pilha;
+
+---
+
+## 4.18 - CLASSES ES2015 COM WeakMap
+
+- Há um tipo de dado que podemos usar para garantir que a propriedae seja `private` em uma classe, e ele se chama `WeakMap`;
+- Um `WekMap` é capaz de armazenarum par de chave/valor, no qual a chave é um objeto e o valor poe ser um dado de qualquer tipo;
+  - Podemos declar uma variável items com um `WeakMap`;
+  - Definir i valor do items no constructor, especifiando `this` (referência da classe) como a chave do WeakMap e o array que representa a pilha como valor;
+  - E assim, obter o valor de `items` acessando o valor do `WeakMap`,passando `this` como a chave;
+- Com essa abordagem, o código não será de ler e não será possível herdar as propriedade que são private se estedermos essa classe;
+
+---
+
+## 4.19 - PROPOSTA PARA CAMPO DE CLASSE NA ECMAScript
+
+- O TypeScript tem um modificador `private` para propriedade e métodos de classe;
+- No entanto, esse modificado funciona smente em tempo de compilação;
+- O fato é que não é possível declarar propriedades ou métodos `private` como podemos fazer em outras linguagens de programação;
+- Há abordagens diferente com as quais podemos alcançar o mesmo resultado, mas cada uma delas tem os seus prós e contras no que diz respeito a uma sintaxe mais simples ou ao desempenho;
+- A melhor abordagem, dependerá do volume de dados a se lidar ou do número necessário de instância das classes que criarmos, entre restrições;
+- poderemos declarar campos de classes JavaScript diretamente no corpo da classe e inicializar as propriedades;
+- Será possível declarar propriedades private prefixando as propriedades com um símbolo de sustenido (#). Esse comportamento é muito semelhante à privacidade dos atributos com o `WeakMap`;
+- Desse modo, esperamos que, em breve, não precisaremos aplicar hacks nem comprometer a legibilidade do código para usar atributos private nas classes;
+
+---
+
+## 4.20 - RESOLVENDO PROBLEMAS USANDO PILHAS
+
+- As pilhas têm uma variedade de aplicações nos problemas do mundo real;
+- Elas podem ser usadas para problmas de backtrackin, a fim de lembrar as tarefas ou os caminhos visitados para desfazer ações;
+
+---
+
+## 4.21 - CONVERTENDO NÚMEROS DECIMAIS PARA BINÁRIOS
+
+- Já temos familiaridade com a base decimal;
+- No entanto, a representação binária é muito importante em ciência da computação, pois tudo em um computador é representado por dígitos binários;
+- Para converter um número decimal em uma representação binária, podemos dividir o número por 2 até o resultado da divisão seja 0;
+- JavaScript tem um tipo de dado numérico, mas não há uma distinção entre inteiros e números de ponto flutuante. Por esse motivo, devemos usar a função `Math.floor` a fim de obter somente o valor inteiro das operações de divisão. Por fim, fazemos pop dos elementos da pilha até que ela esteja vazia, concatenando os elementos removidos em uma string;
+
+---
+
+## 4.22 - ALGORITMO CNVRSOR DE BASE
+
+- Podemos modificar o algoritmo anterior para que ele funcione como um conversor de decimal para as bases entre 2 e 36;
+- Em vez de dividir o número decimal por 2, podemos passar a base desejada como argumento para o método e usá-la nas operações de divisão;
+
+---
+
+## RESUMO
+
+Neste capítulo, conhecemos a estrutura de dados de pilha. Implementamos o nosso próprio algoritmo para representar uma pilha usando arrays e um objeto JavaScript, e vimos como adicionar e remover elementos dela
+usando os métodos push e pop.
+
+Além disso, comparamos as diferentes sintaxes que podem ser usadas para criar a classe Stack, e apresentamos os prós e contras de cada uma.
+
+Também discutimos o modo de resolver um dos problemas mais famosos de ciência da computação usando pilhas.
+No próximo capítulo, conheceremos as filas, que são muito semelhantes às pilhas, porém usam um princípio que não é a LIFO.
