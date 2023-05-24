@@ -77,3 +77,74 @@
 ---
 
 ## 5.7 - LIMPANDO A FILA
+
+- Para limpar todos os elementos da fila, podemos chamar o método `dequeue` até que ele devolta `undefined`;
+- Ou podemos simplesmente reiniciar o valor das propriedades da classe `Queue` com os mesmo valores declarados em seu construtor;
+
+---
+
+## 5.8 - CRIANDO O MÉTODO toString
+
+- Depois de implementar a classe Queue, podemos acrescentar o método `toString`;
+- Como o primeiroa índice da classe `Queue` pode ser zero, começamos iterando a partir do índice `lowestCount`;
+- As classes `Queue` e `Stack` são parecidas!
+- A diferença está nos métodos `dequeue` e `peek`, que se deve à distinção entre os princípios FIFO e LIFO;
+
+---
+
+## 5.9 - USANDO A CLASSE QUEUE
+
+- Inicialmente devemos instanciar a classe `Queue` e verificar se ela está vazia;
+- Em seguida, podemos adicionar alguns elementos na fila;
+- Podemos executar alguns comandos:
+  - Se pedirmos para exibir o conteúdo da fila, os valores será retornados na ordem em que os elementos foram adicionados;
+  - Se exibirmos o tamanho, ele será de acordo com o numero de elementos que adicionamos, pois é a quantidade de elementos adicionado na fila;
+  - Podemos remover dois elementos da fila chamando `dequeue` duas vezes;
+  - Ao exibir o conteúdo da fila novamente,podemos ver os últimos elementos que foram inseridos na fila. Isso significa que a classe está seguindo corretamente o princípio de FIFO;
+
+---
+
+## 5.10 - ESTRUTURA DE DADOS DEQUE
+
+- A estrutura de dados de `deque`, também conhecida como `fila de duas pontas`, é uma fila especial que nos permite inserir e remover elementos do final ou da frente da fila;
+- Uma aplicação comum de um deque é na armazenagem de uma lista de operações para desfazer ações (undo);
+- Sempre que um usuário executa uma operação no software, um push dessa operação será feito no deque;
+- Quando o usuário clicar no botão Undo (desfazer), uma operação de pop será efetuada no deque, o que significa que essa operação será removida do final;
+- Depois de um número predefinido de operações, as operações mais antigas serão removidas da frente do deque;
+- Como o deque implemente os princípios tanto FIFO quanto LIFO, pode-se dizer também que o deque combina as estruturas de dados de fila e de pilha;
+
+---
+
+## 5.11 - CRIANDO A CLASSE DEQUE
+
+- Para iniciar, criamos a classe `Deque` junto ao seu construtor;
+- Como deque é uma fila especial, podemos perceber que ele compartilha alguns trechos de código com o contrutor, tem mesmas propriedades internas e tem os seguintes métodos: `isEmpty`, `clear`, `size` e `toString`;
+- Pelo fato de que deque permite inserir e remover elementos das duas extremidades, também será adicionados alguns outros métodos:
+  - `addFront(element)`: esse método adiciona um novo elemento na frente do deque.
+  - `addBack(element)`: esse método adiciona um novo elemento no fim do deque (a mesma implementação do método enqueue da classe Queue).
+  - `removeFront()`: esse método remove o primeiro elemento do deque (a mesma implementação do método dequeue da classe Queue).
+  - `removeBack()`: esse método remove o último elemento do deque (a mesma implementação do método pop da classe Stack).
+  - `peekFront()`: esse método devolve o primeiro elemento do deque (a mesma implementação do método peek da classe Queue).
+  - `peekBack()`: esse método devolve o último elemento do deque (a mesma implementação do método peek da classe Stack).
+
+---
+
+## 5.12 - ADICIONANDO ELEMENTOS NA FRENTE DO DEQUE
+
+- Ao adicionar um elemento na frente do deque, há três cenários.
+  - O primeiro cenário é aquele em que o deque está vazio;
+    - Nesse caso, chamamos o método `addBack`.
+    - O elemento será adicionado no final do deque, que, nesse caso, também será a frente. O método addBack já tem a lógica necessária para incrementar a propriedade count, portanto podemos reutilizá-la a fim de evitar um código duplicado;-
+  - O segundo cenário é aquele em que um elemento é removido da frente do deque, o que significa que a propriedade `lowestCount` terá um valor
+    maior ou igual a 1;
+    - Nesse caso, basta decrementar a propriedade `lowestCount` e atribuir o elemento à chave desse objeto (posição).
+  - O terceiro e último cenário é aquele em que lowestCount é igual a 0 (zero);
+    - Poderíamos atribuir uma chave com um valor negativo e atualizar a lógica usada para calcular o tamanho do deque para avaliar também as chaves negativas;
+    - Nesse caso, a operação para adicionar um novo valor continuaria tendo o menor custo de processamento;
+- Para adicionar um novo elemento na primeira chave ou posição, devemos mover todos os elementos para a próxima posição a fim de deixar o primeiro index livre.
+- Como não queremos perder nenhum valor existente, começamos a iterar pelos valores existentes na propriedade items a partir de seu último índice, atribuindo-lhe o elemento que está em _index - 1_;
+- Depois que todos os elementos tiverem sidomovidos, a primeira posição estará livre e poderemos sobrescrever qualquer valor existente com o elemento que queremos adicionar no deque;
+
+---
+
+## 5.13 - USANDO A CLASSE DEQUE
