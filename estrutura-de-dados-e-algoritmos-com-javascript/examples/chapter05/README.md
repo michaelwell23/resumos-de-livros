@@ -148,3 +148,57 @@
 ---
 
 ## 5.13 - USANDO A CLASSE DEQUE
+
+- Depois da criação da classe Deque, podemos chamar o método;
+- Com a classe Deque, podemos chamar operações das classes Stack e Queue;
+
+---
+
+## 5.14 - RESOLVENDO PROBLEMAS USANDO FILAS E DEQUES
+
+- Depois de iplementar as classes Queue e Deque, podemos utilizá-las para resolver alguns problemas de ciência da computação;
+- Podemo simular um jogo de Batata Quente com filas;
+- Além de verificar se uma frase é um palíndromo usando deques;
+
+---
+
+## 5.15 - FILA CIRCULAR – BATATA QUENTE
+
+- Como as filas são aplicadas com frequência em ciência da computação e em nossas vidas, há algumas versões modificadas em relação à fila padrão que implementamos;
+- Uma versão modificada é a `fila circular`;
+- Um bom exemplo de fila circular é o jogo de Batata Quente. Para implementaruma simulação desse jogo, usaremos a classe Queue:
+  - Vamos obteruma lista de nomes e enfileirar todos eles;
+  - Dado um número, devemos iterar pela fila. Remover um item do início da fila e adicioná-lo no final para simular a batata quente;
+  - Uma vez que o número for alcançado, a pessoa que tiver a batata quente será eliminada;
+  - Quando restar apenas uma pessoa, ela será declarada a vencedora;
+- O jogo pode ter o número alterado passando para afunção a fim de simular enários diferentes;
+
+---
+
+## 5.16 - VEFICADOR DE PALÍNDROMO
+
+- Um palíndromo é uma palavra, frase, número ou outra sequência de caracteres que é lido igualmente de trás para frente ou de frente para trás, por exemplo, madam ou racecar;
+- Há diferentes algoritmos que podem ser usados para verificar se uma frase ou uma string é um palíndromo;
+- O modo mais fácil é inverter a string e compará-la com a string original. Se as duas strings forem iguais, teremos um palíndromo;
+- Também podemos usar uma pilha para fazer isso, mas amaneira mais fácil de resolver esse problema com uma estrutura de dados é usando um deque:
+  - Antes de começar a analisar a lógica do algoritmo, devemos verificar se a string passada como parâmetro é válida. Se não for, devolveremos false;
+  - Como podemos receber uma string com letras tanto minúsculas quanto maiúsculas, transformamos todas as letras em minúsculas e removemos também todos os espaços;
+  - Em seguida, inserimos todos os caracteres da string no deque usando enqueue;
+  - Enquanto tivermos elementos no deque e a string for um palíndromo, removemos um elemento da frente e um de trás;
+  - Para ser um palíndromo, os dois caracteres removidos do deque devem ser iguais. Se os caracteres não coincidirem, a string não será um palíndromo;
+
+---
+
+## 5.17 - FILAS DE TAREFAS EM JAVASCRIPT
+
+- Quando abrimos uma nova aba no navegador, uma fila de tarefas é criada;
+- Isso ocorre porque apenas uma única thread trata todas as tarefas de uma única aba, e ela é chamada de laço de eventos;
+- O navegador é responsável por várias tarefas, como renderizar o HTML, executar comandos com código JavaScript, tratar a interação com o usuário e executar e processar requisições assíncronas;
+
+---
+
+## RESUMO
+
+Neste capítulo, conhecemos a estrutura de dados de fila (queue). Implementamos o nosso próprio algoritmo para representar uma fila e vimos como adicionar e remover elementos dela usando os métodos enqueue e dequeue, de acordo com o princípio de FIFO. Também conhecemos a estrutura de dados de deque, aprendemos a adicionar elementos na frente e no final do deque e a remover elementos da frente ou do final dessa estrutura.
+
+Além disso, discutimos como resolver dois problemas famosos usando as estruturas de dados de fila e de deque: o jogo de Batata Quente (usando uma fila modificada: a fila circular) e um verificador de palíndromo usandoum deque.
