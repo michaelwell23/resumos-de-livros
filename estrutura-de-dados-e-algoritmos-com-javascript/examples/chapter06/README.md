@@ -42,3 +42,49 @@
 ---
 
 ## 6.4 - REMOVENDO ELEMENTOS DE UMA POSIÇÃO ESPECÍFICA DA LISTA LIGADA
+
+- Como no caso do método push, há dois cenários para remover elementos de uma lista ligada:
+  - O primeiro é aquele que removemos o primeiros elemento;
+    - Sequiser remover o primeiro elemento, basta fazer `head` apontar para o segundo elemento da lista;
+    - Fazendo uma referência ao primeiro elemento da lista;
+    - Assun, a variável `current` é uma referencia ao primeiro elemento da lista;
+  - O segundo é aquele que removemos qualquer elemento que não seka o primeiro; - Se queremos remover o último item ou um item do meio da lista,devemos iterar pelos nós da lista ligata até chegar à posição desejada;
+    - A variável `current` sempre fará refrência ao elemento atual da lista que estivermos percorrendo com um laço;
+    - Devemos ter uma referêncua ao elemento que estiver antes, chamado do `previous`;
+    - Depois de iterar até a posição desejada, a variável current armazenará o nó que queremos remover da lista ligada. Assim, para remover o nó
+      `current`, tudo que temos a fazer é ligar `previous.next` a `current.next`;
+    - Desse modo, o nó current ficará perdido na memória do computador e estará disponível para limpeza pelo coletor de lixo;
+
+---
+
+## 6.5 - PERCORRENDO A LISTA COM UM LAÇO ATÉ ALCANÇAR A POSIÇÃO DESEJADA
+
+- No método remove, devemos percorrer a lista com um laço até alcançar o index (posição) desejado;
+- O trecho de código para alcançar o index desejado com um laço é comum nos métodos da classe LinkedList;
+- Por esse motivo, podemos refatorá-lo e extrair a sua lógica em um método separado para que ele seja reutilizado em lugares diferentes;
+
+---
+
+## 6.6 - REFATORANDO O MÉTODO REMOVE
+
+- Podemos refatorar o método remove e usar o método `getElementAt` criado. Para isso, podemos substituir algumas linhas do código;
+
+---
+
+## 6.7 - INSERINDO UM ELEMENTO EM QUALQUER POSIÇÃO
+
+- A seguir, implementaremos o método insert, que possibilita inserir um `element` em qualquer posição
+- Como estamos lidando com posições (índices), devemos verificar se os valores não estão fora do interval;
+- Se o valor estiver fora do intervalo, devolveremos false para informar que nenhum item foi adicionado na lista;
+- Se a posição for válida, trataremos os diferentes cenários. O primeiro é aquele em que precisamos adicionar `element` no início da lista, isto é, na primeira posição;
+- temos a variável `current` que faz referência ao primeiro elemento da lista. O que precisamos fazer é definir o valor de `node.next` para `current`;
+- Em seguida, basta alterar a referência head para node, e teremos um novo elemento na lista.
+- Para adicionar `element`no meio ou no final da lista. Em primeiro lugar, devemos percorrer a lista com um laço até a posição desejada seja alcançada;
+- Ao sair do laço, a variável previous referenciará um elemento antes do index em que queremos inserir o novo elemento, e a variável current referenciará um element após a posição em que gostaríamos de inserir o novo elemento;
+- Portanto, em primeiro lugar, devemos fazer uma ligação entre o novo elemento (node) e current e, então, precisamos alterar a ligação entre previous e current. Devemos fazer previous.next apontar para node em vez de apontar para current;
+- Se tentarmos adicionar um novo element na última posição, previous será uma referência ao último item da lista, e current será undefined. Nesse
+  caso, node.next apontará para current, previous.next apontará para node e teremos um novo element na lista.
+
+---
+
+## 6.8 - MÉTODO INDEXOF: DEVOLVENDO A POSIÇÃO DE UM ELEMENTO
