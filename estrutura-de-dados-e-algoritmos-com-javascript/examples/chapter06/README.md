@@ -88,3 +88,63 @@
 ---
 
 ## 6.8 - MÉTODO INDEXOF: DEVOLVENDO A POSIÇÃO DE UM ELEMENTO
+
+- O próximo método a ser implementado é o método `indexOf`;
+- Ele é o método que recebe o valor de um elemento e devolve sua posição caso ele seja encontrado;
+- É preciso de uma variável que possa iterar pela lista, a variável `current`, e o seu primeiro valor é `head`;
+- Em seguida, iteramos pelos elementos, começando pelo `head` até que o tamanho da lista seja alcançado;
+- Em cada iteração, é verificado se o elemento que estamos procurando é o elemento no nó `current`;
+- Se o elemento que estamos procurando for o elemento em `current` devolvemos a sua posição. Se não for, iteramos para o próximo nó da lista;
+- O laço não será executado se a lista estiver vazia ou se alcançarmos o final dela. Se o valor não for encontrado, devolvemos -1;
+
+---
+
+## 6.9 - REMOVENDO O ELEMENTO DA LISTA LIGADA
+
+- Com o métdo `indexOf` criado, podemos implementar o método `remove`;
+- Se passarmos o valor do elemento, podemos determinar a sua posição e chamar o método `removeAt` passando a posição encontrada;
+- É muito mais simples, além de mais fácil, caso haja a necessidade de modificar o código do método `removeAt`;
+- Desse modo, não será preciso manter dois códigos para remover um item da lista. Só precisamos de um;
+- As retrições de limites também serão verficadas pelo método `removeAt`;
+
+---
+
+## 6.10 - MÉTODOS isEmpty, size e getHead
+
+- O método `size` devole o número de elementos da lista;
+- De modo diferente das classes que implementamos em capítulos anteriores, a variável `count` da lista é controlada interanamente, pois a classe foi implementada do zero;
+- O método `isEmpty` develverá _true_ se não houver nenhum elemento na lista, e _false_ caso contrátio;
+- A variável `head`é uma variável _privada_ da classe _LinkedList_ (pois supomos que somente os métodos da classe serão acessados);
+- Assim, se precismaos iterar pela lista fora da implementação da classe, podemos disponibilizar um método para obter o primeiro elemento da lista;
+
+---
+
+## 6.11 - MÉTODO toString
+
+- O método `toString` converte o objeto _LinkedList_ em uma string;
+- Se a lista estiver vazia, uma string vazia será retornada;
+- Se a lista não estiver vazia, inicializamos a string que será devolvida no final do método com o valor do primeiro elemento;
+- Depois, iteramos por todos os outros elementos da lista adicionando os valors a string;
+- No final, devolvemos a string com o conteúdo da lista;
+
+---
+
+## 6.12 - LISTA DUPLAMENTE LIGADA
+
+- A diferença entre uma lista duplamente ligada e uma lista ligada comum é que, nessa última, fazemos a ligação somente de um nó para o próximo, enquanto, em uma lista duplamente ligada, temos uma ligação dupla: uma para o próximo elemento e outra para o elemento anterior;
+- A lista duplamente ligada nos oferece duas maneiras de iterar por ela: doinício para o fim ou vice-versa. Também podemos acessar o próximo elemento ou o elemento anterior de um nó em particular. Por causa desse comportamento, para cada nó, temos de manter também o controle sobre
+  o seu nó anterior;
+- Na lista ligada simples, quando iteramos pela lista e ultrapassamos o elemento desejado, é necessário retornar ao início da lista e reiniciar a
+  iteração. Essa é uma das vantagens da lista duplamente ligada;
+
+---
+
+## 6.13 - INSERINDO UM NOVO ELEMENTO EM QUALQUER POSIÇÃO
+
+- Inserir um novo element em uma lista duplamente ligada é muito semelhante à inserção em uma lista ligada. A diferença é que, na lista ligada, controlamos apenas um ponteiro (next), enquanto, na lista duplamente ligada, temos de controlar as propriedades `next` e `prev`;
+- Na classe _DoublyLinkedList_, sobrescreveremos o método insert, o que significa que aplicaremos um comportamento diferente daquele da classe _LinkedList_.
+- O algoritmo para inserir um novo elemento em qualquer posição, analisa três cenários possiveis: adicionando um novo `element` na primeira posição, na última posição e no meio da lista;
+
+---
+
+## 6.14 -
