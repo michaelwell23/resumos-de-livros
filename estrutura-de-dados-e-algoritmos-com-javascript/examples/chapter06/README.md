@@ -147,4 +147,79 @@
 
 ---
 
-## 6.14 -
+## 6.14 - REMOVENDO ELEMENTOS DE QUALQUER POSIÇÃO
+
+- Remover elementos de uma lista duplamente ligada também é muito semelhante à remoção em uma lista ligada;
+- A única diferença é que devemos definir o ponteiro para o elemento anterior também;
+- Devemos tratar três cenários: remover um elemento do início da lista, remover um elemento do meio da lista e remover o último elemento;
+
+---
+
+## 6.15 - LISTAS LIGADAS CIRCULARES
+
+- Uma lista circular pode ter apenas uma direção de referência ou uma referência dupla;
+- A única diferença entre uma lista ligada circular e uma lista ligada é que o ponteiro para o próximo item do último elemento não faz uma referência a `undefined`, mas ao primeiro elemento;
+- Em uma `lista circular duplamente ligada`, `tail.next` aponta para o elemento `head` e `head.prev` aponta para o elemento `tail`;
+- A classe CircularLinkedList não precisa de nenhuma propriedade adicional, portanto basta estender a classe LinkedList e sobrescrever os métodos necessários para aplicar o comportamento especial;
+
+---
+
+## 6.17 - INSERINDO UM NOVO ELEMENTO EM QUALQUER POSIÇÃO
+
+- A lógica para inserir um element em uma lista ligada circular é a mesma usada para inserir um element em uma lista ligada comum;
+- A diferença na lista ligada circular é que precisamos também ligar a referência next do último nó ao nó apontado por head;
+
+---
+
+## 6.18 - REMOVENDO ELEMENTOS DE QUALQUER POSIÇÃO
+
+- Para remover um element de uma lista ligada circular, só precisaremos nos preocupar em altera o elemento head da lista;
+- O primeiro cenário para remover um element é a remoção desse elemento de uma lista com um único node;
+- O segundo cenário consiste em remover o primeiro element de uma lista não vazia;
+
+---
+
+## 6.19 - LISTAS LIGADAS ORDENADAS
+
+- Uma lista ligada ordenada é uma lista que mantém seus elementos ordenados;
+- Para manter todos os elementos ordenados, em vez de aplicar um algoritmo de ordenação, inseriremos element em sua posição correta a fim de manter a lista sempre ordenada;
+- Para começar, declaramos a classe `SortedLinkedList` que herdará todas as propriedades e os métodos da classe `LinkedList`, mas como essa classe tem um comportamento especial, é preciso de uma funçãi para comparar os elemento;
+
+---
+
+## 6.20 - INSERINDO ELEMENTOS NA ORDEM
+
+- Como não queremos permitir a inserção de elementos em qualquer índice, começaremos atribuindo um valor default ao parâmetro index;
+- Se a lista estiver vazia, basta chamar o método insert de LinkedList passando 0 (zero) como index;
+- Se a lista não estiver vazia, temos de obter o que é conhecido como o index correto para inserir element;
+- chamaremos o método insert de LinkedList, passando a posição a fim de manter a lista ordenada;
+- Para obter o índice correto a fim de inserir element, criamos um método chamado getIndexNextSortedElement.
+- Nesse método, iteramos pela lista até encontrar uma posição para inserir element ou até que todos os elementos tenham sido percorridos. Nesse último cenário, o index devolvido será o tamanho (size) da lista;
+- Para comparar os elementos, usaremos compareFn, passado para o construtor da classe. Quando o element que queremos inserir na lista for menor que o elemento current da lista, teremos encontrado a posição para a inserção;
+
+---
+
+## 6.21 - CRIANDO A CLASSE StackLinkedList
+
+- Também podemos usar a classe LinkedList e suas variantes como estruturas de dados internas a fim de criar outras estruturas de dados como
+  `pilha`, `fila` e `deque`;
+- Na classe StackLinkedList, em vez de usar um array ou um objeto JavaScript para armazenar items, usamos uma DoublyLinkedList;
+- O motivo para usar uma lista duplamente ligada no lugar de uma lista ligada é que, para a pilha, os elementos serão inseridos no final da lista e a remoção também será no final;
+- A classe `DoublyLinkedList` mantém uma referência ao último element da lista (tail), portanto não é necessário iterar por todos os elementos da lista para acessá-lo; há um acesso direto ao primeiro e ao último elementos, reduzindo o esforço de processamento e mantendo o custo em O(1), como
+  em nosso implementação original da Stack;
+- Estamos chamando os métodos da classe DoublyLinkedList para todos os demais métodos.
+- Usar a estrutura de dados de lista ligada internamente na implementação de pilha é mais fácil, pois não precisamos criar o código do zero, mantendo o custo de processamento e deixando o código mais legível!
+
+---
+
+## RESUMO
+
+Neste capítulo, conhecemos a estrutura de dados da lista ligada e suas variantes: a lista duplamente ligada, a lista ligada circular e a lista ligada ordenada. Vimos como adicionar e remover elementos de qualquer posição e como iterar por uma lista ligada. Vimos também que a principal
+vantagem de uma lista ligada em relação a um array está no fato de ser possível adicionar e remover elementos facilmente da lista, sem precisar
+deslocar seus elementos. Assim, sempre que precisar adicionar e remover muitos elementos, a melhor opção será usar uma lista ligada no lugar de
+um array.
+
+Aprendemos também a criar uma pilha usando uma lista ligada interna para armazenar seus elementos, em vez de usar um array ou um objeto, e conhecemos também as vantagens de usar outra estrutura de dados para tirar proveito das operações disponíveis, sem ser necessário escrever toda a
+lógica do zero.
+
+o próximo capítulo, conheceremos os conjuntos: uma estrutura de dados que armazena elementos únicos.
