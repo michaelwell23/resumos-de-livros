@@ -32,3 +32,28 @@
   - `values()`: devolve um array com todos os valores (elementos) que estão no conjunto;
 
 ---
+
+## 7.3 - MÉTODO has(element)
+
+- O método `has(element)` vai ser implementado antes pois ele será utilizado em outros métodos, como `add` e `remove`, para verificar se o elemento está no conjunto;
+- O protótipo de `Object`tem o método `hasOwnProperty`, que devolve um booleano informando se o objeto tem a propriedade especificada no objeto ou não;
+
+---
+
+## 7.4 - MÉTODO add
+
+- O próximo elemento a ser implementado é o `add`;
+- Dado um `element`, podemos verificar se ele está presente no conjunto;
+  - Se o elemento não estiver, podemos retorna `true` para informar que ele foi adicionado;
+  - Se estiver, podemos retorna `false` para informa que não foi adicionado;
+- Nesse conjunto estamos adicionando `element`com a chave e o valor, pois a chave pode facilitar na procura;
+
+---
+
+## 7.5 - MÉTODS delete e clear
+
+- No método delete, verificaremos se o element especificado está presente no conjunto;
+- Em caso afirmativo, removemos element do conjunto e devolvemos `true` para informar que ele foi removido; caso contrário, devolvemos `false`;
+- Como estamos usando um objeto items para armazenar o objeto querepresenta o conjunto, podemos simplesmente utilizar o operador delete para remover a propriedade desse objeto;
+- Tudo que precisamos fazer para reiniciar o objeto items é atribuir-lhe um objeto vazio novamente;
+- Também poderíamos iterar pelo conjunto e remover todos os elementos, um a um, usando o método remove, porém seria muito trabalhoso, e temos uma forma mais fácil de fazer isso;
