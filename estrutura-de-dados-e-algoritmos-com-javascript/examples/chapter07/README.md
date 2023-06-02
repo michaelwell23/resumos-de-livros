@@ -57,3 +57,33 @@
 - Como estamos usando um objeto items para armazenar o objeto querepresenta o conjunto, podemos simplesmente utilizar o operador delete para remover a propriedade desse objeto;
 - Tudo que precisamos fazer para reiniciar o objeto items é atribuir-lhe um objeto vazio novamente;
 - Também poderíamos iterar pelo conjunto e remover todos os elementos, um a um, usando o método remove, porém seria muito trabalhoso, e temos uma forma mais fácil de fazer isso;
+
+---
+
+## 7.6 - MÉTODO size
+
+- O próximo método a ser implementado é o método `size`, que devolve a quantidade de elementos presentes no conjunto;
+- Há três forma de implemnatar esse método:
+  - O primeiro método consiste em usar uma variável `length` e controlá-la sempre que os métodos `add` e `remov`forem usados;;
+  - No segundo método, usamos uma função embutida da classe `Object` de JavaSript. A classe Object de JavaScript contém um método chamado keys que devolve um array com todas as propriedades de um dado objeto. Podemos então, usar a propriedade `length` desse array para devolver a quantidade de propriedades existentes no objeto `items`;
+  - O terceiro método consiste em extrair cada propriedade do objeto `items` manualmente, contar a quantas propriedades há e devolver esse número;
+
+---
+
+## 7.7 - MÉTODO values
+
+- Para implementar o método `values`, podemos usar um método embutido da classe `Object` chamado `values`;
+- O método `OBject.values()` devolve um array com os valores de todas as propriedades de um dado objeto;
+- Desse modo, inicialmente iteramos por todas as propriedades do objeto items, adicionamos essas propriedades em um array e o devolvemos;
+
+---
+
+## 7.8 - USANDO A CLASSE Set
+
+- Depois de concluir a implementação da estrutura de dados para conjunto, é hora de usá-la;
+- Alguns comando foram executados, afim de testar a classe `Set`;
+- Depois de finalizado o teste, o resultado é que temos uma implementação muito semelhante à classe `Set` da ECMAScript 2015;
+
+---
+
+## 7.9 - OPERAÇÕES EM CONJUNTOS
