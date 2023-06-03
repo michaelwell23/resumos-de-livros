@@ -87,3 +87,78 @@
 ---
 
 ## 7.9 - OPERAÇÕES EM CONJUNTOS
+
+- O conjunto é um dos conceitos mais básicos em matemática e é muito importamnte também em ciência da computação;
+- Uma das principais aplicações em ciência da computação se dá em `bancos de dados`;
+- Os conjuntos são usados no disign e no processamento de consultas;
+- Quando criamos uma consulta SQL, podemos especificar se queremos ler todos os dados de uma tabela ou apenas um subconjunto deles;
+- Também podemos obter dados que são comuns e duas tabelas, os quais estão presentes apenas em uma tabela;
+- Essas operações são conhecidas no mundo SQL como junções (joins), e a base das junções SQL são as operações em conjuntos;
+
+---
+
+## 7.10 - UNIÃO DE CONJUNTOS
+
+- Nesta seção, discutiremos o conceito matemático de união;
+- Inicialmente devemos criar outro conjunto para representar a união dos dois conjuntos;
+- Em seguida, acessamos todos os values do primeiro conjunto (a instância atual da classe Set), iteramos por eles e adicionamos todos os valores no conjunto que representa a union;
+- Então fazemos exatamente o mesmo, mas com o segundo conjunto;
+- Por fim, devolvemos o resultado;
+- Os métodos ou funções que não têm efeito colateral são chamados de funções puras;
+- Uma função pura não modifica a instância atual nem osparâmetros: ela apenas gera um novo resultado. Esse é um conceito muito importante do paradigma de programação funcional;
+
+---
+
+## 7.11 - INTERSECÇÃO DE CONJUNTOS
+
+- Agora discutiremos o conceito matemático de intersecção;
+- No método `intersection`, devemos encontrar todos os elementos dainstância atual da classe Set que também estejam presentes na instância de Set especificada (otherSet). Assim, em primeiro lugar, criamos outra instância de Set para que possamos devolvê-la com os elementos comuns;
+- Em seguida, iteramos por todos os valores (values) da instância atual da classe `Set` e verificamos se o valor está presente na instância `otherSet` também;
+- Podemos usar o método has, que implementamos antes neste capítulo, a fim de verificar se o elemento está presente na instância de `Set`. Então, se o valor estiver presente também na outra instância, nós o adicionamos à variável intersectionSet criada, e a devolvemos;
+
+---
+
+## 7.12 - APERFEIÇOANDO O MÉTODO intersection
+
+- Usando o método intersection que criamos, precisaríamos iterar pelos valores de setA sete vezes, que é o número de elementos nesse conjunto, e comparar esses sete valores somente com os dois elementos de `setB`;
+- Seria melhor se tivéssemos o mesmo resultado e tivéssemos de iterar somente duas vezes por `setB`;
+- Menos iterações significa um custo menor de processamento, portanto vamos otimizar o nosso código a fim de iterar pelo conjunto com menos elementos;
+- Desse modo, inicialmente criaremos outro conjunto para armazenar o resultado de nossa intersection;
+- Vamos obter também os valores da instância atual do conjunto e do conjunto especificado, passado como parâmetro para o método intersection. Em seguida, supomos que a instância atual é o conjunto com mais elementos, e o
+  conjunto especificado é o conjunto com menos elementos;
+- Comparamos o tamanho dos dois conjuntos e, caso o conjunto especificado tenha mais elementos que a instância atual, trocamos os valores de biggerSet e smallerSet. Por fim, iteramos pelo conjunto menor para calcular os valores comuns entre os dois conjuntos e devolvemos o resultado;
+
+---
+
+## 7.13 - DIFERENÇA ENTRE CONJUNTOS
+
+- O método intersection devolverá todos os elementos presentes nos dois conjuntos;
+- O método difference devolverá todos os elementos que estão presentes em A, mas não em B. Inicialmente criaremos o nosso conjunto de resultados, pois não queremos modificar o conjunto atual nem o conjunto especificado. Em seguida, fazemos uma iteração por todos os valores da instância do conjunto atual;
+- Verificamos se value (o elemento) está presente no conjunto especificado ;
+- se ele não estiver em `otherSet`, adicionamos value no conjunto resultante;
+
+---
+
+## 7.14 - SUBCONJUNTOS
+
+- A última operação de conjunto que discutiremos é o subconjunto;
+- A primeira verificação que precisamos fazer é conferir o tamanho da instância atual da classe Set. Se a instância atual tiver mais elementos que a instância `otherSet`, ela não será um subconjunto;
+- Em seguida, supomos que a instância atual é um subconjunto do conjunto especificado;
+- Iteramos por todos os elementos do conjunto atual e verificamos se o elemento também está presente em `otherSet`;
+- Se houver algum elemento que não esteja presente em `otherSet`, é sinal de que esse conjunto não é um subconjunto, portanto devolveremos False;
+- Se todos os elementos estiverem também presentes em `otherSet`, a linha {5} não será executada e devolveremos true, a flag isSubset não será alterada;
+- O método every será chamado enquanto a função de `callback` devolver true. Se a função de `callback` devolver false, o laço será interrompido, e é por isso que estamos também alterando o valor da flag isSubset na linha {5};
+- Temos três conjuntos: setA é um subconjunto de `setB`, no entanto, `setA` não é subconjunto de `setC`, poraanto o resultado é `false`;
+
+---
+
+## 7.15 - ECMASCRIPT 2015 - A CLASSE Set
+
+- A ECMAScript 2015 introduziu a classe `Set` como parte da API de JavaScript;
+- Vamos agora observar como podemos usar também a classe `Set` nativa;
+- A diferença entre a nossa classe `Set` e a classe `Set` da ES2015 é que o método values devolve um Iterator em vez de devolver o array com os valores. Outra diferença está no fato de termos desenvolvido um método size que devolve o número de alores armazenados em `Set`;
+- A classe `Set` da ES2015 tem uma propriedade chamada size;
+- Também podemos chamar o método delete para remover um elemento de set;
+- O método clear também reinicia a estrutura de dados de Set. Ele tem a mesma funcionalidade que nós implementamos;
+
+---
