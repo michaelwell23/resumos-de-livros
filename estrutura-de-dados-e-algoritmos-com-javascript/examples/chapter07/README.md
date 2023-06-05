@@ -162,3 +162,53 @@
 - O método clear também reinicia a estrutura de dados de Set. Ele tem a mesma funcionalidade que nós implementamos;
 
 ---
+
+## 7.16 - OPERAÇÕES COM CLASSE SET DA ES2015
+
+- Desenvolvemos as operações matemáticas como união, intersecção, diferença e subconjunto em nossa classe Set. Infelizmente, a classe Set nativa da ES2015 não contém essas funcionalidades. No entanto, podemos escrever nossas próprias funções com funcionalidades semelhantes caso seja necessário;
+
+---
+
+## 7.17 - SIMULANDO A OPERAÇÃO DE UNIÃO
+
+- Para somar todos os elementos dos dois conjuntos, podemos criar uma função que devolverá um novo conjunto com todos os elementos de `set1` e de `set2`. Devemos iterar por `set1` e por `set2` e adicionar todos os elementos no conjunto de união usando `add`;
+
+---
+
+## 7.18 - SIMULANDO A OPERAÇÃO DE INTERSECÇÃO
+
+- Para simular a operação de intersecção, podemos também implementaruma função para nos ajudar a criar outro conjunto com os elementos comuns presentes tanto em `setA` quanto em `setB`;
+- O código faz o mesmo que a função `intersection` que desenvolvemos, porém não está otimizado;
+
+---
+
+## 7.19 - SIMULANDO A OPERAÇÃO DE DIFERENÇA
+
+- A a operação de diferença é feita por meio da criação de um novo conjunto com os elementos que estão em `setA`, mas não estão em `setB`;
+- A única diferença entre as funções `intersection` e `difference` está na linha 4º linha do código, pois queremos adicionar somente os diferentes elementos de Set contidos em `setA`, mas não em `setB`;
+
+---
+
+## 7.20 - USANO O OPERADOR DE ESPALHAMENTO
+
+- Há uma maneira mais simples de simular as operações de união,intersecção e diferença, usando o operador de espalhamento;
+- O processo é constituído de três passos:
+  - 1. Converter os conjuntos em arrays;
+  - 2. Executar a operação desejada;
+  - 3. Converter o resultado de volta em um conjunto;
+
+---
+
+## 7.21 - MULTICONJUNTOS OU BAGS
+
+- Como já vimos, a estrutura de dados de conjunto não permite elementos duplicados;
+- Entretanto, em matemática, temos um conceito chamado multiconjunto (multiset), que permite que o mesmo elemento seja inserido no conjunto, mesmo que ele já tenha sido inserido antes;
+- Os multiconjuntos (ou bags) podem ser muito úteis para contar quantos vezes o elemento está presente em um conjunto; - Eles são frequentemente aplicados em sistemas de banco de dados;
+
+---
+
+## RESUMO
+
+Neste capítulo, aprendemos a implementar uma classe Set do zero, a qual é semelhante à classe Set definida na ECMAScript 2015. Também discutimos alguns métodos que, em geral, não estão presentes nas implementações da estrutura de dados para conjuntos em outras linguagens de programação, como união, intersecção, diferença e subconjunto. Implementamos uma classe Set completa, se comparada à implementação atual de Set em outras linguagens de programação.
+
+No próximo capítulo, discutiremos os hashes e os dicionários, que são estruturas de dados não sequenciais.
