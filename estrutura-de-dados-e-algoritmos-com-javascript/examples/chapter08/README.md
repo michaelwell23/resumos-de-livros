@@ -65,3 +65,50 @@
 ---
 
 ## 8.6 - OBTENDO UM VALOR DO DICIONÁRIO
+
+- O método `get` obtém o objeto armazenado na propriedade `key` specificada. Se o objeto com o par de valores existir, é devolvido o seu `value`, caso contrário é devolvido `undefined`;
+- Uma outra maneira de implementar esse mesmo método seria verficar se um determinado `value` existe. Se o resultado for positivo, o objeto `table` é acessado e devolvido o valor desejado;
+- Mas esa segunda abordagem, estáriamos obtendo a string para `key` e acessando o objeto `table` duas vezes; a primeira no método `hasKey` e a segunda, dentro da intrução `if`. É um pequeno detalhe, mas a primeira abordagem tem um custo menor de processamento;
+
+---
+
+## 8.7 - MÉTODOS KEYS, VALUES E VALUEPAIRS
+
+- O método `valuePairs` devolve um array com todos os objetos `ValuesPair` presentes no dicionário;
+- O código é bem simples, chamamos o método embutido `values` da classe Object d JavaScript;
+- Precisamos iterar por todoas aas propriedades do objeto `table`, para garantir que `key` existe, usando a função `hasKey` para essa verificação e, então, adicionamos o `ValuePair` do objeto `table` no resultante;
+- Nesse método, como já estamos acessando a propredade do objeto `table` diretamente, não precisamos tranformar em uma string com a função `toStrFn`;
+- O próximo método que criaremos é o método `Keys`, o qual devolve todas as chaves (as originais) usadas para identificar um valor na classe
+  `Dictionary`;
+- Chamamos o método `keyValues` que criamos, o qual devolve um array de instâncias de `ValuePair`. Então iteramos por elas. Como estamos interessados somente na propriedade `key` de `ValuePair`, devolvemos apenas a sua `key`
+- De modo semelhante ao método `keys`, temos também o método values. Esse método devolve um array com todos os valores armazenados no dicionário. O seu código é muito parecido com o código do método `keys`; contudo, em vez de devolver a propriedade `key` da classe `ValuePair`, devolvemos a propriedade value;
+
+---
+
+## 8.8 - ITERANDO PELOS VALUESPAIRS DO DICIONÁRIO COM FOREACH
+
+- Implementaremos o método forEach para a classe Dictionary;
+- Inicialmente obtemos o array de `ValuePairs` do dicionário;
+- Em seguida, iteramos por cada `ValuePair` e chamamos a função `callbackFn` passada como parâmetro para o método forEach, além de armazenar o seu resultado;
+- Caso a função de callback devolva false, interrompemos a execução do método forEach, saindo do laço for que faz a iteração por `valuePairs`;
+
+---
+
+## 8.9 - MÉTODO CLEAR, SIZE, ISEMPTY E TO STRING
+
+- O método `size` devolve quantos valores estão armazenados no dicionário. Podemos obter todas as keys do objeto table usando o método `Object.keys`;
+- Para verificar se o dicionário está vazio, podemos obter o seu tamanho (size) e conferir se é igual a zero. Se size for zero, é sinal de que o dicionário está vazio. Essa lógica é implementada no método `isEmpty`;
+- Para limpar o dicionário, basta atribuir uma nova instância de objeto a `table`;
+- Por fim, criaremos também o método toString;
+- No método toString, se o dicionário estiver vazio, devolvemos uma string vazia. Caso contrário, adicionamos o seu primeiro ValuePair na string resultante chamando o método toString de ValuePair. Então, se houver algum value no array, ele também será adicionado à stringresultante; essa string será devolvida no final do método;
+
+---
+
+## 8.10 - USANDO A CLASSE DICTIONARY
+
+- Para usar a classe Dictionary, inicialmente devemos criar uma instância e, em seguida, adicionaremos três emails a ela;
+- Como removemos um value, a instância dictionary agora contém somente dois tipos de value. A linha em destaque exemplifica o modocomo o objeto table está estruturado internamente;
+
+---
+
+## 8.11 - TABELA HASH
