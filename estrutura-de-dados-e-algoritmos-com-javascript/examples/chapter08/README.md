@@ -112,3 +112,68 @@
 ---
 
 ## 8.11 - TABELA HASH
+
+- Nesta seção, conheceremos a classe HashTable, também conhecida como `HashMap`: uma implementação com hash da classe Dictionary;
+- O hashing consiste em encontrar um valor em uma estrutura de dados o mais rápido possível;
+- Quando usamos uma função de hash, já sabemos em que posição o valor se encontra, portanto, podemos simplesmente o acessar. Uma função de hash é uma função que, dada uma key, devolve o endereço em que o valor está na tabela;
+- Em ciência da computação, a tabela hash tem vários casos de uso. Ela pode ser usada como arrays associativos, pois é uma implementação do dicionário, e também pode ser usada para indexar um banco de dados;
+- Outro uso muito comum é a utilização de tabelas hash para representar objetos. A linguagem JavaScript usa uma tabela hash internamente para representar cada objeto;
+- . A função de hash que será usada é a função mais comum existente, chamada de função de `hash lose-lose`, emque simplesmente somamos os valores ASCII de cada caractere da chave;
+
+---
+
+## 8.12 - CRIANDO UMA CLASSE HASHTABLE
+
+- Usaremos também um array associativo (objeto) para representar a nossa estrutura de dados;
+- Depois, estruturamos a classe;
+- Em seguida, devemos acrescentar alguns métodos:
+  - put(key,value): esse método adiciona um novo item à tabela hash (ou
+    pode atualizá-la também);
+  - remove(key): esse método remove o value da tabela hash usando key.
+  - get(key): esse método devolve um value específico encontrado com
+    key;
+
+---
+
+## 8.13 - CRIANDO UMA FUNÇÃO DE HASH
+
+- O primeiro método que implementaremos antes desses três métodos éhashCode;
+- Esse métodp simplemente chama o método `loseloseHashCode passando` a `key` como parâmetro;
+- No método loseloseHashCode, inicialmente verificamos se key é um number;
+- Se for, ele será apenas devolvido com return. Na sequência, geramos um número baseado na soma do valor de cada caractere ASCII que compõe a key.
+- Assim, em primeiro lugar, temos de transformar key em uma string caso ela seja um objeto, e não uma string;
+- Iniciamos a variável hash que armazenará a soma. Então iteramos pelos caracteres de key e somamos o valor ASCII do caractere correspondente na tabela ASCII na variável hash;
+- Para isso, podemos usar o método charCodeAt da classe String de JavaScript. Por fim, devolvemos o valor de hash. Para trabalhar com números menores, devemos usar o resto da divisão (%) do número de hash utilizando um número arbitrário – isso evitará correr o risco de trabalhar com
+  números grandes, que não caibam em uma variável numérica;
+
+---
+
+## 8.14 - INSERINDO UMA CHAVE E UM VALOR NA TABELA HASH
+
+- Agora que temos a nossa função hashCode, podemos implementar o método put;
+- Em primeiro lugar, verificamos se key e value são válidos; caso não sejam, devolvemos false para informar que o valor não foi adicionado
+  (nem atualizado). Para o parâmetro key especificado, devemos encontrar uma posição na tabela usando a função hashCode que criamos;
+- Então, tudo que temos a fazer é criar uma instância de ValuePair com key e value ({3}). De modo semelhante à classe Dictionary, armazenaremos
+  também a key original para informação;
+
+---
+
+## 8.15 - OBTENDO UM VALOR DA TABELA HASH
+
+- Obter um value da instância de HashTable também é simples. Implementaremos o método get para isso;
+- Em primeiro lugar, obtemos a posição do parâmetro key especificado, usando a função hashCode que criamos. Essa função devolverá a posição
+  de value, e tudo que temos de fazer é acessar essa posição no array table e devolver o seu value;
+
+---
+
+## 8.16 - REMOVENDO UM VALOR DA TABELA has-scrolling-header
+
+- O último método que implementaremos para HashTable é o método remove;
+- Para remover um value da HashTable, inicialmente devemos saber qual posição devemos acessar, portanto, obtemos o hash usando a função
+  hashCode;
+- Lemos o valuePair armazenado na posição hash e, caso ele não seja null nem undefined, nós o removemos usando o operador delete de JavaScript;
+- Também devolveremos true se a remoção for bem-sucedida, e false caso contrário;
+
+---
+
+## 8.17 - USANDO A CLASSE HASHTABLE
