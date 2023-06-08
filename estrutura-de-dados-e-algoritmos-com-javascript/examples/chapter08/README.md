@@ -137,9 +137,9 @@
 
 ## 8.13 - CRIANDO UMA FUNÇÃO DE HASH
 
-- O primeiro método que implementaremos antes desses três métodos éhashCode;
+- O primeiro método que implementaremos antes desses três métodos é`hashCode`;
 - Esse métodp simplemente chama o método `loseloseHashCode passando` a `key` como parâmetro;
-- No método loseloseHashCode, inicialmente verificamos se key é um number;
+- No método `loseloseHashCode`, inicialmente verificamos se key é um number;
 - Se for, ele será apenas devolvido com return. Na sequência, geramos um número baseado na soma do valor de cada caractere ASCII que compõe a key.
 - Assim, em primeiro lugar, temos de transformar key em uma string caso ela seja um objeto, e não uma string;
 - Iniciamos a variável hash que armazenará a soma. Então iteramos pelos caracteres de key e somamos o valor ASCII do caractere correspondente na tabela ASCII na variável hash;
@@ -150,30 +150,62 @@
 
 ## 8.14 - INSERINDO UMA CHAVE E UM VALOR NA TABELA HASH
 
-- Agora que temos a nossa função hashCode, podemos implementar o método put;
+- Agora que temos a nossa função `hashCode`, podemos implementar o método put;
 - Em primeiro lugar, verificamos se key e value são válidos; caso não sejam, devolvemos false para informar que o valor não foi adicionado
-  (nem atualizado). Para o parâmetro key especificado, devemos encontrar uma posição na tabela usando a função hashCode que criamos;
-- Então, tudo que temos a fazer é criar uma instância de ValuePair com key e value ({3}). De modo semelhante à classe Dictionary, armazenaremos
-  também a key original para informação;
+  (nem atualizado). Para o parâmetro key especificado, devemos encontrar uma posição na tabela usando a função `hashCode` que criamos;
+- Então, tudo que temos a fazer é criar uma instância de ValuePair com key e value;
+- De modo semelhante à classe `Dictionary`, armazenaremos também a key original para informação;
 
 ---
 
 ## 8.15 - OBTENDO UM VALOR DA TABELA HASH
 
 - Obter um value da instância de HashTable também é simples. Implementaremos o método get para isso;
-- Em primeiro lugar, obtemos a posição do parâmetro key especificado, usando a função hashCode que criamos. Essa função devolverá a posição
+- Em primeiro lugar, obtemos a posição do parâmetro key especificado, usando a função `hashCode` que criamos. Essa função devolverá a posição
   de value, e tudo que temos de fazer é acessar essa posição no array table e devolver o seu value;
 
 ---
 
-## 8.16 - REMOVENDO UM VALOR DA TABELA has-scrolling-header
+## 8.16 - REMOVENDO UM VALOR DA TABELA HASH
 
 - O último método que implementaremos para HashTable é o método remove;
 - Para remover um value da HashTable, inicialmente devemos saber qual posição devemos acessar, portanto, obtemos o hash usando a função
-  hashCode;
-- Lemos o valuePair armazenado na posição hash e, caso ele não seja null nem undefined, nós o removemos usando o operador delete de JavaScript;
+  `hashCode`;
+- Lemos o `valuePair` armazenado na posição hash e, caso ele não seja null nem undefined, nós o removemos usando o operador delete de JavaScript;
 - Também devolveremos true se a remoção for bem-sucedida, e false caso contrário;
 
 ---
 
 ## 8.17 - USANDO A CLASSE HASHTABLE
+
+- Podemos testar a classe `HashTable` usando alguns exemplos;
+- Se inspecionarmos o conteúdo da tabale hash depois de executar o código, veremos três elementos como resultado;
+- Testando o método `get`, Gandalf é uma `key` presente na HashTable, o método `get` devolverá o seu value no primeiro teste. Pelo fato de Loiane não ser uma key existente, se tentarmos acessar a sua posição no array;
+- Depois tentamos remover `Gandalf` da `HashTable`. O método `hash.get('Gandalf')` devolverá undefined como saída no console, pois `Gandalf` não está mais presente na tabela;
+
+---
+
+## 8.18 - TABELA HASH VERSUS CONJUNTO HASH
+
+- Uma tabela hash é o mesmo que um mapa hash;
+- Em algumas linguagens de programação, também temos a implementação de conjunto hash (hash set). A estrutura de dados de um conjunto hash é composta de um conjunto;
+- Podemos reutilizar todo o código que implementamos neste capítulo em um conjunto hash; a diferença é que, em vez de adicionar um par chave-valor, apenas o valorserá inserido, e não a chave;
+
+---
+
+## 8.19 - TRATANDO COLISÕES NAS TABLEAS HASH
+
+- Às vezes, chaves diferentes podem ter o mesmo valor de hash. Chamaremos a isso de `colisão`, pois tentaremos atribuir diferentes pares chave-valor à mesma posição na instância de `HashTable`;
+- A ideia de usar uma estrutura de dados para armazenar todos esses valores obviamente não é perdê-los, mas preservá-los de alguma forma. Por esse motivo, devemos lidar com essa situação quando ela ocorrer. Há algumas técnicas para tratar colisões: encadeamento separado (separate chaining),sondagem linear (linear probing) e hashing duplo (double hashing).
+
+---
+
+## 8.20 - ENCADEAMENTO SEPARADO
+
+- A técnica de encadeamento separado (separate chaining) consiste em criar uma lista ligada para cada posição da tabela e armazenar aí os elementos.
+- É a técnica mais simples que há para tratar colisões; no entanto, ela exige memória extra, além daquela ocupada pela instância de HashTable.
+- No encadeamento separado e na sondagem linear, será necessário substituir três métodos: put, get e remove. Esses três métodos serão diferentes para cada técnica distinta;
+
+---
+
+## 8.21 - MÉTODO PUT
