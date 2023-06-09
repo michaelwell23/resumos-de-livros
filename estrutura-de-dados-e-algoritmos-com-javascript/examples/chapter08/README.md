@@ -209,3 +209,64 @@
 ---
 
 ## 8.21 - MÉTODO PUT
+
+- Vamos implementar o primeiro método – o método `put`;
+- Nesse método, verificamos se a posição na qual estamos tentando adicionar o valor já contém outros valores;
+- Se essa for a primeira vez que estamos adicionando um elemento nessa posição, vamos inicializá-la com uma instância da classe LinkedList;
+- Então adicionamos a instância de ValuePair à instância de LinkedList usando o método push;
+
+---
+
+## 8.22 - MÉTODO GET
+
+- A seguir, implementaremos o método `get` para obter um valor, dada uma chave;
+- A primeira verificação que devemos fazer é conferir se há algum value na posição desejada;
+- Para isso, acessamos a linkedList na position do hash e verificamos se há uma instância de linkedList ou se ela está vazia;
+- Se não houver nenhum value, devolvemos undefined para informar que o valor não foi encontrado na instância de HashTable ({8}). Se houver
+  um valor em position, saberemos que a instância desse objeto é uma instância de LinkedList;
+- Agora, tudo que temos a fazer é procurar o element que queremos encontrar fazendo uma iteração pela lista;
+- Para isso, é necessário obter a referência à cabeça (head) da lista, que é o primeiro element da linkedList, e, em seguida, podemos iterar por ela até encontrarmos o final da lista;
+- Para acessar a propriedade key do Node da LinkedList, podemos usar current.element.key e compará-lo para ver se é a key que estamos procurando. Se for o mesmo atributo key, devemos devolver o valor de Node; se não for, continuaremos iterando pela lista, acessando o próximo element. Essa lógica nos permite procurar todos os atributos key em qualquer posição da LinkedList.
+- Outra abordagem para esse algoritmo é esta: em vez de fazer a busca de key no método get, poderíamos instanciar a LinkedList no método put, passando um equalsFn personalizado para o construtor de LinkedList, o qual comparará somente a propriedade key do elemento;
+
+---
+
+## 8.23 - MÉTODO REMOVE
+
+- Remover um valor da instância de HashTableSeparateChaining é umpouco diferente;
+- No método remove, fazemos o mesmo que fizemos no método get para encontrar o element que estamos procurando;
+- Ao iterar pela instância de LinkedList, se o element de current na lista for a chave que estamos procurando, usaremos o método remove para removê-lo da LinkedList;
+- Então, faremos uma validação adicional: se a lista estiver vazia, removeremos position de table usando o operador delete, de modo que possamos pular essa position sempre que procurarmos um element;
+- Por fim, devolveremos true para informar que o elemento foi removido, ou devolveremos false no final para informar que o element não estava presente em HashTableSeparateChaining;
+- Se não for o elemento que estávamos procurando, faremos uma iteração para o próximo elemento da LinkedList, como foi feito no método get;
+
+---
+
+## 8.24 - SONDAGEM LINEAR
+
+- Outra técnica de resolução de colisão é a sondagem linear;
+- É chamada de linear porque a colisão é tratada de modo que os valores serão armazenados diretamente na tabela, e não em uma estrutura de
+  dados separada;
+- Ao tentar adicionar um novo elemento, se a position do hash já estiver ocupada, tentaremos usar position + 1. Se position + 1 estiver
+  ocupada, tentaremos position + 2, e assim sucessivamente, até que uma posição livre seja encontrada na tabela hash;
+- Quando removemos uma chave-valor da tabela hash, não será suficiente simplesmente remover o elemento da position, conforme implementamos
+  nas estruturas de dados anteriores neste capítulo. Se somente removermos o elemento, isso poderá fazer com que uma posição vazia seja encontradaquando buscamos outro elemento com o mesmo hash (position), resultando em um bug no algoritmo;
+- Há duas opções na técnica de sondagem linear:
+  - A primeira é a abordagem da remoção soft (soft delete). Usamos um valor especial (flag) para sinalizar que a chave-valor foi apagada (remoção preguiçosa [lazy] ou soft), em vez de realmente apagar o elemento.
+  - A segunda abordagem exige verificar se é necessário mover um ou mais elementos uma position para trás. Ao procurar uma chave, essa abordagem evita encontrar uma posição vazia, mas, se for necessário mover elementos, significa que precisaremos deslocar as chaves-valores na tabela hash;
+
+---
+
+## 8.25 - MÉTODO PUT
+
+- Vamos prosseguir e implementar os três métodos que devemos sobrescrever. O primeiro será o método put;
+- Como sempre, começaremos obtendo a position do hash gerada pelo método hashCode. Em seguida, vamos conferir se a position contém um
+  elemento;
+- Se não contiver (esse é o cenário mais simples), adicionaremos o elemento ( – que é uma instância da classe ValuePair) nesse local.
+  Se a position já estiver ocupada, devemos encontrar a próxima position livre (position é undefined ou null); desse modo, criamos uma variável
+  index e lhe atribuímos position + 1;
+- Em seguida, verificamos se a position está ocupada e, em caso afirmativo, incrementamos index, até encontrarmos uma position que não esteja ocupada. Depois do laço while, o index apontará para uma posição livre. Então tudo que precisaremos fazer é atribuir o valor desejado a essa position;
+
+---
+
+## 8.26 - MÉTODO GET
