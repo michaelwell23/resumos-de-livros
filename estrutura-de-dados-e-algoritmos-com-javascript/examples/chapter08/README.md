@@ -270,3 +270,57 @@
 ---
 
 ## 8.26 - MÉTODO GET
+
+- Agora que adicionamos os nossos elementos, vamos implementar a função get para que possamos obter os seus valores;
+- Para obter o valor de uma chave, inicialmente devemos verificar se a key existe. Se não existir, é sinal de que o valor não está na tabela hash, portanto podemos devolver undefined;
+- Se existir, devemos verificar se o valor que estamos procurando é aquele que está na position original do hash. Se for, basta devolver o seu valor;
+- Caso contrário, iteramos pelos elementos de HashTableLinearProbing, começando pela próxima position do hash. Continuaremos procurando nas próximas posições da instância de HashTableLinearProbing até encontrar uma posição que contenha o elemento que estamos procurando, ou até que uma posição vazia seja localizada;
+- Ao sair do laço while, verificamos se a key do elemento coincide com a key que estamos procurando; em caso afirmativo, devolveremos o seu value. Se, depois de iterar pela table, a posição index for undefined ou null, é sinal de que a chave não existe, e devolveremos undefined;
+
+---
+
+## 8.27 - MÉTODO REMOVE
+
+- O método remove é muito parecido com o método get;
+- No método get, quando encontramos a key que estamos procurando, devolvemos o seu valor. No método remove, apagamos o elemento da tabela hash com delete. Podemos encontrar o elemento diretamente na position original do hash ou em uma posição diferente caso tenha havido um tratamento de colisão;
+
+---
+
+## 8.28 - CRIANDO FUNÇÕES MELHORES DE HASH
+
+- A função de hash lose-lose que implementamos não é uma boa função de hash, conforme podemos concluir;
+- Uma boa função de hash apresenta determinados fatores: o tempo para inserir e acessar um elemento (desempenho), além de uma baixa probabilidade de colisões;
+- Depois de transformar a chave em uma string , o método djb2HashCode inicializa a variável hash com um número primo; em seguida, iteramos pelos caracteres da string que representa a key, multiplicamos o valor do hash por 33 (usado como um número mágico) e somamos com o valor ASCII do caractere;
+- Por fim, usamos o resto da divisão do total por outro número primo aleatório, maior que o tamanho que achamos que a instância de HashTable poderá ter;
+
+---
+
+## 8.29 - CLASSE MAP DA ES2015
+
+- A ECMAScript 2015 introduziu uma classe Map como parte da API de JavaScript. Desenvolvemos a nossa classe Dictionary com base na classe Map da ES2015;
+- A diferença entre a nossa classe Dictionary e a classe Map da ES2015 está no fato de os métodos values e keys devolverem um Iterator (que
+  conhecemos no Capítulo 3, Arrays) em vez de devolver o array com os valores ou as chaves;
+- Outra diferença é que desenvolvemos um método size para devolver o número de valores armazenados no mapa. A classe Map da ES2015 tem uma propriedade chamada size;
+
+---
+
+## 8.30 - CLASSE WEAKMAP E WEAKSET DA ES2015
+
+- Junto com as duas novas estruturas de dados Set e Map, a ES2015 introduziu também uma versão dessas classes com tipos fracos: WeakMap e
+  WeakSet. Basicamente, a única diferença entre as classes Map ou Set e suas versões fracas são:
+  - As classes WeakSet ou WeakMap não têm os métodos entries, keys e
+    values.
+  - É possível usar somente objetos como chaves.
+- O motivo para a criação e o uso dessas duas classes tem a ver comdesempenho. Como WeakSet e WeakMap têm tipos fracos (usam objetos como chave), não há nenhuma referência forte para as chaves. Esse comportamento permite que o coletor de lixo de JavaScript limpe uma entrada completa do mapa ou do conjunto.
+- Outra vantagem das versões fracas é que só poderemos obter um valor se tivermos a sua chave. Como essas classes não têm os métodos iteradores(entries, keys e values), não há maneiras de obter um valor, a menos que você saiba qual é a chave;
+
+---
+
+## RESUMO
+
+Neste capítulo, conhecemos os dicionários e os métodos para adicionar, remover e acessar os elementos, entre outros. Também vimos a diferença
+entre um dicionário e um conjunto.
+
+Descrevemos o hashing, discutimos como criar uma estrutura de dados de tabela hash (ou mapa hash), vimos como adicionar, remover e acessar elementos, e como criar funções de hash. Aprendemos a lidar com colisõesem uma tabela hash usando duas técnicas diferentes.
+
+Também discutimos o uso da classe Map da ES2105, assim como das classes WeakMap e WeakSet. No próximo capítulo, veremos a técnica da recursão.
