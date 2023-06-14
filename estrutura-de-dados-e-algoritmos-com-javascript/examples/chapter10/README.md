@@ -72,3 +72,48 @@
 ---
 
 ## 10.6 - PERCORRENDO UMA ÁRVORE
+
+- Percorrer uma árvore (ou caminhar por ela) é o processo de visitar todos os seus nós e executar uma operação em cada um deles;
+- Há três abordagens distintas que podem ser usadas para visitar todos os nós de uma árvore: em-ordem (in-order), pré-ordem (pre-order) e pós-ordem (post-order);
+
+---
+
+## 10.7 - PERCURSO EM-ORDEM
+
+- Um percurso em-ordem (in-order) visita todos os nós de uma BST em ordem crescente, o que significa que todos os nós serão visitados, do menor para o maior;
+- Uma aplicação do percurso em-ordem seria ordenar uma árvore;
+- O método `inOrderTraverse` recebe uma função callback como parâmetro, a qual pode ser usada para executar a ação desejada quando visitamos o nó;
+
+---
+
+## 10.8 - PERCURSO PRÉ-ORDEM
+
+- Um percurso pré-ordem (pre-order) visita o nó antes de visitar seus descendentes;
+- Uma aplicação do percurso pré-ordem seria exibir um documento estruturado;
+- A diferença entre os percursos `em-ordem` e `pré-ordem` é que o percurso `pré-ordem` visita o nó raiz antes, depois o nó à esquerda e, por
+  fim, o nó à direita, enquanto o percurso `em-ordem` executa as linhas na seguinte ordem: da esquerda para a direita;
+
+---
+
+## 10.9 - PERCURSO PÓS-ORDEM
+
+- Um percurso pós-ordem (post-order) visita o nó depois de visitar os seus descendentes;
+- Uma aplicação do percurso pós-ordem poderia ser calcular o espaço usado por um arquivo em um diretório e em seus subdiretórios;
+- Nesse caso, o percurso pós-ordem visitará o nó à esquerda, depois o nó à direita e, por último, o nó raiz;
+- Os algoritmos para as abordagens em-ordem, pré-ordem e pós-ordem são muito parecidos; a única diferença está na ordem em que as linhas {1}, {2}
+  e {3} são executadas em cada método;
+
+---
+
+## 10.10 - PESQUISANDO VALORES EM UMA ÁRVORE
+
+- Há três tipos de pesquisa geralmente executados em árvores:
+  - pesquisa de valores mínimos;
+  - pesquisa de valores máximos;
+  - pesquisa de um valor específico;
+
+---
+
+## 10.11 - PESQUISANDO VALORES MÍNIMOS E MÁXIMOS
+
+-
