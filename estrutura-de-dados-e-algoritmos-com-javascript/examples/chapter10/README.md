@@ -116,4 +116,52 @@
 
 ## 10.11 - PESQUISANDO VALORES MÍNIMOS E MÁXIMOS
 
--
+- Se observar o nó mais à esquerda no último nível da árvore, você verá o valor 3, que é a menor chave nessa árvore; se observar o nó mais distante à direita (também no último nível da árvore), encontrará o valor 25, que é a maior chave nessa árvore;
+- Essa informação nos ajuda muito na implementação de métodos que encontrarão os nós mínimo e máximo da árvore;
+- O método `minNode` nos permite encontrar a chave mínima, a partir de qualquer nó da árvore. Podemos usá-lo para encontrar a chave mínima de uma subárvore ou da própria árvore;
+- A lógica usada no método minNode é muito semelhante ao código que usamos para iterar até o último nó de uma _lista ligada no Capítulo 6_; A diferença, nesse caso, é que estamos iterando até encontrar o nó mais à esquerda da árvore;
+- De modo semelhante, também temos o método `max`;
+- Para encontrar a chave máxima, percorremos a aresta direita da árvore até encontrar o último nó na extremidade direita dela. Assim, para o valor mínimo, sempre percorreremos o lado esquerdo da árvore; para o valor máximo, sempre navegaremos para o lado direito dela;
+
+---
+
+## 10.12 - PESQUISANDO UM VALOR ESPECÍFICO
+
+- Nos capítulos anteriores, implementamos também os métodos find, search e get para encontrar um valor específico na estrutura de dados;
+- Implementaremos o método search para a BST também;
+- Nossa primeira tarefa deve ser declarar o método search. Seguindo o padrão dos demais métodos declarados para a BST, usaremos um método auxiliar para nos ajudar na lógica de recursão;
+- O método searchNode pode ser usado para encontrar uma chave específica na árvore ou em qualquer uma de suas subárvores. Esse é o motivo pelo qual chamaremos esse método na linha {1} passando o nó root da árvore como parâmetro;
+- Se o nó não for null, devemos continuar a pesquisa. Se a key que estamos procurando for menor que o nó atual, continuaremos a pesquisa usando a subárvore do filho à esquerda. Se o valor que estamos procurando for maior que o nó atual, continuaremos a pesquisa a partir do filho à direita do nó atual. Caso contrário, significa que a chave que estamos procurando é igual à chave do nó atual, e devolveremos true para informar que ela foi encontrada
+
+---
+
+## 10.13 - REMOVENDO UM NÓ
+
+- O próximo e último método que implementaremos para a nossa BST é o método remove. Esse é o método mais complexo que implementaremos;
+- Vamos começar pelo método que estará disponível para ser chamado a partir da instância de uma árvore;
+- Esse método recebe a key que desejamos remover, e chama também removeNode, passando `root` e a `key` a ser removida como parâmetros;
+- A complexidade do método removeNode se deve aos diferentes cenários com os quais devemos lidar, além do fato de o método ser recursivo;
+
+---
+
+## 10.14 - REMOVENDO UMA FOLHA
+
+- O primeiro cenário é aquele em que o nó é uma folha, sem filhos à esquerda nem à direita;
+- Nesse caso, tudo que temos a fazer é remover o nó atribuindo-lhe o valor `null`;
+- sabemos que atribuir `null` ao nó não é suficiente, e devemos cuidar também das referências (ponteiros). Nesse caso, o nó não tem nenhum filho, mas tem um nó pai. Devemos atribuir `null` em seu nó pai, e isso pode ser feito devolvendo `null`;
+- Como o nó já tem o valor null, a referência do pai ao nó receberá null também, e esse é o motivo pelo qual estamos devolvendo o valor de node
+  no método removeNode. O nó pai sempre receberá o valor devolvido pelo método. Uma alternativa a essa abordagem seria passar o pai e o node como parâmetros do método;
+
+---
+
+## 10.15 - REMOVENDO UM NÓ COM UM FILHO À ESQUERDA OU À DIREITA
+
+- Vamos agora analisar o segundo cenário, aquele em que um nó tem um filho à esquerda ou à direita. Nesse caso, devemos pular esse nó e fazer o
+  ponteiro do pai apontar para o nó filho;
+- Se o nó não tiver um filho à esquerda, significa que ele tem um filho à direita, portanto modificaremos a referência do nó para o seu filho à
+  direita e devolveremos o nó atualizado;
+- Faremos o mesmo se o nó não tiver o filho à direita; atualizaremos a referência do nó para o seu filho à esquerda e devolveremos o valor atualizado;
+
+---
+
+## 10.16 - REMOVENDO UM NÓ COM DOIS FILHOS
