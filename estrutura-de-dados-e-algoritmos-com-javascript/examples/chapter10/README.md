@@ -165,3 +165,52 @@
 ---
 
 ## 10.16 - REMOVENDO UM NÓ COM DOIS FILHOS
+
+- Agora chegamos ao terceiro cenário, o mais complexo: aquele em que o nó que estamos tentando remover tem dois filhos: um à direita e outro à esquerda;
+- Para remover um nó com dois filhos, há quatro passos que devem ser executados;
+  - 1. Depois que o nó que queremos remover for encontrado, precisamos encontrar o nó mínimo da subárvore da aresta à sua direita;
+  - 2. Em seguida, atualizamos o valor do nó com a chave do nó mínimo de sua subárvore à direita. Com essa ação, estamos substituindo chave do nó, o que significa que ele foi removido.
+  - 3. No entanto, agora temos dois nós na árvore com a mesma chave, e isso não pode ocorrer. O que devemos fazer agora é remover o nó mínimo da subárvore à direita, pois ele foi transferido para o local em que estava o nó removido;
+  - 4. Por fim, devolvemos a referência ao nó atualizado para o seu pai;
+
+---
+
+## 10.17 - ÁRVORES AUTOBALANCEADAS
+
+- A BST tem um problema: conforme a quantidade de nós que você adicionar, uma das arestas da árvore poderá ser muito profunda, o que significa que um galho da árvore poderá ter um nível alto, enquanto outro galho poderá ter um nível baixo;
+- Isso pode causar problemas de desempenho na adição, na remoção e na pesquisa de um nó em uma aresta em particular da árvore. Por esse motivo, há uma árvore chamada `AVL` (Árvore de Adelson-Velskii e Landi);
+- A árvore `AVL` é uma BST autobalanceada, o que significa que a altura das subárvores à esquerda e à direita de qualquer nó difere no máximo em 1;
+
+---
+
+## 10.18 - ÁRVORE D ADLSON-VELSKII E LANDI (ÁRVORE AVL)
+
+- A árvore AVL é uma árvore autobalanceada, isto é, uma árvore que tenta se autobalancear sempre que um nó é adicionado ou removido. As alturas das
+  subárvores à esquerda ou à direita de qualquer nó (e em qualquer nível) diferem no máximo em 1;
+- Isso quer dizer que a árvore tentará ser completa sempre que for possível quando adicionar ou remover um nó;
+- Como a árvore AVL é uma BST, podemos estender a classe BST que criamos e somente sobrescrever os métodos necessários para manter o balanceamento da árvore AVL;
+- Inserir e remover nós de uma árvore AVL funciona do mesmo modo que em uma BST. No entanto, a diferença na árvore AVL é que precisaremos verificar o seu fator de balanceamento (ou fator de balanço) e, se for necessário, aplicaremos a lógica para autobalancear a árvore;
+
+---
+
+## 10.19 - ALTURA DE UM NÓ E O FATOR DE BALANCEAMENTO
+
+- Conforme vimos no início deste capítulo, a altura de um nó é definida como o número máximo de arestas, do nó para qualquer uma de suas folhas;
+- Em uma árvore AVL, sempre que um nó for inserido ou removido da árvore, devemos calcular a diferença entre a altura da subárvore do lado direito (hr) e da subárvore do lado esquerdo (hl). O resultado de hr – hl deve ser 0, 1 ou -1;
+- Se o resultado for diferente desses valores, é sinal de que a árvore precisa ser balanceada. Esse conceito se chama fator de balanceamento;
+
+---
+
+## 10.20 - OPERAÇÕES DE BALANCEAMENTO - ROTAÇÃO NA ÁRVORE AVL
+
+- Depois de inserir ou remover nós de uma árvore AVL, calcularemos a altura dos nós e verificaremos se a árvore precisa ser balanceada. Há dois
+  processos de balanceamento que podem ser usados: rotação simples ou rotação dupla.
+- Entre a rotação simples e a rotação dupla, há quatro cenários:
+  - `LL` (Left-Left, ou Esquerda-Esquerda): é uma rotação simples à direita;
+  - `RR` (Right-Right, ou Direita-Direita): é uma rotação simples à esquerda;
+  - `LR` (Left-Right, ou Esquerda-Direita): é uma rotação dupla à direita (rotação à esquerda e depois à direita);
+  - `RL` (Right-Left, ou Direita-Esquerda): é uma rotação dupla à esquerda (rotação à direita e depois à esquerda);
+
+---
+
+## 10.21 - ROTAÇÃO ESQUERDA-ESQUERDA: ROTAÇÃO SIMPLES A DIREITA
