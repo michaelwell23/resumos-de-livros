@@ -214,3 +214,60 @@
 ---
 
 ## 10.21 - ROTAÇÃO ESQUERDA-ESQUERDA: ROTAÇÃO SIMPLES A DIREITA
+
+- Esse caso ocorre quando a altura do filho à esquerda de um nó torna-se maior que a altura do filho à direita, e o filho à esquerda está balanceado ou mais pesado à esquerda;
+- Suponha que o nó 5 tenha sido o último nó inserido na árvore AVL. Isso deixaria a árvore desbalanceada (o nó 50, isto é, Y, tem altura igual a +2), portanto precisamos balanceá-la.
+- Eis os passos que devemos executar para balancear a árvore:
+  - O nó X, que está no meio dos três nós envolvidos no balanceamento (X, Y e Z), ocupará o lugar do nó Y, que tem um fator de balanceamento igual a +2;
+  - A subárvore do lado esquerdo do nó X (nó Z) não será alterada;
+  - A subárvore do lado direito do nó X será posicionada como a subárvore à esquerda do nó Y;
+  - O filho à direita do nó X referenciará o nó Y;
+
+---
+
+## 10.22 - ROTAÇÃO DIREITA-DIREITA: ROTAÇÃO SIMPLES À ESQUERDA
+
+- O caso da rotação direita-direita é o inverso da rotação esquerda-esquerda. Ela ocorre quando a altura do filho à direita de um nó torna-se maior que a altura do filho à esquerda, e o filho à direita está balanceado ou é mais pesado à direita;
+- Suponha que o nó 90 tenha sido o último nó inserido na árvore AVL. Isso deixaria a árvore desbalanceada (o nó 50, isto é, Y, tem altura igual a -2), portanto precisamos balanceá-la.
+- Eis os passos que executaremos para balancear a árvore:
+  - O nó X, que está no meio dos três nós envolvidos no balanceamento (X, Y e Z), ocupará o lugar do nó Y, que tem um fator de balanceamento de -2;
+  - A subárvore do lado direito do nó X (nó Z) não será alterada;
+  - A subárvore do lado esquerdo do nó X será posicionada como a subárvore à direita do nó Y;
+  - O filho à esquerda do nó X referenciará o nó Y;
+
+---
+
+## 10.23 - ESQUERDA-DIREITA: ROTAÇÃO DUPLA À DIREITA
+
+- Esse caso ocorre quando a altura do filho à esquerda de um nó torna-se maior que a altura do filho à direita, e o filho à esquerda é mais pesado à direita;
+- Nesse cenário, podemos corrigir a árvore fazendo uma rotação à esquerda no filho à esquerda, o que resulta no caso esquerda-esquerda; em seguida,corrigimos a árvore novamente fazendo uma rotação à direita no nó desbalanceado;
+- Suponha que o nó 75 tenha sido o último nó inserido na árvore AVL. Isso deixaria a árvore desbalanceada (nó 70, isto é, Y, tem altura igual a -2),portanto precisamos balanceá-la. Eis os passos que executaremos para balancear a árvore:
+  - O nó X ocupará o lugar do nó Y, que tem um fator de balanceamento igual a -2;
+  - A subárvore do lado direito do nó X será posicionada como a subárvoreà esquerda do nó Z;
+  - A subárvore do lado esquerdo do nó X será posicionada como a subárvore à direita do nó Y;
+  - O filho à esquerda do nó X referenciará o nó Y;
+  - O filho à direita do nó X referenciará o nó Z;
+
+---
+
+## 10.24 - DIREITA-ESQUERDA: ROTAÇÃO DUPLA À ESQUERDA
+
+- O caso direita-esquerda é o inverso do caso esquerda-direita. Ele ocorre quando a altura do filho à direita de um nó torna-se maior que a altura do filho à esquerda, e o filho à direita é mais pesado à esquerda;
+- Nesse cenário, podemos corrigir a árvore fazendo uma rotação à direita no filho à direita, o que resulta no caso direita-direita; em seguida, corrigimos a árvore novamente fazendo uma rotação à esquerda no nó desbalanceado;
+- Suponha que o nó 35 tenha sido o último nó inserido na árvore AVL. Isso deixaria a árvore desbalanceada (nó 50, isto é, Y tem altura igual a +2),portanto precisamos balanceá-la. Eis os passos que executaremos para balancear a árvore:
+  - O nó X ocupará o lugar do nó Y, que tem um fator de balanceamento igual a +2;
+  - A subárvore do lado direito do nó X será posicionada como a subárvore à esquerda do nó Y;
+  - A subárvore do lado esquerdo do nó X será posicionada como a subárvore à direita do nó Z;
+  - O filho à direita do nó X referenciará o nó Y;
+  - O filho à esquerda do nó X referenciará o nó Z. Portanto, basicamente, estamos fazendo uma rotação RR antes e, em seguida, uma rotação LL;
+
+---
+
+## 10.25 - INSERINDO UM NÓ NA ÁRVORE AVL
+
+- Inserir um nó em uma árvore AVL funciona do mesmo modo que em uma BST;
+- Além de inserir o nó, verificaremos também se a árvore continua balanceada após a inserção; se não estiver, aplicaremos as operações de rotação;
+
+---
+
+## 10.26 - REMOVENDO UM NÓ DA ÁRVORE AVL
