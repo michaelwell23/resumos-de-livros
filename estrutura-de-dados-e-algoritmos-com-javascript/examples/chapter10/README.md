@@ -271,3 +271,51 @@
 ---
 
 ## 10.26 - REMOVENDO UM NÓ DA ÁRVORE AVL
+
+- Remover um nó de uma árvore AVL funciona do mesmo modo que em uma BST;
+- Além de remover o nó, verificaremos também se a árvore continua balanceada após a remoção;
+- Se não estiver, aplicaremos as operações de rotação, conforme forem necessárias;
+
+---
+
+## 10.27 - ÁRVORE RUBRO-NEGRA
+
+- Assim como a árvore AVL, a árvore rubro-negra (reb-black tree) é também uma árvore binária de busca autobalanceada;
+- Na árvore rubro-negra, todo nó segue as regras listadas a seguir:
+  - 1. Como o nome da árvore sugere, cada nó é vermelho ou preto.
+  - 2. A raiz da árvore é preta.
+  - 3. Todas as folhas são pretas (os nós representados com referência NULL).
+  - 4. Se um nó for vermelho, então seus dois filhos serão pretos.
+  - 5. Não pode haver dois nós vermelhos adjacentes. Um nó vermelho não pode ter um pai ou um filho vermelho.
+  - 6. Todo caminho (path) de um dado nó para qualquer um de seus descendentes (folhas NULL) contém o mesmo número de nós pretos.
+- Como a árvore rubro-negra também é uma árvore BST, podemos estender a classe BST que criamos e sobrescrever somente os métodos necessários para manter as propriedades da árvore rubro-negra;
+
+---
+
+## 10.28 - INSERINDO UM NÓ NA ÁRVORE RUBRO-NEGRA
+
+- Inserir um nó em uma árvore rubro-negra funciona do mesmo modo que em uma BST.
+- Além de inserir o nó, aplicaremos também uma cor a ele e, após a inserção, verificaremos se a árvore continua obedecendo às regras da árvore rubro-negra e se está balanceada;
+
+---
+
+## 10.29 - VERIFICANDO AS PROPRIEDADES DA ÁRVORE RUBRO-NEGRA APÓS A INSERÇÃO
+
+- Para verificar se a árvore rubro-negra continua balanceada e ainda atende a todos os seus requisitos, usaremos dois conceitos: recoloração (recoloring) e rotação;
+- Depois de inserir um novo nó na árvore, esse nó será vermelho. Isso não afetará a regra do número de nós pretos (regra 6), mas poderá afetar a regra 5: dois nós vermelhos adjacentes não podem coexistir;
+- Se o pai do nó inserido for preto, não haverá problemas. No entanto, se o pai do nó inserido for vermelho, teremos uma violação da regra 5. Para resolver essa violação, basta alterar a cor do pai do nó, do avô do nó e do tio do nó;
+
+---
+
+## 10.30 - ROTAÇÃO NA ÁRVORE RUBRO-NEGRA
+
+- No algoritmo de inserção, usamos somente as rotações direita-direita e esquerda-esquerda;
+- A lógica é a mesma que a da árvore AVL; porém, como estamos mantendo uma referência ao pai do nó, temos de atualizar também a referência node.parent para o novo pai depois que o nó sofrer rotação;
+
+---
+
+## RESUMO
+
+Neste capítulo, discutimos os algoritmos para adicionar, pesquisar e remover chaves de uma árvore binária de busca, que é a estrutura de dados básica de árvore, frequentemente usada em ciência da computação. Vimos três abordagens de percurso para visitar todos os nós de uma árvore. Também aprendemos a criar árvores autobalanceadas usando a árvoreAVL e a inserir e remover chaves dela; além disso, descrevemos a árvore rubro-negra.
+
+No próximo capítulo, conheceremos uma estrutura de dados especial chamada heap (ou fila de prioridades).
