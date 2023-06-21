@@ -103,3 +103,81 @@
 ---
 
 ## 12.12 - BUSCANDO EM PROFUNDIDADE (DFS)
+
+- O algoritmo DFS começará percorrendo o grafo a partir do primeiro vértice especificado, seguirá um caminho até que o seu último vértice tenha sido visitado;
+- Em seguida, um backtracking (retrocesso) será feito no caminho e o próximo caminho será seguido. Em outras palavras, o algoritmo visita os vértices em profundidade antes, e depois em largura;
+- Os passos do DFS são recursivos, o que significa que o algoritmo DFS utiliza uma pilha para armazenar as chamadas (uma pilha criada pelas chamadas recursivas);
+
+---
+
+## 12.13 - EXPLORANDO O ALGORITMO DFS
+
+- Até agora, simplesmente demonstramos como o algoritmo DFS funciona.
+- Podemos usá-lo para outras tarefas que não sejam apenas exibir a ordem dos vértices visitados;
+- Dado um grafo G, o algoritmo DFS percorre todos os vértices de G e constrói uma floresta (uma coleção de árvores com raiz), junto com um conjunto de vértices de origem (raízes), e exibe dois arrays com: o instante da descoberta e o instante do término da exploração. Podemos modificar a função `depthFirstSearch` para que ela devolva algumas informações para nós, por exemplo:
+  - o instante da descoberta d[u] de u;- o instante final f[u] quando u é marcado com preto;
+  - os antecessores (predecessors) p[u] -de u.
+
+---
+
+## 12.14 - ORDENAÇÃO TOPLÓGICA USANDO DFS
+
+- Quando houver necessidade de especificar a ordem com que algumas tarefas ou passos devem ser executados, chamamos a isso de `ordenação topológica`;
+- A ordenação topológica só pode ser aplicada em DAGs;
+
+---
+
+## 12.15 - ALGORITMOS DE CAMINHO MAIS CURTO
+
+- Dado um mapa de ruas, suponha que você queira sair do ponto A e chegar ao ponto B usando o caminho mais curto possível;
+- Podemos usar grafos para resolver esse problema para nós, e o algoritmo é chamado de algoritmo do caminho mais curto. Há dois algoritmos muito famosos, o algoritmo de Dijkstra e o algoritmo de Floyd-Warshall, que serão discutidos nas próximas seções;
+
+---
+
+## 12.16 - ALGORITMO DE DIJKSTRA
+
+- O algoritmo de Dijkstra é um algoritmo guloso para calcular o caminho mais curto entre uma única origem e todos os demais vértices, o que significa que podemos usá-lo para calcular o caminho mais curto do vértice de um grafo para todos os outros;
+- Para calcular a `minDistance`, procuraremos o valor mínimo no array dist, como vemos a seguir, e devolveremos o índice do array que contém esse valor;
+- Também é possível modificar o algoritmo para que ele devolva o valor do caminho mais curto, além do próprio caminho;
+
+---
+
+## 12.17 - ALGORITMO DE FLOYD-WARSHALL
+
+- O algoritmo de Floyd-Warshall é um algoritmo de `programação dinâmica` para calcular todos os caminhos mais curtos em um grafo. Com esse algoritmo, podemos encontrar o caminho mais curto a partir de todas as origens para todos os vértices;
+- A seguir, apresentamos a descrição do funcionamento do algoritmo:
+  - Em primeiro lugar, inicializamos o array de distâncias com o valor do peso entre cada vértice, pois a distância mínima possível entre i e j é opeso desses vértices . A distância do vértice para si mesmo é zero;
+  - Caso não haja nenhuma aresta entre dois vértices, isso será representado com Infinity.
+  - Usando os vértices 0...k como pontos intermediários, o caminho mais curto entre i e j é dado por k. A fórmula usada para calcular o caminho mais curto entre i e j pelo vértice k é dada na linha;
+  - Se um novo valor para o caminho mais curto for encontrado, nós o usaremos e ele será armazenado ({7}). A fórmula na linha {6} é o coração do algoritmo de Floyd-Warshall.
+
+---
+
+## 12.18 - ÁRVORE DE EXTENSÃO MÍNIMA (MST)
+
+- O problema da MST (Minimum Spanning Tree, ou Árvore de Extensão Mínima/Árvore Geradora Mínima) é muito comum no design de redes;
+- Há dois algoritmos principais para encontrar as MSTs: o `algoritmo de Prim` e o `algoritmo de Kruskal`, que veremos nas próximas seções;
+
+---
+
+## 12.19 - ALGORITMO DE PRIM
+
+- O algoritmo de Prim é um algoritmo guloso (greedy), que resolve um problema de MST para um grafo conectado não direcionado com peso. Ele encontra um subconjunto das arestas que formam uma árvore, incluindo todos os vértices, em que o peso total de todas as arestas da árvore é minimizado;
+
+---
+
+## 12.20 - ALGORITMO DE KRUSKAL
+
+- De modo semelhante ao algoritmo de Prim, o algoritmo de Kruskal também é um algoritmo guloso, que encontra a MST para um grafo conectado, não direcionado com peso;
+- Há algumas variações desse algoritmo que podem ser desenvolvidas. Isso dependerá da estrutura de dados usada para ordenar os pesos dos valores das arestas (como em uma fila de prioridades), e também de como o grafo é representado;
+
+---
+
+## RESUMO
+
+Neste capítulo, vimos os conceitos básicos associados aos grafos. Conhecemos as diferentes maneiras com as quais podemos representar essa estrutura de dados e implementamos uma classe para representar um grafo usando uma lista de adjacências. Também aprendemos a percorrer um grafo usando as abordagens BFS e DFS. Este capítulo também incluiu duas aplicações de BFS e DFS para encontrar o caminho mais curto usando BFS e a ordenação topológica com DFS.
+
+O capítulo também abordou alguns dos algoritmos famosos, como o de Dijkstra e o de Floyd-Warshall para calcular o caminho mais curto. Além disso, discutimos o algoritmo de Prim e o algoritmo de Kruskal para calcular a MST (Minimum Spanning Tree, ou Árvore de Extensão Mínima)
+de um grafo.
+
+No próximo capítulo, veremos os algoritmos mais comuns de ordenação usados em ciência da computação;
