@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <script src="libary.js"></script>
+    <!-- inclui uma biblioteca de código JavaScript -->
+  </head>
+  <body>
+    <p>This is a paragraph of HTML</p>
+    <script>
+      // E esste é um código JavaScript do lado do cliente
+      //  literalmente incorporado no arquivo HTML
+    </script>
+    <p>Here is more HTML.</p>
+
+    <script>
+      function moveon() {
+        // Exibe uma caixa de diálogo modal para fazer uma pergunta ao usuário
+        var answer = confirm('Ready to move on?');
+        // Se ele clicou no botão "OK", faz o navegador carregar uma nova página
+        if (answer) window.location = 'http://google.com';
+      }
+      // Executa a função definida acima por 1 minuto (60.000 milissegundos) a partir de agora.
+      setTimeout(moveon, 60000);
+
+      // JQUERY
+      function debug(msg) {
+        var log = $('#debuglog'); // Localiza o elemento para exibir a msg.
+        if (log.length == 0) {
+          // Se ele ainda não existe, cria-o...
+          log = $("<div id='debuglog'><h1>Debug Log</h1></div>");
+          log.appendTo(document.body);
+          // e o insere no final do corpo.
+        }
+        log.append($('<pre/>').text(msg));
+        // Coloca a msg em <pre> e anexa no log.
+      }
+    </script>
+
+    <script src="debug.js"></script>
+    <script src="hide.js"></script>
+    Hello
+    <button onclick="hide(this, true); debug('hide button 1')">Hide1</button>
+    <button onclick="hide(this); debug('hide button 2')">Hide2</button>
+    Hello
+  </body>
+</html>
