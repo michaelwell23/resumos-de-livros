@@ -33,3 +33,37 @@ JavaScript básico inclui uma construtora Date() para criar objetos que represen
 ---
 
 ## 3.2 - TEXTO
+
+Uma string é uma sequência ordenada imutável de valores de 16 bits, cada um dos quais normalmente representa um caractere Unicode – as strings são um tipo de JavaScript usado para representar texto.
+
+### 3.2.1 - Strings literais
+
+Para incluir uma string literalmente em um programa JavaScript, basta colocar os caracteres da string dentro de um par combinado de aspas simples ou duplas ( ' ou " ). Os caracteres de aspas duplas podem estar contidos dentro de strings delimitadas por caracteres de aspas simples e estes podem estar contidos dentro de strings delimitadas por aspas duplas.
+
+### 3.2.2 - SEQUÊNCIA DE ESCAPE EM STRING LITERAIS
+
+O caractere de barra invertida (\) tem um propósito especial nas strings em JavaScript. Combinado com o caractere que vem a seguir, ele representa um caractere que não pode ser representado de outra forma dentro da string. Outro exemplo, é o escape \’, que representa o caractere de aspas simples (ou apóstrofo). Essa sequência de escape é útil quando se precisa incluir um apóstrofo em uma string literal que está contida dentro de aspas simples.
+
+### 3.2.3 - Trabalhando com strings
+
+Um dos recursos incorporados a JavaScript é a capacidade de concatenar strings. Se o operador + é utilizado com números, ele os soma. Mas se esse operador é usado em strings, ele as une, anexando a segunda na primeira. Para determinar o comprimento de uma string – o número de valores de 16 bits que ela contém use sua propriedade `length`. Além dessa propriedade length , existem vários métodos que podem ser chamados em strings.
+
+### 3.2.4 - Comparação de padrões
+
+JavaScript define uma construtora RegExp() para criar objetos que representam padrões textuais. Esses padrões são descritos com expressões regulares, sendo que JavaScript adota a sintaxe da Perl para expressões regulares. Tanto as strings como os objetos RegExp têm métodos para fazer comparação de padrões e executar operações de busca e troca usando expressões regulares. Embora os objetos RegExp não sejam um dos tipos de dados fundamentais da linguagem, eles têm uma sintaxe literal e podem ser codificados diretamente nos programas JavaScript. O texto entre um par de barras normais constitui uma expressão regular literal. A segunda barra normal do par também pode ser seguida por uma ou mais letras, as quais modificam o significado do padrão. Os objetos RegExp definem vários métodos úteis e as strings também têm métodos que aceitam argumentos de RegExp.
+
+---
+
+## 3.3 - VALORES BOOLEANOS
+
+Um valor booleano representa verdadeiro ou falso, ligado ou desligado, sim ou não. Só existem dois valores possíveis desse tipo. As palavras reservadas true e false são avaliadas nesses dois valores. Os valores booleanos são comumente usados em estruturas de controle em JavaScript. Por exemplo, a instrução if/else de JavaScript executa uma ação se um valor booleano é true e outra ação se o valor é false. Normalmente, uma comparação que gera um valor booleano combinada diretamente com a instrução que o utiliza.
+
+---
+
+## 3.4 - NULL E UNDEFINED
+
+null é uma palavra-chave da linguagem avaliada com um valor especial, normalmente utilizado para indicar a ausência de um valor. Usar o operador typeof em null retorna a string “object”, indicando que null pode ser considerado um valor de objeto especial que significa “nenhum objeto”. Na prática, contudo, null normalmente é considerado como o único membro de seu próprio tipo e pode ser usado para indicar “nenhum valor” para números e strings, assim como para objetos. JavaScript também tem um segundo valor que indica ausência de valor. O valor indefinido representa uma ausência mais profunda. É o valor de variáveis que não foram inicializadas e o valor obtido quando se consulta o valor de uma propriedade de objeto ou elemento de array que não existe. O valor indefinido também é retornado por funções que não têm valor de retorno e o valor de parâmetros de função quando os quais nenhum argumento é fornecido. undefined é uma variável global predefinida (e não uma palavra-chave da linguagem, como null ) que é inicializada com o valor indefinido. Apesar dessas diferenças, tanto null quanto undefined indicam uma ausência de valor e muitas vezes podem ser usados indistintamente.
+
+---
+
+## 3.5 - O OBJETO GLOBAL
