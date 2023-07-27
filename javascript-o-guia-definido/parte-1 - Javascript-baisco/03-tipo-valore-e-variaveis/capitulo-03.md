@@ -67,3 +67,78 @@ null é uma palavra-chave da linguagem avaliada com um valor especial, normalmen
 ---
 
 ## 3.5 - O OBJETO GLOBAL
+
+O objeto global é um objeto normal de JavaScript que tem um objetivo muito importante: as propriedades desse objeto
+são os símbolos definidos globalmente que estão disponíveis para um programa JavaScript. Quando o interpretador JavaScript começa (ou quando um navegador Web carrega uma nova página), ele cria um novo objeto global e dá a ele um conjunto inicial de propriedades que define:
+
+• propriedades globais, como undefined , Infinity e NaN
+• funções globais, como isNaN() , parseInt() e eval().
+• funções construtoras, como Date() , RegExp() , String() , Object() e Array()
+• objetos globais, como Math e JSON
+
+As propriedades iniciais do objeto global não são palavras reservadas, mas merecem ser tratadas como se fossem. Emm JavaScript do lado do cliente, o objeto Window serve como objeto global para todo código JavaScript contido na janela do navegador que ele representa. Esse objeto global Window tem uma propriedade de autoreferência window que pode ser usada no lugar de this para se referir ao objeto global. O objeto Window define as propriedades globais básicas, mas também define muitos outros globais que são específicos para navegadores Web e para JavaScript do lado do cliente.
+
+---
+
+## 3.6 - OBJETOS WRAPPER
+
+Os objetos JavaScript são valores compostos: eles são um conjunto de propriedades ou valores nomeados. Ao usarmos a notação .(ponto) fazemos referência ao valor de uma propriedade. Quando o valor de uma propriedade é uma função, a chamamos de método. Para chamar o método m de um objeto
+o , escrevemos
+
+```js
+o.m();
+```
+
+Contudo, as strings não são objetos. Então, por que elas têm propriedades? Quando você tenta se referir a uma propriedade de uma string s, JavaScript converte o valor da string em um objeto como se estivesse chamando new String(s). Esse objeto herda métodos da string e é utilizado para solucionar a referência da propriedade. Uma vez solucionada a propriedade, o objeto recentemente criado é descartado. Números e valores booleanos têm métodos pelo mesmo motivo que as strings: um objeto temporário é criado com a construtora Number() ou Boolean() e o método é solucionado por meio desse objeto temporário. Não existem objetos empacotadores (wrapper) para os valores null e undefined: qualquer tentativa de acessar uma propriedade de um desses valores causa um TypeError . Os objetos temporários criados ao se acessar uma propriedade de uma string, número ou valor booleano são conhecidos como objetos empacotadores (wrapper) e ocasionalmente pode ser necessário diferenciar um valor de string de um objeto String ou um número ou valor booleano de um objeto Number ou Boolean. Normalmente, contudo, os objetos wrapper podem ser considerados como um detalhe de implementação e não é necessário pensar neles. Basta saber que string, número e valores booleanos diferem de objetos pois suas propriedades são somente para leitura e que não é possível definir novas propriedades neles.
+
+---
+
+## 3.7 - VALORES PRIMITIVOS IMUTÁVEIS E REFERÊNCIAS DE OBJETO MUTÁVEIS
+
+Em JavaScript existe uma diferença fundamental entre valores primitivos (undefined , null , booleanos, números e strings) e objetos (incluindo arrays e funções). Os valores primitivos são imutáveis: não há como alterar (ou “mudar”) um valor primitivo. No entanto, não é tão óbvio para strings. Como as strings são como arrays de caracteres, você poderia pensar que é possível alterar o caractere em qualquer índice especificado. Na verdade, JavaScript não permite isso e todos os métodos de string que parecem retornar uma string modificada estão na verdade retornando um novo valor de string. Os valores primitivos também são comparados por valor: dois valores são iguais somente se têm o mesmo valor. Isso parece recorrente para números, booleanos, null e undefined : não há outra maneira de compará-los. Novamente, contudo, não é tão óbvio para strings. Se dois valores distintos de string são comparados, JavaScript os trata como iguais se, e somente se, tiverem o mesmo comprimento e se o caractere em cada índice for o mesmo.
+
+---
+
+## 3.8 - CONVERSÃO DE TIPOS
+
+Se a JavaScript quer uma string, ela converte qualquer valor fornecido em uma string. Se a JavaScript quer um número, ela tenta converter o valor fornecido para um número (ou para NaN , caso não consiga fazer uma conversão significativa).
+
+### 3.8.1 - Conversões e igualdade
+
+Como JavaScript pode converter valores com flexibilidade, seu operador de igualdade == também é flexível em sua noção de igualdade.
+
+### 3.8.2 - Conversões explícitas
+
+Embora JavaScript faça muitas conversões de tipo automaticamente, às vezes será necessário realizar uma conversão explícita ou talvez você prefira usar as conversões de forma explícita para manter o código mais claro. O modo mais simples de fazer uma conversão de tipo explícita é usar as funções Boolean(), Number(), String() ou Object(). Certos operadores de JavaScript fazem conversões de tipo implícitas e às vezes são usados para propósitos de conversão de tipo. Se um operando do operador + é uma string, ele converte o outro em uma string. O operador unário + converte seu operando em um número. E o operador unário ! converte seu operando em um valor booleano e o nega.
+
+### 3.8.3 - Conversões e objeto para valores primitivos
+
+As conversões de objeto para valores booleanos são simples: todos os objetos (inclusive arrays e funções) são convertidos em true. Isso vale até para objetos wrapper: new Boolean(false) é um objeto e não um valor primitivo e também é convertido em true. As conversões de objeto para string e de objeto para número são feitas chamando-se um método do objeto a ser convertido. Isso é complicado pelo fato de que os objetos em JavaScript têm dois métodos diferentes que realizam conversões e também é complicado por alguns casos especiais.
+
+---
+
+## 3.9 - DECLARAÇÃO DE VARIÁVEL
+
+Antes de utilizar uma variável em um programa JavaScript, você deve declará-la. As variáveis são declaradas com a palavra-chave var. Também é possível declarar várias variáveis com a mesma palavra-chave var e pode-se combinar a declaração da variável com sua inicialização.
+
+### 3.9.1 - Declarações repetidas e omitidas
+
+É válido e inofensivo declarar uma variável mais de uma vez com a instrução var. Se a declaração repetida tem um inicializador, ela atua como se fosse simplesmente uma instrução de atribuição.
+
+---
+
+## 3.10 - ESCOPO DE VARIÁVEL
+
+O escopo de uma variável é a região do código-fonte de seu programa em que ela está definida. Uma variável global tem escopo global; ela está definida em toda parte de seu código JavaScript. Por outro lado, as variáveis declaradas dentro de uma função estão definidas somente dentro do corpo da função. Elas são variáveis locais e têm escopo local. Os parâmetros de função também contam como variáveis locais e estão definidos somente dentro do corpo da função.
+
+### 3.10.1 - Escopo de função e içamento
+
+Em algumas linguagens de programação semelhantes ao C, cada bloco de código dentro de chaves tem seu escopo próprio e as variáveis não são visíveis fora do bloco em que são declaradas. Isso é chamado de escopo de bloco e JavaScript não tem esse conceito. Em vez disso, JavaScript utiliza escopo de função: as variáveis são visíveis dentro da função em que são definidas e dentro de qualquer função que esteja aninhada dentro dessa função. O escopo de função em JavaScript significa que todas as variáveis declaradas dentro de uma função são visíveis por todo o corpo da função. Curiosamente, isso significa que as variáveis são visíveis mesmo antes de serem declaradas. Essa característica de JavaScript é informalmente conhecida como içamento: o código JavaScript se comporta como se todas as declarações de variável em uma função (mas não em qualquer atribuição associada) fossem “içadas” para o topo da função.
+
+### 3.10.2 - Variáveis como propriedade
+
+Quando se declara uma variável global em JavaScript, o que se está fazendo realmente é definindo uma propriedade do objeto global. Se var é utilizada para declarar a variável, a propriedade criada não pode ser configurada, ou seja, não pode ser excluída com o operador delete. Já observamos que, se o modo restrito não está sendo usado e um valor é atribuído a uma variável não declarada, JavaScript cria uma variável global automaticamente. As variáveis criadas dessa maneira são propriedades normais e configuráveis do objeto global e podem ser excluídas.
+
+### 3.10.3 - O encadeamento de escopo
+
+JavaScript é uma linguagem com escopo léxico: o escopo de uma variável pode ser considerado como o conjunto de linhas de código-fonte para as quais a variável está definida. As variáveis globais estão definidas para todo o programa. As variáveis locais estão definidas para toda a função na qual são declaradas e também dentro de qualquer função aninhada dentro dessa função. Se pensarmos nas variáveis locais como propriedades de algum tipo de objeto definido pela implementação, então há outro modo de considerarmos o escopo das variáveis. Cada trecho de código JavaScript (código ou funções globais) tem um encadeamento de escopo associado. Esse encadeamento de escopo é uma lista ou encadeamento de objetos que define as variáveis que estão “no escopo” para esse código. Quando JavaScript precisa pesquisar o valor de uma variável x (um processo chamado solução de variável), ela começa examinando o primeiro objeto do encadeamento.
