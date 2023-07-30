@@ -116,3 +116,107 @@ Os operadores bit a bit fazem manipulação de baixo nível dos bits na represen
 ---
 
 ## 4.9 EXPRESSÕES RELACIONAIS
+
+Esta seção descreve os operadores relacionais de JavaScript. Esses operadores testam uma relação (como “igual a”, “menor que” ou “propriedade de”) entre dois valores e retornam true ou false, dependendo da existência dessa relação. As expressões relacionais sempre são avaliadas com um valor booleano e frequentemente esse valor é utilizado para controlar o fluxo da execução do programa em instruções if , while e for.
+
+### 4.9.1 - Operadores de igualdade e desigualdade
+
+Os operadores == e === verificam se dois valores são os mesmos utilizando duas definições diferentes de semelhança. Os dois operadores aceitam operandos de qualquer tipo e ambos retornam true se seus operandos são os mesmos e false se são diferentes. O operador === é conhecido como operador
+de igualdade restrita (ou, às vezes, como operador de identidade) e verifica se seus dois operandos são “idênticos”, usando uma definição restrita de semelhança. O operador == é conhecido como operador de igualdade; ele verifica se seus dois operandos são “iguais” usando uma definição mais relaxada de semelhança que permite conversões de tipo. Os operadores != e !== testam exatamente o oposto dos operadores == e === . O operador de desigualdade != retorna false se dois valores são iguais de acordo com == e, caso contrário, retorna true. O operador !== retorna false se dois valores são rigorosamente iguais; caso contrário, retorna true.
+
+### 4.9.2 - Operadores de comparação
+
+Os operadores de comparação testam a ordem relativa de seus dois operandos:
+
+- Menor que(<): O operador < é avaliado como true se o primeiro operando é menor do que o segundo; caso
+  contrário, é avaliado como false .
+- Maior que(>): O operador > é avaliado como true se o primeiro operando é maior do que o segundo; caso contrário, é avaliado como false .
+- Menor ou igual a (<=): O operador <= é avaliado como true se o primeiro operando é menor ou igual ao segundo; caso contrário, é avaliado como false.
+- Maior ou igual a (>=): O operador >= é avaliado como true se o primeiro operando é maior ou igual ao o segundo; caso contrário, é avaliado como false.
+
+### 4.9.3 - O operador in
+
+O operador in espera um operando no lado esquerdo que seja ou possa ser convertido em uma string. No lado direito, ele espera um operando que seja um objeto. Ele é avaliado como true se o valor do lado esquerdo é o nome de uma propriedade do objeto do lado direito.
+
+### 4.9.4 - O operador instanceof
+
+O operador instanceof espera um objeto para o operando no lado esquerdo e um operando no lado direito que identifique uma classe de objetos. O operador é avaliado como true se o objeto do lado esquerdo é uma instância da classe do lado direito e é avaliado como false caso contrário.
+
+---
+
+## 4.10 - EXPRESSÕES LÓGICAS
+
+Os operadores lógicos && , || e ! efetuam álgebra booleana e são frequentemente usados em conjunto com os operadores relacionais para combinar duas expressões relacionais em outra mais complexa.
+
+### 4.10.1 - E lógico(&&)
+
+No nível mais simples, quando utilizado com operandos booleanos, && efetua a operação E booleana nos dois valores: ele retorna true se, e somente se, seu primeiro operando e seu segundo operando são true . Se um ou os dois operandos são false , ele retorna false. O segundo nível no qual && pode ser entendido é como operador E booleano para valores verdadeiros e falsos. Se os dois operandos são verdadeiros, o operador retorna um valor verdadeiro. Caso contrário, um ou os dois operandos devem ser falsos, e o operador retorna um valor falso.
+
+### 4.10.2 - OU lógico (||)
+
+O operador || efetua a operação OU booleana em seus dois operandos. Se um ou os dois operandos são verdadeiros, ele retorna um valor verdadeiro. Se os dois operandos são falsos, ele retorna um valor falso. Embora o operador || seja mais frequentemente utilizado apenas como um operador OU booleano, assim como o operador && ele tem comportamento mais complexo. Ele começa avaliando o primeiro operando, a expressão à sua esquerda. Se o valor desse primeiro operando é verdadeiro, ele retorna esse valor verdadeiro. Caso contrário, ele avalia o segundo operando, a expressão à sua direita, e retorna o valor dessa expressão.
+
+### 4.10.3 - NÃO lógico (!)
+
+O operador ! é um operador unário – ele é colocado antes de um único operando. Seu objetivo é inverter o valor booleano de seu operando.
+
+---
+
+## 4.11 - EXPRESSÕES DE ATRIBUIÇÃO
+
+A JavaScript usa o operador = para atribuir um valor a uma variável ou propriedade. O operador = espera que o operando de seu lado esquerdo seja um lvalue: uma variável ou propriedade de objeto (ou elemento de array). Ele espera que o operando de seu lado direito seja um valor arbitrário de qualquer tipo. O valor de uma expressão de atribuição é o valor do operando do lado direito. Como efeito colateral, o operador = atribui o valor da direita à variável ou propriedade da esquerda; portanto, futuras referências à variável ou propriedade são avaliadas com o valor.
+
+### 4.11.1 - Atribuição com operação
+
+Além do operador de atribuição = normal, a JavaScript aceita vários outros operadores de atribuição que fornecem atalhos por combinar atribuição com alguma outra operação. Como seria de se esperar, o operador += funciona com números ou strings. Para operandos numéricos, ele efetua adição e atribuição; para operandos string, ele faz concatenação e atribuição.
+
+---
+
+## 4.12 - EXPRESSÕES DE AVALIAÇÃO
+
+Assim como muitas linguagens interpretadas, JavaScript tem a capacidade de interpretar strings de código-fonte, avaliando-as para produzir um valor. JavaScript faz isso com a função global eval(). A avaliação dinâmica de strings de código-fonte é um recurso poderoso da linguagem que quase
+nunca é necessário na prática. Se você se encontrar usando eval() , deve considerar com atenção se realmente precisa usá-la.
+
+### 4.12.1 - eval()
+
+eval() espera um único argumento. Se for passado qualquer valor que não seja uma string, ela simplesmente retorna esse valor. Se for passada uma string, ela tenta analisar a string como código JavaScript, lançando uma exceção SyntaxError em caso de falha. Se conseguir analisar a string, então ela avalia o código e retorna o valor da última expressão ou instrução da string ou undefined , caso a última expressão ou instrução não tenha valor algum. Se a string avaliada lança uma exceção, essa exceção é propagada a partir da chamada a eval(). O principal a saber sobre eval() (quando chamada desse modo) é que ela usa o ambiente da variável do código que a chama. Isto é, ela pesquisa os valores das variáveis e define novas variáveis e funções da mesma maneira como código local faz. Se uma função define uma variável local x e, então, chama eval("x") , ela obtém o valor da variável local. Se chama eval("x=1") , ela altera o valor da variável local. E se a função chama eval("var y = 3;") , ela declarou uma nova variável local y.
+
+### 4.12.2 - eval() global
+
+É a capacidade de eval() alterar variáveis locais que é tão problemática para os otimizadores de JavaScript. Contudo, como uma solução de contorno, os interpretadores simplesmente fazem menos otimização em qualquer função que chame eval(). A capacidade de fazer uma eval global não é apenas uma adaptação às necessidades do otimizador; na verdade é um recurso tremendamente útil: ele permite executar strings de código como se fossem scripts de nível superior independentes. Conforme observado no início desta seção, é raro precisar realmente avaliar uma string de código. Mas se você achar necessário, é mais provável que queira fazer um eval global do que um eval local.
+
+### 4.12.3 - eval() restrito
+
+Quando eval() é chamada a partir de código de modo restrito ou quando a própria string de código a ser avaliada começa com uma diretiva “use strict”, eval() faz um eval local com um ambiente de variável privado. Isso significa que, no modo restrito, o código avaliado pode consultar e configurar variáveis locais, mas não pode definir novas variáveis ou funções no escopo local.
+
+---
+
+## 4.13 - OPERADORES DIVEROS
+
+JavaScript aceita diversos outros operadores,
+
+### 4.13.1 - O operador condiciona (?:)
+
+O operador condicional é o único operador ternário (três operandos) de JavaScript e às vezes é chamado de operador ternário. Esse operador às vezes é escrito como ?: , embora não apareça dessa maneira em código. Como esse operador tem três operandos, o primeiro fica antes de ? , o segundo fica entre ? e : e o terceiro fica depois de : . Ele é usado como segue:
+
+```js
+x > 0 ? x : -x; // O valor absoluto de x
+```
+
+Os operandos do operador condicional podem ser de qualquer tipo. O primeiro operando é avaliado e interpretado como um valor booleano. Se o valor do primeiro operando é verdadeiro, então o segundo operando é avaliado e seu valor é retornado. Caso contrário, se o primeiro operando é falso, então o terceiro operando é avaliado e seu valor é retornado. Somente o segundo ou o terceiro operando é avaliado, nunca ambos.
+
+### 4.13.2 - O operador typeof
+
+typeof é um operador unário colocado antes de seu único operando, o qual pode ser de qualquer tipo. Seu valor é uma string que especifica o tipo do operando.
+
+### 4.13.3 - O operando delete
+
+delete é um operador unário que tenta excluir a propriedade do objeto ou elemento do array especificado como operando 1 . Assim como os operadores de atribuição, incremento e decremento, delete é normalmente usado por seu efeito colateral de exclusão de propriedade e não pelo valor que retorna. delete espera que seu operando seja lvalue. Se não for lvalue, o operador não faz nada e retorna true. Caso contrário, delete tenta excluir o lvalue especificado. delete retorna true se tem êxito em excluir o lvalue especificado. Contudo, nem todas as propriedades podem ser excluídas – algumas propriedades básicas internas e do lado do cliente são imunes à exclusão e as variáveis definidas pelo usuário declaradas com a instrução var não podem ser excluídas. As funções definidas com a instrução function e os parâmetros de função declarados também não podem ser excluídos.
+
+### 4.13.4 - O operador void
+
+Esse operador é incomum e pouco utilizado: ele avalia seu operando e, então, descarta o valor e retorna undefined . Como o valor do operando é descartado, usar o operador void só faz sentido se o operando tiver efeitos colaterais.
+
+### 4.13.5 - O operador virgula (,)
+
+O operador vírgula é um operador binário cujos operandos podem ser de qualquer tipo. Ele avalia o operando da esquerda, avalia o operando da direita e, então, retorna o valor do operando da direita. A expressão do lado esquerdo é sempre avaliada, mas seu valor é descartado, ou seja, só faz sentido utilizar o operador vírgula quando a expressão do lado esquerdo tem efeitos colaterais. A única situação na qual o operador vírgula costuma ser utilizado é em um laço for que tenha diversas variáveis.
