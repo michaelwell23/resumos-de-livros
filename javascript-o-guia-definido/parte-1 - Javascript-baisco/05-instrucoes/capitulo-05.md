@@ -102,3 +102,136 @@ Para executar uma instrução while , o interpretador primeiramente avalia a exp
 executa a instrução e repete, pulando de volta para o início do laço e avaliando a expressão novamente . Outra maneira de dizer isso é que o interpretador executa a instrução repetidamente enquanto a expressão é verdadeira.
 
 ### 5.5.2 - do/while
+
+O laço do/while é como um laço while , exceto que a expressão do laço é testada no final e não no início do laço. Isso significa que o corpo do laço sempre é executado pelo menos uma vez. A sintaxe é:
+
+```js
+do instrução;
+while (expressão);
+```
+
+O laço do/while é menos comumente usado do que seu primo while – na prática, é um tanto incomum ter certeza de que se quer executar um laço pelo menos uma vez. Existem duas diferenças sintáticas entre o laço do/while e o laço while normal. Primeiramente, o laço do exige a palavra-chave do (para marcar o início do laço) e a palavra-chave while (para marcar o fim e introduzir a condição do laço). Além disso, o laço do sempre deve ser terminado com um ponto e vírgula. O laço while não precisa de ponto e vírgula se o corpo do laço estiver colocado entre chaves.
+
+### 5.5.3 - for
+
+A instrução for fornece uma construção de laço frequentemente mais conveniente do que a instrução while . A instrução for simplifica os laços que seguem um padrão comum. A maioria dos laços tem uma variável contadora de algum tipo. Essa variável é inicializada antes que o laço comece e é testada antes de cada iteração do laço. Por fim, a variável contadora é incrementada ou atualizada de algum modo no final do corpo do laço, imediatamente antes que a variável seja novamente testada. A instrução for codifica cada uma dessas três manipulações como uma expressão e torna essas expressões uma parte explícita da sintaxe do laço:
+
+```js
+for (inicialização; teste; incremento) instrução;
+```
+
+inicialização , teste e incremento são três expressões (separadas com pontos e vírgulas) que são responsáveis por inicializar, testar e incrementar a variável de laço. Colocar todas elas na primeira linha do laço facilita entender o que um laço for está fazendo e evita erros, como esquecer de inicializar ou incrementar a variável de laço.
+
+### 5,5,4 - for/in
+
+A instrução for/in utiliza a palavra-chave for , mas é um tipo de laço completamente diferente do laço for normal. Um laço for/in é como segue:
+
+```js
+for (variável in objeto) instrução;
+```
+
+variável normalmente nomeia uma variável, mas pode ser qualquer expressão que seja avaliada como lvalue ou uma instrução var que declare uma única variável – deve ser algo apropriado para o lado esquerdo de uma expressão de atribuição. objeto é uma expressão avaliada como um objeto. Como sempre, instrução é a instrução ou bloco de instruções que serve como corpo do laço. Para executar uma instrução for/in, o interpretador JavaScript primeiramente avalia a expressão objeto. Se for avaliada como null ou undefined, o interpretador pula o laço e passa para a instrução seguinte 3. Se a expressão é avaliada como um valor primitivo, esse valor é convertido em seu objeto empacotador equivalente. Caso contrário, a expressão já é um objeto. Agora o interpretador executa o corpo do laço, uma vez para cada propriedade enumerável do objeto. Contudo, antes de cada iteração, o interpretador avalia a expressão variável e atribui o nome da propriedade (um valor de string) a ela.
+
+#### 5.5.4.1 - Ordem de enumeração de propriedades
+
+A especificação ECMAScript não define a ordem na qual o laço for/in enumera as propriedades de um objeto. Na prática, contudo, as implementações de JavaScript de todos os principais fornecedores de navegador enumeram as propriedades de objetos simples de acordo como foram definidas, com as propriedades mais antigas enumeradas primeiro. Se um objeto foi criado como objeto literal, sua ordem de enumeração é a mesma das propriedades que aparecem no literal. A ordem de enumeração se torna dependente da implementação (e não serve indistintamente) se:
+• o objeto herda propriedades enumeráveis;
+• o objeto tem propriedades que são índices inteiros de array;
+• delete foi usado para excluir propriedades existentes do objeto; ou
+• Object.defineProperty() ou métodos semelhantes foram usados para alterar atributos da propriedade do objeto.
+
+---
+
+## 5.6 - SALTOS
+
+Outra categoria de instruções de JavaScript são as instruções de salto. Conforme o nome lembra, elas fazem o interpretador JavaScript saltar para um novo local no código-fonte. A instrução break faz o interpretador saltar para o final de um laço ou para outra instrução. continue faz o interpretador pular o restante do corpo de um laço e voltar ao início de um laço para começar uma nova iteração. A instrução return faz o interpretador saltar de uma chamada de função de volta para o código que a chamou e também fornece o valor para a chamada. A instrução throw provoca (ou “lança”) uma exceção e foi projetada para trabalhar com a instrução try/catch/finally , a qual estabelece um bloco de código de tratamento de exceção. Esse é um tipo complicado de instrução de salto: quando uma exceção é lançada, o interpretador pula para a rotina de tratamento de exceção circundante mais próxima, a qual pode estar na mesma função ou acima na pilha de chamada, em uma função invocadora.
+
+### 5.6.1 - Instruções rotuladas
+
+Qualquer instrução pode ser rotulada por ser precedida por um identificador e dois-pontos:
+
+```js
+identificador: instrução;
+```
+
+Rotulando uma instrução, você dá a ela um nome que pode ser usado para se referir a ela em qualquer parte de seu programa. É possível rotular qualquer instrução, embora só seja útil rotular instruções que tenham corpos, como laços e condicionais. Dando um nome a um laço, você pode usar
+instruções break e continue dentro do corpo do laço para sair dele ou para pular diretamente para o seu início, a fim de começar a próxima iteração. break e continue são as únicas instruções em JavaScript que utilizam rótulos;O identificador utilizado para rotular uma instrução pode ser qualquer identificador JavaScript válido, que não seja uma palavra reservada. O espaço de nomes para rótulos é diferente do espaço de nomes para variáveis e funções; portanto, pode-se usar o mesmo identificador como rótulo de instrução e como nome de variável ou função. Os rótulos de instrução são definidos somente dentro da instrução na qual são aplicados (e dentro de suas subinstruções, evidentemente). Uma instrução pode não ter o mesmo rótulo de uma instrução que a contém, mas duas instruções podem ter o mesmo rótulo, desde que nenhuma delas esteja aninhada dentro da outra.
+
+### 5.6.2 - break
+
+A instrução break , utilizada sozinha, faz com que o laço ou instrução switch circundante mais interna seja abandonada imediatamente. Como ela é usada para sair de um laço ou switch para sair, essa forma da instrução break é válida apenas dentro de uma dessas instruções. Em laços, ela é normalmente utilizada para sair prematuramente, quando, por qualquer motivo, não há mais qualquer necessidade de completar o laço. Quando um laço tem condições de término complexas, frequentemente é mais fácil implementar algumas dessas condições com instruções break do que tentar expressar todas elas em uma única expressão de laço.
+
+### 5.6.3 - continue
+
+A instrução continue é semelhante à instrução break . No entanto, em vez de sair de um laço, continue reinicia um laço na próxima iteração. A instrução continue , tanto em sua forma rotulada como na não rotulada, só pode ser usada dentro do corpo de um laço. Utilizá-la em qualquer outro lugar causa erro de sintaxe. Quando a instrução continue é executada, a iteração atual do laço circundante é terminada e a próxima iteração começa.
+
+### 5.6.4 - return
+
+Lembre-se de que as chamadas de função são expressões e de que todas as expressões têm valores. Uma instrução return dentro de uma função especifica o valor das chamadas dessa função. A instrução return só pode aparecer dentro do corpo de uma função. É erro de sintaxe ela aparecer
+em qualquer outro lugar. Quando a instrução return é executada, a função que a contém retorna o valor de expressão para sua chamadora. Sem uma instrução return , uma chamada de função simplesmente executa cada uma das instruções do corpo da função até chegar ao fim da função e, então, retorna para sua chamadora. Nesse caso, a expressão de invocação é avaliada como undefined. A instrução return aparece frequentemente como a última instrução de uma função, mas não precisa ser a última: uma função retorna para sua chamadora quando uma instrução return é executada, mesmo que ainda restem outras instruções no corpo da função.
+
+### 5.6.5 - thow
+
+Uma exceção é um sinal indicando que ocorreu algum tipo de condição excepcional ou erro. Disparar uma exceção é sinalizar tal erro ou condição excepcional.JavaScript, as exceções são lançadas quando ocorre um erro em tempo de execução e quando o programa lança uma explicitamente, usando a instrução throw. Expressão pode ser avaliada com um valor de qualquer tipo. Pode-se lançar um número representando um código de erro ou uma string contendo uma mensagem de erro legível para seres humanos. A classe Error e suas subclasses são usadas quando o próprio interpretador JavaScript lança um erro, e você também pode usá-las. Um objeto Error tem uma propriedade name que especifica o tipo de erro e uma propriedade message que contém a string passada para a função construtora (consulte a classe Error na seção de referência).
+
+### 5.6.6 - try/catch/finally
+
+A instrução try/catch/finally é o mecanismo de tratamento de exceção de JavaScript. A cláusula try dessa instrução simplesmente define o bloco de código cujas exceções devem ser tratadas. O bloco try é seguido de uma cláusula catch , a qual é um bloco de instruções que são chamadas quan-
+do ocorre uma exceção em qualquer lugar dentro do bloco try . A cláusula catch é seguida por um bloco finally contendo o código de limpeza que é garantidamente executado, independente do que aconteça no bloco try . Os blocos catch e finally são opcionais, mas um bloco try deve estar acompanhado de pelo menos um desses blocos.
+
+---
+
+## 5.7 - INSTRUÇÕES DIVERSAS
+
+Esta seção descreve as três instruções restantes de JavaScript – with , debugger e use strict.
+
+### 5.7.1 - with
+
+A instrução with é usada para ampliar o encadeamento de escopo temporariamente. Ela tem a seguinte sintaxe:
+
+```js
+with (objeto) instrução;
+```
+
+Essa instrução adiciona objeto na frente do encadeamento de escopo, executa instrução e, então, restaura o encadeamento de escopo ao seu estado original. A instrução with é proibida no modo restrito e deve ser considerada desa- provada no modo não restrito: evite usá-la, quando possível. Um código JavaScript que utiliza with é difícil de otimizar e é provável que seja executado mais lentamente do que um código equivalente escrito sem a instrução with.
+
+### 5.7.2 - debugger
+
+A instrução debugger normalmente não faz nada. No entanto, se um programa depurador estiver disponível e em execução, então uma implementação pode (mas não é obrigada a) executar algum tipo de ação de depuração. Na prática, essa instrução atua como um ponto de interrupção: a execução do código JavaScript para e você pode usar o depurador para imprimir valores de variáveis, examinar a pilha de chamada, etc.
+
+### 5.7.3 - "use strict"
+
+"use strict" é uma diretiva introduzida em ECMAScript 5. As diretivas não são instruções (mas são parecidas o suficiente para que "use strict" seja documentada aqui). Existem duas diferenças importantes entre a diretiva "use strict" e as instruções normais:
+• Ela não inclui qualquer palavra-chave da linguagem: a diretiva é apenas uma instrução de expressão que consiste em uma string literal especial (entre aspas simples ou duplas).
+• Ela só pode aparecer no início de um script ou no início do corpo de uma função, antes que qualquer instrução real tenha aparecido.
+O objetivo de uma diretiva "use strict" é indicar que o código seguinte (no script ou função) é código restrito. O código de nível superior (não função) de um script é código restrito se o script tem uma diretiva "use strict" . O corpo de uma função é código restrito se está definido dentro de código restrito ou se tem uma diretiva "use strict".
+
+---
+
+## 5.8 - RESUMO DAS INTRUÇÕES JAVASCRIPT
+
+Este capítulo apresentou cada uma das instruções da linguagem JavaScript. A Tabela 5-1 as resume,
+listando a sintaxe e o objetivo de cada uma.
+
+| Intrução | Sintaxe                                                                                              | Objetivo                                                               |
+| -------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| break    | break [rótulo];                                                                                      | Sai do laço ou switch mais interno ou da instrução circundante nomeada |
+| case     | case expressão:                                                                                      | Rotula uma instrução dentro de um switch                               |
+| continue | continue [rótulo];                                                                                   | Começa a próxima iteração do laço mais interno ou do laço nomeado      |
+| debugger | debugger;                                                                                            | Ponto de interrupção de depurador                                      |
+| default  | default:                                                                                             | Rotula a instrução padrão dentro de um switch                          |
+| do/while | do instrução while (expressão);                                                                      | Uma alternativa para o laço while                                      |
+| empty    | ;                                                                                                    | Não faz nada                                                           |
+| for      | for(inic; teste; incr) instrução                                                                     | Um laço fácil de usar                                                  |
+| for/in   | for (var in objeto) instrução                                                                        | Enumera as propriedades de objeto                                      |
+| function | function nome([parâm[,...]]) { corpo }                                                               | Declara uma função chamada nome                                        |
+| if/else  | if (expr) instrução1 [else instrução2]                                                               | Executa instrução1 ou instrução2                                       |
+| label    | rótulo: instrução                                                                                    | Dá à instrução o nome rótulo                                           |
+| return   | return [expressão];                                                                                  | Retorna um valor de uma função                                         |
+| switch   | switch (expressão) { instruções }                                                                    | Ramificação de múltiplos caminhos para rótulos case ou default:        |
+| throw    | throw expressão;                                                                                     | Lança uma exceção                                                      |
+| try      | try { instruções } [catch { instruções de rotina de tratamento }] [finally { instruções de limpeza}] | Trata exceções                                                         |
+| use      | strict "use strict";                                                                                 | Aplica restrições do modo restrito em um script ou função              |
+| var      | var nome [ = expr] [ ,... ];                                                                         | Declara e inicializa uma ou mais variáveis                             |
+| while    | while (expressão) instrução                                                                          | Uma construção de laço básica                                          |
+| with     | with (objeto) instrução                                                                              | Amplia o encadeamento de escopo (proibida no modo restrito)            |
