@@ -107,3 +107,35 @@ O atributo protótipo de um objeto especifica o objeto do qual ele herda proprie
 O atributo classe de um objeto é uma string que fornece informações sobre o tipo do objeto. Nem ECMAScript 3 nem ECMAScript 5 fornecem um modo de configurar esse atributo, sendo que há apenas uma técnica indireta para consultá-lo. O método padrão toString() (herdado de Object.prototype) retorna uma string da forma. Assim, para obter a classe de um objeto, você pode chamar esse método toString() nele e extrair do oitavo ao penúltimo caracteres da string retornada. A parte complicada é que muitos objetos herdam outros métodos toString() mais úteis e, para chamar a versão correta de toString() , precisamos fazer isso indiretamente, usando o método Function.call().
 
 ### 6.8.3 - O atributo extensível
+
+ECMAScript 5 define funções para consultar e configurar a capacidade de extensão de um objeto. Para determinar se um objeto é extensível, passe-o para Object.isExtensible(). Para tornar um objeto não extensível, passe-o para Object.preventExtensions(). Note que não há qualquer modo de tornar um objeto novamente extensível, uma vez que você o tenha tornado não extensível. Note também que chamar preventExtensions() afeta apenas a capacidade de extensão do próprio objeto. Se novas propriedades forem adicionadas no protótipo de um objeto não extensível, o objeto não extensível vai herdar essas novas propriedades.O objetivo do atributo extensível é “bloquear” os objetos em um estado conhecido e evitar falsificação externa. O atributo de objeto extensível é frequentemente usado em conjunto com os atributos de propriedade configurável e gravável. ECMAScript 5 define funções que tornam fácil configurar esses atributos juntos. Object.seal() funciona como Object.preventExtensions() , mas além de tornar o objeto não extensível, também torna todas as propriedades próprias desse objeto não configuráveis. Isso significa que novas propriedades não podem ser adicionadas no objeto e que as propriedades já existentes não podem ser excluídas nem configuradas. Object.freeze() bloqueia os objetos ainda mais firmemente. Além de tornar o objeto não extensível e suas propriedades não configuráveis, também transforma todas as propriedades de dados próprias do objeto em somente para leitura. Use Object.isFrozen() para determinar se um objeto está congelado. É importante entender que Object.seal() e Object.freeze() afetam apenas o objeto em que são passados: eles não têm efeito algum sobre o protótipo desse objeto. Se quiser bloquear um objeto
+completamente, você provavelmente também precisa selar ou congelar os objetos no encadeamento de protótipos.
+
+---
+
+## 6.9 - SERIALIZANDO OBJETOS
+
+Serialização de objeto é o processo de converter o estado de um objeto em uma string a partir da qual ele pode ser restaurado posteriormente. ECMAScript 5 fornece as funções nativas JSON.stringify() e JSON.parse() para serializar e restaurar objetos de JavaScript. Essas funções utilizam o formato de troca de dados JSON. JSON significa “JavaScript Object Notation” (notação de objeto JavaScript) e sua sintaxe é muito parecida com a de objetos e array literais de JavaScript.
+
+---
+
+## 6.10 - MÉTODOS DE OBJETOS
+
+Conforme discutido, todos os objetos de JavaScript (exceto aqueles explicitamente criados sem protótipo) herdam propriedades de Object.prototype. Essas propriedades herdadas são principalmente métodos e, como estão disponíveis universalmente, são de interesse especial para os programadores
+de JavaScript.
+
+### 6.10.1 - O método toString()
+
+O método toString() não recebe argumentos; ele retorna uma string que de algum modo representa o valor do objeto em que é chamado. JavaScript chama esse método de um objeto quando precisa converter o objeto em uma string.
+
+### 6.10.2 - O método toLocaleString()
+
+Além do método toString() básico, todos os objetos têm um método toLocaleString(). O objetivo desse método é retornar uma representação de string localizada do objeto. O método toLocaleString() padrão definido por Object não faz localização alguma sozinho: ele simplesmente chama toString() e retorna esse valor.
+
+### 6.10.3 - O método toJSON()
+
+Se esse método existe no objeto a ser serializado, ele é chamado, sendo que o valor de retorno é serializado em vez do objeto original.
+
+### 6.10.4 - O método valueOf()
+
+O método valueOf() é muito parecido com o método toString() , mas é chamado quando JavaScript precisa converter um objeto em algum tipo primitivo que não seja uma string – normalmente um número. JavaScript chama esse método automaticamente se um objeto é usado em um contexto em que é exigido um valor primitivo.
