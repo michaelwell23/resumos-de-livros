@@ -55,8 +55,34 @@ como método de qualquer objeto, mesmo que não seja realmente um método desse 
 
 ## 8.3 - ARGUMENTO E PARÂMETROS DE FFUNÇÃO
 
+As subseções a seguir descrevem o que acontece quando uma função é chamada com menos argumentos do que parâmetros declarados ou com mais argumentos do que parâmetros declarados. Elas também demonstram como é possível testar explicitamente o tipo dos argumentos da função, caso seja necessário garantir que uma função não seja chamada com argumentos incompatíveis.
+
+### 8.3.1 - Parâmetros Opcionais
+
+Quando uma função é chamada com menos argumentos do que parâmetros declarados, os parâmetros adicionais são configurados com o valor undefined . Frequentemente é útil escrever funções de modo que alguns argumentos sejam opcionais e possam ser omitidos na chamada da função. Para fazer isso, deve-se atribuir um valor padrão razoável aos parâmetros omitidos.
+
+### 8.3.2 - Listas de argumentos de comprimento variável: o objeto Arguments
+
+O objeto Arguments é um objeto semelhante a um array que permite aos valores de argumento passados para a função serem recuperados por número, em vez de por nome. Suponha que você defina uma função f que espera receber um único argumento, x. Se essa função for chamada com dois argumentos, o primeiro argumento vai estar acessível dentro da função pelo nome de parâmetro x ou como arguments[0]. O segundo argumento vai estar acessível somente como arguments[1]. Além disso, assim como os arrays reais, arguments tem uma propriedade length que especifica o número de elementos que ele contém. Um uso importante do objeto Arguments é na escrita de funções que operam sobre qualquer número de argumentos.
+
+#### 8.3.2.1 - As propriedades callee e caller
+
+Além de seus elementos de array, o objeto Arguments define as propriedades callee e caller. No modo restrito de ECMAScript 5, é garantido que essas propriedades lançam um TypeError se você tenta lê-las ou gravá-las. No entanto, fora do modo restrito, o padrão ECMAScript diz que a propriedade callee se refere à função que está sendo executada no momento. caller é uma propriedade não padronizada, mas comumente implementada, que se refere à função que chamou àquela.
+
+### 8.3.3 - Usando propriedade de objeto como argumentos
+
+Para que o programador não precise consultar a documentação cada vez que utilizar a função, pode ser apropriado permitir que os argumentos sejam passados como pares nome/valor em qualquer ordem. Para implementar esse estilo de chamada de método, defina sua função de modo a esperar um único objeto como argumento e faça os usuários da função passarem um objeto que defina os pares nome/valor exigidos.
+
+### 8.3.4 - Tipos de argumentos
+
+Os parâmetros de método em JavaScript não têm tipos declarados e não é feita verificação de tipo nos valores passados para uma função. Você pode ajudar a autodocumenta seu código escolhendo nomes descritivos para argumentos de função e incluindo os tipos de argumento nos comentários. Para argumentos opcionais, você pode incluir a palavra “opcional” no comentário. E quando um método pode aceitar qualquer número de argumentos, você pode usar reticências. JavaScript faz conversão de tipo de forma livre, quando necessário. Assim, se você escreve uma função que espera um argumento de string e então chama essa função com um valor de algum outro tipo, o valor passado é simplesmente convertido em string quando a função tenta utilizá-lo como string. Contudo, isso nem sempre é verdade. A não ser que você esteja escrevendo uma função “descartável” que vai ser chamada apenas uma ou duas vezes, pode ser interessante adicionar código para verificar os tipos dos argumentos. É melhor que uma função falhe imediata e previsivelmente quando são passados valores incompatíveis do que comece a executar e falhe com uma mensagem de erro que provavelmente não será clara.
+
 ---
 
 ## 8.4 - FUNÇÕES COM VALORES
 
+As características mais importantes das funções são que elas podem ser definidas e chamadas. Definição e chamada de função são recursos sintáticos de JavaScript e na maioria das outras linguagens de programação. Em JavaScript, no entanto, as funções não são apenas sintaxe, mas também valores,ou seja, podem ser atribuídas a variáveis, armazenadas nas propriedades de objetos ou nos elementos de arrays, passadas como argumentos para funções, etc. Quando uma funçãi é definida, um novo objeto função é criado e atrbuido à variável. O nome de uma função é irrelevante; é simplismente o nome de uma variável que se refere ao objeto função. Essa função pode ser atribuida a outra variável e ainda funcionar da mesma maneira. As funções também podem ser atribuídas a propriedades de objeto, em vez de a variáveis.
+
 ---
+
+## 8.5 - FUNÇÕES COM ESPAÇO DE NOMES
