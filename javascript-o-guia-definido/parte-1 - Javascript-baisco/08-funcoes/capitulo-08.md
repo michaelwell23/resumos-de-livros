@@ -81,8 +81,25 @@ Os parâmetros de método em JavaScript não têm tipos declarados e não é fei
 
 ## 8.4 - FUNÇÕES COM VALORES
 
-As características mais importantes das funções são que elas podem ser definidas e chamadas. Definição e chamada de função são recursos sintáticos de JavaScript e na maioria das outras linguagens de programação. Em JavaScript, no entanto, as funções não são apenas sintaxe, mas também valores,ou seja, podem ser atribuídas a variáveis, armazenadas nas propriedades de objetos ou nos elementos de arrays, passadas como argumentos para funções, etc. Quando uma funçãi é definida, um novo objeto função é criado e atrbuido à variável. O nome de uma função é irrelevante; é simplismente o nome de uma variável que se refere ao objeto função. Essa função pode ser atribuida a outra variável e ainda funcionar da mesma maneira. As funções também podem ser atribuídas a propriedades de objeto, em vez de a variáveis.
+As características mais importantes das funções são que elas podem ser definidas e chamadas. Definição e chamada de função são recursos sintáticos de JavaScript e na maioria das outras linguagens de programação. Em JavaScript, no entanto, as funções não são apenas sintaxe, mas também valores,ou seja, podem ser atribuídas a variáveis, armazenadas nas propriedades de objetos ou nos elementos de arrays, passadas como argumentos para funções, etc. Quando uma funçãi é definida, um novo objeto função é criado e atrbuido à variável. O nome de uma função é irrelevante; é simplismente o nome de uma variável que se refere ao objeto função. Essa função pode ser atribuida a outra variável e ainda funcionar da mesma maneira. As funções também podem ser atribuídas a propriedades de objeto, em vez de a variáveis. As funções nem mesmo exigem nomes, assim como quando são atribuídas a elementos de array.
+
+### 8.4.1 - Definindo suas próprias propriedade de função
+
+Em JavaScript funções não são valores primitivos, mas sim um tipo de objeto especializado, ou seja, elas podem ter propriedades. Quando uma função precisa de uma variável “estática” cujo valor persiste entre as chamadas, muitas vezes é conveniente utilizar uma propriedade da função, em vez de
+congestionar o espaço de nomes definindo uma variável global. A função nunca deve retornar o mesmo valor duas vezes. Para conseguir isso, a função precisa monitorar os valores que já retornou e essa informação deve persistir entre as chamadas de função. Você poderia armazenar essa informação em uma variável global, mas isso é desnecessário, pois a informação é usada apenas pela própria função. É melhor armazená-la em uma propriedade do objeto Function.
 
 ---
 
 ## 8.5 - FUNÇÕES COM ESPAÇO DE NOMES
+
+JavaScript tem escopo de função: as variáveis declaradas dentro de uma função são visíveis por toda a função (inclusive dentro de funções aninhadas), mas não existem fora da função. As variáveis declaradas fora de uma função são variáveis globais e são visíveis por todo o seu programa JavaScript. JavaScript não define maneira alguma de declarar variáveis que são ocultas dentro de um único bloco de código e, por esse motivo, às vezes é útil definir uma função para agir simplesmente como espaço de nomes temporário, no qual é possível definir variáveis sem poluir o espaço de nomes global.
+
+---
+
+## 8.6 - CLOUSURES
+
+Para implementar escopo léxico, o estado interno de um objeto função em JavaScript deve incluir não apenas o código da função, mas também uma referência ao encadeamento de escopo corrente. Essa combinação de objeto função e um escopo (um conjunto de vínculos de variável) no qual as variáveis da função são solucionadas, é chamado de closure na literatura da ciência da computação. Tecnicamente, em JavaScript todas funções são closures: elas são objetos e têm um encadeamento de escopo associado. A maioria das funções é chamada usando o mesmo encadeamento de escopo que estava em vigor quando a função foi definida e não importa que exista uma closure envolvida. As closures se tornam interessantes quando são chamadas em um encadeamento de escopo diferente do que estava em vigor quando foram definidas. Lembre-se da regra fundamental do escopo léxico: em JavaScript as funções são executadas usando o encadeamento de escopo que estava em vigor quando foram definidas.
+
+---
+
+## 8.7 - PROPRIEDADES DE FUNÇÃO, MÉTODOS E CONTRUTORA
