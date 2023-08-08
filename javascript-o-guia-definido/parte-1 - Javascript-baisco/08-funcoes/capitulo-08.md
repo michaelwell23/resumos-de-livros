@@ -103,3 +103,59 @@ Para implementar escopo léxico, o estado interno de um objeto função em JavaS
 ---
 
 ## 8.7 - PROPRIEDADES DE FUNÇÃO, MÉTODOS E CONTRUTORA
+
+Vimos que nos programas JavaScript as funções são valores. O operador typeof retorna a string “function” quando aplicado a uma função, mas na verdade as funções são um tipo especializado de objeto em JavaScript. Como as funções são objetos, podem ter propriedades e métodos, exatamente
+como qualquer outro objeto.
+
+### 8.7.1 - A propriedade length
+
+Dentro do corpo de uma função, arguments.length especifica o número de argumentos que foram passados para a função. Contudo, a propriedade length de uma função em si tem um significado diferente. Essa propriedade somente de leitura retorna a aridade da função – o número de parâmetros que ela declara em sua lista de parâmetros, que normalmente é o número de argumentos esperados pela função.
+
+### 8.7.2 - A propriedade prototype
+
+Toda função tem uma propriedade prototype que se refere a um objeto conhecido como objeto protótipo. Cada função tem um objeto protótipo diferente. Quando uma função é usada como construtora, o objeto recém-criado herda propriedades do objeto protótipo.
+
+### 8.7.3 - Os métodos call() e apply()
+
+call() e apply() permitem chamar uma função indiretamente como se fosse um método de algum outro objeto. O primeiro argumento de call() e de apply() é o objeto em que a função vai ser chamada; esse argumento é o contexto da chamada e se torna o valor da palavra-chave this dentro do corpo da função. Qualquer argumento para call() , após o primeiro argumento de contexto da chamada, é o valor passado para a função chamada. O método apply() é como o método call() , exceto que os argumentos a serem passados para a função são especificados como um array. Se uma função é definida para aceitar um número de argumentos arbitrário, o método apply() permite chamar essa função no conteúdo de um array de comprimento arbitrário.
+
+### 8.7.4 - O método bind()
+
+O método bind() foi adicionado em ECMAScript 5, mas é fácil simulá-lo em ECMAScript 3. Conforme o nome lembra, o principal objetivo de bind() é vincular uma função a um objeto. Quando o método bind() é chamado em uma função f e um objeto o é passado, o método retorna uma nova função. Chamar a nova função (como função) chama a função original f como método de o. Os argumentos passados para a nova função são passados para a função original. O método bind() de ECMAScript 5 faz mais do que apenas vincular uma função a um objeto. Ele também faz aplicação parcial: os argumentos passados para bind() após o primeiro são vinculados junto com o valor de this . A aplicação parcial é uma técnica comum na programação funcional e
+às vezes é chamada de currying.
+
+### 8.7.5 - O método toString()
+
+Em JavaScript assim como todos os objetos, as funções têm um método toString(). A especificação ECMAScript exige que esse método retorne uma string que siga a sintaxe da instrução de declara- ção de função. Na prática, a maioria (mas não todas) das implementações desse método toString()retorna o código-fonte completo da função.
+
+### 8.7.6 - A construtora Function()
+
+As funções normalmente são definidas com a palavra-chave function, ou na forma de uma instrução de definição de função ou de uma expressão de função literal. Mas as funções também podem ser definidas com a construtora Function(). A construtora Function() espera qualquer número de argumentos de string. O último argumento é o texto do corpo da função; ele pode conter instruções arbitrárias em JavaScript, separadas umas das
+outras por pontos e vírgulas. Todos os outros argumentos da construtora são strings que especificam os nomes de parâmetros da função. Se estiver definindo uma função que não recebe argumentos, basta passar uma única string – o corpo da função – para a construtora.
+
+### 8.7.7 - Objetos que podem ser chamados
+
+Um objeto que pode ser chamado é qualquer objeto que possa ser chamado em uma expressão de invocação de função. Todas as funções podem ser chamadas, mas nem todos os objetos que podem ser chamados são funções. Os objetos que podem ser chamados e que não são funções são encontrados em duas situações nas implementações atuais de JavaScript. Primeiramente, o navegador Web IE (versão 8 e anteriores) implementa métodos do lado do cliente, como Window.alert() e Document.getElementsById(), usando objetos hospedeiros que podem ser chamados, em vez de objetos Function nativos. Esses métodos funcionam da mesma maneira no IE e em outros navegadores, mas não são realmente objetos Function. A outra forma comum de objetos que podem ser chamados são os objetos RegExp – em muitos navegadores, pode-se chamar um objeto RegExp diretamente como um atalho para chamar seu método exec(). Esse é um recurso completamente não padronizado de JavaScript que foi introduzido pela Netscape e copiado por outros fornecedores por questão de compatibilidade.
+
+---
+
+## 8.8 - PROGRAMAÇÃO FUNCIONAL
+
+JavaScript não é uma linguagem de programação funcional como Lisp ou Haskell, mas o fato de ela poder manipular funções como objetos significa que podemos usar técnicas de programação funcional em JavaScript. Os métodos de array de ECMAScript 5, como map() e reduce() , são especialmente adequados para um estilo de programação funcional.
+
+### 8.8.1 - Processando arrays com funções
+
+Suponha que temos um array de números e queremos calcular a média e o desvio padrão desses valores. Podemos efetuar esses cálculos no estilo funcional conciso, usando os métodos de array map() e reduce(). E se estivéssemos usando ECMAScript 3 e não tivéssemos acesso a esses métodos de array podemos definir nossas próprias funções map() e reduce() que utilizam os métodos internos, caso eles existam.
+
+### 8.8.2 - Funções de alta ordem
+
+Uma função de alta ordem é um função que opera sobre funções, recebendo uma ou mais funções como argumento e retornando uma nova função.
+
+### 8.8.3 - Aplicação parcial de função
+
+O método bind() aplica parcialmente os argumentos da esquerda – isto é, os argumentos passados para bind() são colocados no início da
+lista de argumentos passada para a função original. Mas também é possível aplicar parcialmente os argumentos da direita. A aplicação parcial se torna ainda mais interessante quando a combinamos com outras funções de mais alta ordem.
+
+### 8.8.4 - Memoização
+
+Na Seção 8.4.1, definimos uma função de fatorial que colocava na cache os resultados calculados anteriormente. Na programação funcional, esse tipo de uso de cache é denominado memoização. A função memoize() cria um novo objeto para usar como cache e atribui esse objeto a uma variável local, de modo que é privado (na closure da) da função retornada. A função retornada converte seu array de argumentos em uma string e usa essa string como nome de propriedade do objeto cache. Se um valor existe na cache, ela o retorna diretamente.
