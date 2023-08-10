@@ -37,3 +37,27 @@ O mecanismo de herança baseado em protótipos de JavaScript é dinâmico: um ob
 ---
 
 ## 9.5 - CLASSES E TIPOS
+
+As subseções a seguir explicam três técnicas para determinar a classe de um objeto arbitrário: o operador instanceof , a propriedade constructor e o nome da função construtora. Entretanto, nenhuma dessas técnicas é inteiramente satisfatória. Assim, a seção termina com uma discussão sobre tipagem do pato, uma filosofia de programação que se concentra no que um objeto pode fazer (quais métodos ele tem) e não em qual é sua classe.
+
+### 9.5.1 - O operador instaceof
+
+O operando do lado esquerdo deve ser o objeto cuja classe está sendo testada e o operando do lado direito deve ser uma função construtora que dá nome a uma classe. A expressão o instanceof c é avaliada como true se o herda de c.prototype. A herança não precisa ser direta. Se o herda de um objeto que herda de um objeto que herda de c.prototype , a expressão ainda vai ser avaliada como true. As construtoras atuam como identidade pública
+das classes, mas os protótipos são a identidade fundamental. Apesar do uso de uma função construtora com instanceof , esse operador na verdade está testando de quem um objeto herda e não a construtora que foi utilizada para criá-lo. Se quiser testar o encadeamento de protótipos de um objeto para um objeto protótipo específico e não quiser a função construtora como intermediária, você pode usar o método isPrototypeOf(). Uma deficiência do operador instanceof e do método isPrototypeOf() é que eles não nos permitem consultar a classe de um objeto, mas somente testar um objeto em relação a uma classe que especificamos.
+
+### 9.5.2 - A propriedade constructor
+
+Outra maneira de identificar a classe de um objeto é simplesmente usar a propriedade constructor. Essa técnica de usar a propriedade constructor está sujeita ao mesmo problema de instanceof. Nem sempre vai funcionar quando houver vários contextos de execução (como vários quadros
+na janela de um navegador) que compartilham valores. Nessa situação, cada quadro tem seu próprio conjunto de funções construtoras: a construtora Array de um quadro não é a mesma construtora Array de outro. Além disso JavaScript não exige que todo objeto tenha uma propriedade constructor: essa é uma converção baseada no objeto protótipo padrão criado para cada função, mas é fácil omitir, acidental ou intencionalmente, a propriedade constructor no protótipo.
+
+### 9.5.3 - O nome da construtora
+
+O principal problema no uso do operador instanceof ou da propriedade constructor para determinar a classe de um objeto ocorre quando existem vários contexto de execução e, portanto, várias cópias das funções construtoras. Uma possível solução é usar o nome da função construtora como identificado da classe, em vez da própria função. A construtora Array de uma janela não é igual à construtora Array de outra janela, mas seus nomes são iguais. ALgumas implementações em JavaScript tornam o nome de uma função disponível por meio de uma propriedade não padronizada name do objeto função. Essa técnica de uso do nome da construtora para identificar a classe de um objeto tem o mesmo problema de usar a propriedade constructor : nem todos os objetos têm uma propriedade constructor.
+
+### 9.5.4 - Tipagem do pato
+
+Nenhuma das técnicas descritas anteriormente para determinar a classe de um objeto está livre de problemas, pelo menos em JavaScript do lado do cliente. Uma alternativa é evitar o problema: em vez de perguntar “qual é a classe desse objeto?”, perguntamos “o que esse objeto pode fazer?” Essa estratégia de programação é comum em linguagens como Python e Ruby e se chama tipagem do pato, por causa desta frase. Para programadores JavaScript, essa definição pode ser entendida como “se um objeto caminha, nada e grasna como um Pato, então podemos tratá-lo como um Pato, mesmo que não herde do objeto protótipo da classe Pato”. O método foreach() de nossa classe Range também não testa explicitamente o tipo dos pontos extremos do intervalo, mas o uso de Math.ceil() e do operador ++ significa que ela só funciona com pontos extremos numéricos. Uma estratégia para a tipagem do pato é laissez-faire: simplesmente supomos que nossos objetos de entrada implementam os métodos necessários e não fazemos verificação alguma. Se a suposição for inválida, vai ocorrer um erro quando nosso código tentar chamar um método inexistente. Outra estratégia faz a verificação dos objetos de entrada. Entretanto, em vez de verificar suas classes, ela verifica se eles implementam métodos com os nomes apropriados. Isso nos permite rejeitar más entradas mais cedo e pode resultar em mensagens de erro mais informativas. Existem duas coisas importantes a serem lembradas a respeito dessa função quacks(). Primeiramente, ela só testa se um objeto tem uma ou mais propriedades com valor de função com nomes especificados. A existência dessas propriedades não nos informa nada sobre o que essas funções fazem ou sobre quantos e quais tipos de argumentos elas esperam. Essa, no entanto, é a natureza da tipagem do pato.
+
+---
+
+## 9.6 - TÉCNICAS ORIENTADAS A OBJETO EM JAVASCRIPT
