@@ -61,3 +61,41 @@ Nenhuma das técnicas descritas anteriormente para determinar a classe de um obj
 ---
 
 ## 9.6 - TÉCNICAS ORIENTADAS A OBJETO EM JAVASCRIPT
+
+Nesta seção, trocamos de marcha e demonstramos várias técnicas práticas (embora não fundamentais) para programar com classes em JavaScript. Começamos com dois exemplos de classes não triviais que por si sós são interessantes, mas que também servem como pontos de partida para as discussões que se seguem.
+
+### 9.6.1 - Exemplo: uma classe Set
+
+Os objetos em JavaScript são basicamente conjuntos de nomes de propriedade, com valores associados a cada nome. Portanto, é simples usar um objeto com um conjunto de strings. O Exemplo implementa uma classe Set mais geral em JavaScript. Ela funciona mapeando qualquer valor de JavaScript em uma string exclusiva e, então, usando essa string como um nome de propriedade. Os objetos e as funções não têm uma representação de string concisa e exclusiva, de modo que a classe Set precisa definir uma propriedade identificadora em qualquer objeto ou função armazenada no conjunto.
+
+### 9.6.2 - Exemplo: tipos enumeração
+
+Um tipo enumeração é um tipo com um conjunto finito de valores que são listados (ou “enumerados”) quando o tipo é definido. O Exemplo consiste em uma única função enumeration() . Contudo, essa não é uma função
+construtora: ela não define uma classe chamada “enumeration”. Em vez disso, essa é uma função fábrica: cada chamada cria e retorna uma nova classe. O objetivo do exemplo é demonstrar que as classes de JavaScript são muito mais flexíveis e dinâmicas do que as classes estáticas de linguagens como C++ e Java.
+
+### 9.6.3 - Métodos de conversão padrão
+
+O primeiro e mais importante método é toString(). O objetivo desse método é retornar uma representação de string de um objeto. JavaScript chama esse método automaticamente, caso seja utilizado um objeto onde é esperada uma string – como um nome de propriedade. O método toLocaleString() é estreitamente relacionado a toString() : ele deve converter um objeto em uma string compatível com a localidade. Por padrão, os objetos herdam um método toLocaleString() que simplesmente chama seus métodos toString(). Alguns tipos internos têm métodos toLocaleString() úteis que retornam strings compatíveis com a localidade. O terceiro método é valueOf() . Sua tarefa é converter um objeto em um valor primitivo. O método valueOf() é chamado automaticamente quando um objeto é usado em um contexto numérico, com operadores aritméticos (exceto + ) e com os operadores relacionais.
+O quarto método é toJSON(), que é chamado automaticamente por JSON.stringify(). O formato JSON se destina à serialização de estruturas de dados e pode manipular valores primitivos, arrays e objetos comuns de JavaScript. Ele não conhece classes e, ao serializar um objeto, ignora o protótipo e a construtora do objeto.
+
+### 9.6.4 - Métodos de comparação
+
+Os operadores de igualdade de JavaScript comparam objetos por referência, e não por valor. Isto é, dadas duas referências do objeto, eles verificam se ambas são para o mesmo objeto. Esses operadores não verificam se dois objetos diferentes têm os mesmos nomes de propriedade e valores. Para permitir que instâncias de sua classe sejam testadas quanto à igualdade, defina um método de instância chamado equals(). Ele deve receber um único argumento e retornar true se esse argumento for igual ao objeto em que é chamado. O método compareTo() deve aceitar um único argumento e compará-lo com o objeto no qual o método é chamado. Se o objeto this for menor do que o argumento, compareTo() deve retornar um valor menor do que zero. Se o objeto this for maior do que o objeto argumento, o método deve retornar um valor maior do que zero.
+
+### 9.6.5 - Emprestando métodos
+
+Uma única função pode até ser usada como método de mais de uma classe. A maioria dos métodos internos da classe Array, por exemplo, é definida genericamente e se você define uma classe cujas instâncias são objetos semelhantes a um array, pode copiar funções de Array.prototype no objeto protótipo de sua classe. Não são apenas os métodos de Array que podem ser emprestados: podemos escrever nossos próprios métodos genéricos.
+
+### 9.6.6 - Estado privado
+
+Na programação orientada a objetos clássica, frequentemente é um objetivo encapsular ou ocultar o estado de um objeto dentro do objeto, permitindo o acesso a esse estado somente por meio dos métodos do objeto, possibilitando assim que as variáveis de estado importantes sejam lidas ou gravadas
+diretamente. Java permite a declaração de campos de instência "privados" de uma classe, que são acessíveis somente para o método de instância da classe e não podem ser vistos fora dela. Podemos ter algo próximo aos campos privados de instância usando variáveis (ou argumentos) capturadas na closure da chamada de construtora que cria uma instância. Para fazer isso, definimos funções dentro da construtora (para que elas tenham acesso aos argumentos e às variáveis da construtora) e atribuímos essas funções às propriedades do objeto recém-criado.
+
+### 9.6.7 - SObrecarga de construtora e métodos de fábrica
+
+Às vezes queremos permitir que os objetos sejam inicializados de mais de uma maneira. Talvez queiramos criar um objeto Complex inicializado com um raio e um ângulo (coordenadas polares), em vez dos componentes real e imaginário, por exemplo, ou queiramos criar um Set cujos membros são os elementos de um array, em vez dos argumentos passados para a construtora. Um modo de fazer isso é sobrecarregar a construtora e fazê-la realizar diferentes tipos de inicialização, dependendo dos argumentos passados. Definir a construtora Set() dessa maneira nos permite listar explicitamente os membros do conjunto na chamada da construtora ou passar um array de membros para a construtora. Contudo, a construtora tem uma infeliz ambiguidade: não podemos utilizá-la para criar um conjunto que tenha um array como seu único membro. A vantagem dos métodos de fábrica aqui é que você pode dar a eles o nome que quiser, e métodos com nomes diferentes podem fazer diferentes tipos de inicialização. No entanto, como as constru-
+toras servem como identidade pública de uma classe, normalmente existe apenas uma construtora por classe.
+
+---
+
+## 9.7 - SUBCLASSES
