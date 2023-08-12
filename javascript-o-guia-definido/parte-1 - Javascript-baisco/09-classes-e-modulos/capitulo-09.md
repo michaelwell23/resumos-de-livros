@@ -99,3 +99,71 @@ toras servem como identidade pública de uma classe, normalmente existe apenas u
 ---
 
 ## 9.7 - SUBCLASSES
+
+Na programação orientada a objetos, uma classe B pode estender ou fazer uma subclasse de outra classe A. Dizemos que A é a superclasse e B é a subclasse. As instâncias de B herdam todos os métodos de instância de A. A classe B pode definir seus próprios métodos de instância, alguns dos quais podem anular métodos de mesmo nome definidos pela classe A. Se um método de B anula um método de A, o método de B às vezes pode chamar o método anulado de A: isso é chamado de encadeamento de métodos. Da mesma forma, a construtora da subclasse B() às vezes pode chamar a construtora da superclasse A() . Isso é chamado de encadeamento de construtoras. As próprias subclasses podem ter subclasses e ao se trabalhar com hierarquias de classes, às vezes é útil definir classes abstratas. Uma classe abstrata é aquela que define um ou mais métodos sem uma implementação. A implementação desses métodos abstratos é deixada para as subclasses concretas da classe abstrata. O segredo da criação de subclasses em JavaScript é a inicialização correta do objeto protótipo. Se a classe B estende A, então B.prototype deve ser herdeira de A.prototype . Assim, as instâncias
+de B herdam de B.prototype que, por sua vez, herda de A.prototype.
+
+### 9.7.1 - Definindo uma subclasse
+
+Os objetos de JavaScript herdam propriedades (normalmente métodos) do objeto protótipo de suas classes. Se um objeto O é uma instância de uma classe B e B é uma subclasse de A, então O também deve herdar propriedades de A. Providenciamos isso garantindo que o objeto protótipo de B herde do objeto protótipo de A.
+
+### 9.7.2 - Encadeamento de contrutoras e de métodos
+
+Quando definimos uma subclasse, queremos apenas aumentar ou modificar o comportamento de nossos métodos de superclasse e não substituí-los completamente. Para fazer isso, a construtora e os métodos da subclasse chamam a (ou encadeiam para a) construtora da superclasse e os métodos
+da superclasse.
+
+### 9.7.3 - Composição VS subclasses
+
+Um princípio bastante conhecido no projeto orientado a objetos é “prefira a composição em vez da herança”. Nesse caso, podemos usar composição definindo uma nova implementação de conjunto que “empacota” outro objeto conjunto e encaminha pedidos para ele, após filtrar os membros proibidos.
+
+### 9.7.4 - Hierarquia de classe e classes abstratas
+
+Na seção anterior você foi estimulado a “preferir a composição em vez da herança”. Mas para ilustrarmos esse princípio, criamos uma subclasse de Set. Fizemos isso para que a classe resultante fosse instanceof Set e para que ela pudesse herdar os métodos auxiliares úteis de Set, como toString() e equals() . Esses são motivos pragmáticos válidos, mas ainda teria sido ótimo fazer composição de conjunto sem fazer a subclasse de uma implementação concreta como a classe Set. Pode-se dizer algo semelhante a respeito de nossa classe SingletonSet do Exemplo 9-12 – essa classe é uma subclasse de Set, de modo que poderia herdar os métodos auxiliares, mas sua implementação seria completamente diferente de sua superclasse SingletonSet não é uma versão especializada da classe Set, mas um tipo de Set completamente diferente. SingletonSet deve ser irmã de Set na hierarquia de classes, não uma descendente. Nas linguagens OO clássicas bem como em JavaScript, a solução é separar a interface da implementação. Suponha que definamos uma classe AbstractSet que implementa os métodos auxiliares, como toString() , mas não implementa os métodos básicos, como foreach(). Então, nossas implementações de conjunto, Set, SingletonSet e FilteredSet, podem ser todas subclasses de AbstractSet. FilteredSet e SingletonSet não serão mais subclasses de uma implementação não relacionada.
+
+---
+
+## - 9.8 - CLASSES EM ECMASCRIPT 5
+
+ECMAScript 5 adiciona métodos para especificar atributos de propriedade (getters, setters, capacidade de enumeração, de gravação e de configuração) e para restringir a capacidade de estender objetos.
+
+### 9.8.1 - Tornando propriedades não enumeráveis
+
+A classe Set do Exemplo 9-6 usou um truque para armazenar objetos como membros de conjunto: ela definiu uma propriedade “identificação do objeto” em todo objeto adicionado ao conjunto. Posteriormente, se outro código utilizar esse objeto em um laço for/in , essa propriedade adicionada vai ser retornada. ECMAScript 5 nos permite evitar isso, tornando as propriedades não enumeráveis.
+
+### 9.8.2 - Definindo classes imutávies
+
+Object.defineProperty() e Object.defineProperties() podem ser usados para criar novas propriedades já existentes. Quando usados para definir novas propriedades, os atributos omitidos são false por padrão. Entretanto, quando usados para alterar propriedades já existentes, os atributos omitidos ficam inalterados. Na função hideProps() anterior, por exemplo, especificamos somente o atributo enumerable , pois esse é o único que queremos modificar. Com essas funções utilitárias definidas, podemos aproveitar os recursos de ECMAScript 5 para escrever uma classe imutável sem alterar substancialmente a maneira de escrevermos classes.
+
+### 9.8.3 - Encapsulando o estado do objeto
+
+ECMAScript 5 nos permite encapsular nossas variáveis de estado de modo mais robusto, definindo métodos getter e setter de propriedades que não podem ser excluídos.
+
+### 9.8.4 - Impedindo extensões de classe
+
+Normalmente considera-se uma característica de JavaScript as classes poderem ser estendidas dinamicamente pela adição de novos métodos no objeto protótipo. ECMAScript 5 permite evitar isso, caso se queira. Object.preventExtensions() torna um objeto não extensível (Seção 6.8.3), ou seja,
+nenhuma propriedade nova pode ser adicionada nele. Object.seal() leva isso um passo adiante: impede a adição de novas propriedades e também transforma todas as propriedades atuais em não configuráveis, de modo que não podem ser excluídas. Outro recurso dinâmico de JavaScript é a capacidade de substituir (ou fazer “monkey-patch”) métodos de um objeto. Esse tipo de alteração pode ser evitado transformando-se os métodos de instância em somente para leitura. A função utilitária freezeProps() definida anteriormente é uma maneira de fazer isso. Outra é com Object.freeze(), que faz tudo que Object.seal() faz, mas também transforma todas as propriedades em somente para leitura e não configuráveis. Existe uma característica das propriedades somente para leitura que é importante entender ao se trabalhar com classes. Se um objeto o herda uma propriedade somente para leitura p, uma tentativa de atribuir em o.p vai falhar e não vai criar uma nova propriedade em o . Se quiser anular uma propriedade somente de leitura herdada, você tem de usar Object.defineProperty() ou Object. defineProperties() ou Object.create() para criar a nova propriedade. Isso significa que, se você transforma em somente para leitura os métodos de instância de uma classe, torna-se significativamente mais difícil as subclasses anularem esses métodos.
+
+### 9.8.5 - Subclasses e ECMAScript 5
+
+O Exemplo 9-22 demonstra como fazer subclasses usando recursos de ECMAScript 5. Ele define uma classe StringSet como uma subclasse da classe AbstractWritableSet do Exemplo 9-16. A principal característica desse exemplo é o uso de Object.create() para criar um objeto protótipo que herda do protótipo da superclasse e também define as propriedades do objeto recém-criado. A dificuldade dessa estratégia, conforme mencionado anteriormente, é que ela exige o uso de descritores de propriedade complicados. Outro ponto interessante a respeito desse exemplo é que ele passa null para Object.create() a fim de criar um objeto que não herda nada. Esse objeto é usado para armazenar os membros do conjuntoe o fato de não ter protótipo nos permite utilizar o operador in com ele, em vez do método hasOwnProperty().
+
+### 9.8.6 - Descritores de propriedade
+
+Concluímos esta seção sobre ECMAScript 5 com um exemplo estendido que vai demonstrar muitas operações nas propriedades de ECMAScript 5. O Exemplo adiciona um método properties() (não enumerável, é claro) em Object.prototype. O valor de retorno desse método é um objeto que representa uma lista de propriedades e define métodos úteis para exibir as propriedades e os atributos (útil para depuração), para obter descritores de propriedade (útil quando se quer copiar propriedades junto com seus atributos) e para configurar atributos nas propriedades (alternativas úteis às funções hideProps() e freezeProps() , definidas anteriormente).
+
+---
+
+## 9.9 - MÓDULOS
+
+Uma razão importante para organizar código em classes é torná-lo mais modular e conveniente para reutilização em uma variedade de situações. Contudo, as classes não são o único tipo de código modular. Normalmente, um módulo é um único arquivo de código JavaScript. Um arquivo de módulo
+poderia conter uma definição de classe, um conjunto de classes relacionadas, uma biblioteca de funções utilitárias ou apenas um script de código para executar. Qualquer trecho de código JavaScript pode ser um módulo, desde que seja escrito de forma modular. JavaScript não define nenhuma
+construção da linguagem para trabalhar com módulos (no entanto, reserva as palavras-chave imports e exports para versões futuras), isso quer dizer que escrever código JavaScript modular é, em grande parte, uma questão de seguir certas convenções de codificação. O objetivo dos módulos é permitir que programas grandes sejam montados com código de fontes muito diferentes e que todo esse código seja executado corretamente, mesmo na presença de código que os autores do módulo não previram. Para que isso funcione, os vários módulos devem evitar alterações no ambiente de execução global, a fim de que os módulos subsequentes possam ser executados no ambiente puro (ou quase puro) que esperam. Na prática, isso significa que os módulos devem minimizar o número de símbolos globais que definem – de preferência, nenhum módulo deve definir mais de um.
+
+### 9.9.1 - Objetos como namespaces
+
+Uma maneira de um módulo evitar a criação de variáveis globais é usar um objeto como seu espaço de nome. Em vez de definir funções e variáveis globais, ele armazena as funções e os valores como propriedades de um objeto (o qual pode ser referenciado por uma variável global).
+
+### 9.9.2 - Escopo de função como namespace privado
+
+Os módulos têm uma API pública que exportam: são as funções, classes, propriedades e métodos destinados a serem usados por outros programadores. Frequentemente, contudo, as implementações de módulo exigem mais funções ou métodos não destinados a uso fora do módulo. Podemos fazer isso definindo nosso módulo (a classe Set, nesse caso) dentro de uma função. Conforme descrito na Seção 8.5, as variáveis e funções definidas dentro de outra função são locais para essa função e invisíveis fora dela. Na verdade, podemos usar o escopo de uma função (às vezes chamado de “função módulo”) como um espaço de nomes privado para nosso módulo.
+As estruturas que definem sistemas de carregamento de módulo podem ter outros métodos para exportar a API de um módulo. Pode haver uma função provides() para os módulos registrarem a API ou um objeto exports no qual os módulos devem armazenar a API. Até que JavaScript tenha seus próprios recursos de gerenciamento de módulo, você deve escolher o sistema de criação e exportação de módulos que funcione melhor com a estrutura ou kit de ferramentas que utiliza.
