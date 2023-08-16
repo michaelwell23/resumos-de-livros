@@ -39,4 +39,43 @@ Em uma atribuição de desestruturação, o valor do lado direito do sinal de ig
 
 ## 11.4 - ITERAÇÃO
 
+As extensões de JavaScript do Mozilla introduzem novas técnicas de iteração, incluindo o laço for each e iteradores e geradores estilo Python.
+
+### 11.4.1 O laço for/each
+
+O laço for each é muito parecido com o laço for/in . Contudo, em vez de iterar pelas propriedades de um objeto, ele itera pelos valores dessas propriedades. Quando usado com um array, o laço for/each itera pelos elementos (em vez dos índices) do laço. Normalmente, ele os enumera em ordem numérica, mas isso não é padronizado nem obrigatório. O laço for/each não se limita aos elementos de um array – ele enumera o valor de qualquer propriedade enumerável do array, incluindo métodos enumeráveis herdados pelo array. Por isso, normalmente não é recomendado usar o laço for/each com arrays.
+
+### 11.4.2 Iteradores
+
+Um iterador é um objeto que permite iteração sobre uma coleção de valores e mantém o estado que for necessário para monitorar a “posição” atual no conjunto. Um iterador deve ter um método next(). Cada chamada de next() retorna o próximo valor da coleção. Um objeto iterável representa um conjunto de valores que podem ser iterados. Os iteradores que trabalham em coleções finitas lançam StopIteration a partir de seus métodos quando não existem mais valores para iterar. StopIteration é uma propriedade do objeto global em JavaScript 1.7. Seu valor é um objeto normal (sem propriedades próprias), reservado para esse propósito especial de terminar iterações. É estranho usar um objeto iterador em um laço onde o método StopIteration deve ser manipulado explicitamente. Por causa disso, não utilizamos objetos iteradores diretamente com muita frequência. Um objeto iterável deve definir um método chamado **iterator**() (com dois sublinhados: no início e no fim do nome) o qual retorna um objeto iterador para o conjunto. O laço for/in de JavaScript 1.7 foi estendido para trabalhar com objetos iteráveis. Se o valor à direita da palavra-chave in é iterável, então o laço for/in vai chamar seu método **iterator**() automaticamente para obter um objeto iterador. Em seguida, ele chama o método next() do iterador, atribui o valor resultante à variável de laço e executa o corpo do laço. O laço for/in trata da exceção StopIteration em si e nunca é visível em seu código.
+
+### 11.4.3 - Geradores
+
+Os geradores são um recurso em JavaScript 1.7 (emprestado de Python) que usa a nova palavra-chave yield , isso significa que o código que os utiliza deve optar explicitamente pela versão 1.7. A palavra-chave yield é usada em uma função e, de modo semelhante a return, retorna um valor da função. No entanto, a diferença entre yield e return é que uma função que gera um valor para sua chamadora mantém seu estado interno, de modo que pode ser retomada. Essa capacidade de ser retomada torna yield uma ferramenta perfeita para escrever iteradores. Os geradores são um recurso muito poderoso da linguagem, mas podem ser difíceis de entender no início. Qualquer função que utilize a palavra-chave yield (mesmo que yield não possa ser alcançada) é uma função geradora. As funções geradoras retornam valores com yield . Elas podem usar a instrução return sem valor algum, para terminar antes de chegarem no fim do corpo da função, mas não podem usar return com um valor. A não ser pelo uso de yield e por essa restrição a respeito do uso de return , não dá para distinguir as funções geradoras das funções normais: elas são declaradas com a palavra-chave function , o operador typeof retorna “função” e elas herdam de Function.prototype, exatamente como as funções normais. Um gerador é um objeto que representa o estado atual da execução de uma função geradora. Ele define um método next() que retoma a execução da função geradora e permite que continue a executar até que sua próxima instrução yield seja encontrada.
+
+### 11.4.4 - Array comprehension
+
+Array comprehension é outro recurso que JavaScript 1.7 emprestou da Python. Trata-se de uma técnica para inicializar os elementos de um array a partir dos (ou com base nos) elementos de outro array ou objeto iterável. A sintaxe dos array comprehensions é baseada na notação matemática de definição dos elementos de um conjunto, ou seja, expressões e cláusulas ficam em lugares diferentes do que os programadores JavaScript esperariam que estivessem.
+
+### 11.4.5 - Expressões geradoras
+
+Em JavaScript 1.8 2 , pode-se substituir os colchetes em torno de uma inclusão de array por parênteses, para produzir uma expressão geradora. Uma expressão geradora é como um array comprehension (a sintaxe dentro dos parênteses é exatamente igual à sintaxe dentro dos colchetes), mas seu valor é um objeto gerador, em vez de um array. As vantagens de usar uma expressão geradora em vez de um array comprehension são que você obtém avaliação preguiçosa – os cálculos são efetuados conforme o necessário, em vez de todos de uma vez – e pode trabalhar com sequências potencialmente infinitas. A desvantagem de usar um gerador em vez de um array é que os geradores só permitem acesso sequencial aos seus valores e não acesso aleatório.
+
 ---
+
+## 11.5 - Funções abreviadas
+
+JavaScript 1.8 3 introduz um atalho (chamado “closures de expressão”) para escrever funções simples. Se uma função avalia uma única expressão e retorna seu valor, pode-se omitir a palavra-chave return e também as chaves em torno do corpo da função, e simplesmente colocar a expressão a ser avaliada imediatamente após a lista de argumentos.
+
+---
+
+## 11.6 - Cláusulas catch múltiplas
+
+Em JavaScript 1.5, a instrução try/catch foi estendida para permitir várias cláusulas catch. Para usar esse recurso, coloque após o nome do parâmetro da cláusula catch a palavra-chave if e uma expressão condicional. Quando ocorre uma exceção, cada cláusula catch é tentada por sua vez. A exceção é atribuída ao parâmetro da cláusula catch nomeado e a condicional é avaliada. Se for verdadeira, o corpo dessa cláusula catch é avaliado e todas as outras cláusulas catch são puladas. Se uma cláusula catch não tem condicional, ela se comporta como se a condicional if fosse true e é sempre disparada se nenhuma cláusula antes dela foi disparada. Se todas as cláusulas catch têm uma condicional e nenhuma dessas condicionais é verdadeira, a exceção se propaga sem ser capturada.
+
+---
+
+## 11.7 - E4X: ECMAScript para XML
+
+ECMAScript para XML, mais conhecida como E4X, é uma extensão 4 padronizada de JavaScript que define vários recursos poderosos para processar documentos XML. E4X é suportada pelo Spidermonkey 1.5 e pelo Rhino 1.6. Como não é amplamente suportada pelos fornecedores de navegador, talvez seja melhor considerar E4X como uma tecnologia para mecanismos de script baseados em Spidermonkey ou Rhino no lado do servidor. E4X representa um documento XML (ou um elemento ou atributo de um documento XML) como um objeto XML e representa fragmentos de XML (mais do que um elemento XML não incluído em um parente comum) com o objeto estreitamente relacionado XMLList. Vamos ver diversas maneiras
+de criar e trabalhar com objetos XML por toda esta seção. Os objetos XML são um tipo fundamentalmente novo de objeto, com (conforme veremos) sintaxe E4X de propósito muito especial para suportá-los. Como você sabe, o operador typeof retorna “objeto” para todos os objetos padrão de JavaScript que não sejam funções. Os objetos XML são tão diferentes dos objetos normais de JavaScript quanto as funções, e o operador typeof retorna “xml”. É importante entender que os objetos XML não têm relação com os objetos DOM (Document Object Model) utilizados em JavaScript do lado do client
