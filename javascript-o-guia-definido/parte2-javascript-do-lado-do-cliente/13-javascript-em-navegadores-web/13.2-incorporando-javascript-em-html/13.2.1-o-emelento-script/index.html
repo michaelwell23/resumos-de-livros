@@ -1,0 +1,48 @@
+<!-- Um relógio digital simples em JavaScript -->
+<!DOCTYPE html>
+<!-- Este é um arquivo HTML5 -->
+<html>
+  <!-- O elemento raiz -->
+  <head>
+    <!-- Título, scripts e estilos ficam aqui -->
+    <title>Digital Clock</title>
+    <script>
+      // Um script de código js
+      // Define uma função para exibir a hora atual
+      function displayTime() {
+        var elt = document.getElementById('clock'); // Localiza o elemento com id="clock"
+        var now = new Date();
+        // Obtém a hora atual
+        elt.innerHTML = now.toLocaleTimeString();
+        // Faz elt exibi-la
+        setTimeout(displayTime, 1000);
+        // Executa novamente em 1 segundo
+      }
+      window.onload = displayTime;
+      // Começa a exibir a hora quando o documento carrega.
+    </script>
+    <style>
+      /* Uma folha de estilos CSS para o relógio */
+      #clock {
+        /* O estilo se aplica ao elemento com id="clock" */
+        font: bold 24pt sans;
+        /* Usa uma fonte grande em negrito */
+        background: #ddf;
+        /* Sobre um fundo cinza-azulado claro */
+        padding: 10px;
+        /* Circunda-o com algum espaço */
+        border: solid black 2px;
+        /* E uma borda preta grossa */
+        border-radius: 10px;
+        /* Arredonda os cantos (onde for suportado) */
+      }
+    </style>
+  </head>
+  <body>
+    <!-- O corpo são as partes exibidas do doc. -->
+    <h1>Digital Clock</h1>
+    <!-- Exibe um título -->
+    <span id="clock"></span>
+    <!-- A hora é inserida aqui -->
+  </body>
+</html>
