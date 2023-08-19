@@ -1,0 +1,35 @@
+Gerando conteúdo de documento no momento do carregamento
+<h1>Table of Factorials</h1>
+<script>
+  function factorial(n) {
+    // Uma função para calcular fatoriais
+    if (n <= 1) return n;
+    else return n * factorial(n - 1);
+  }
+
+  document.write('<table>');
+  // Inicia uma nova tabela HTML
+  document.write('<tr><th>n</th><th>n!</th></tr>');
+  // Saída do cabeçalho da tabela
+  for (var i = 1; i <= 10; i++) {
+    // Saída de 10 linhas
+    document.write('<tr><td>' + i + '</td><td>' + factorial(i) + '</td></tr>');
+  }
+  document.write('</table>');
+  // Fim da tabela
+  document.write('Generated at ' + new Date());
+  // Saída de um timestamp
+</script>
+
+<script defer src="deferred.js"></script>
+<script async src="async.js"></script>
+
+<script>
+  // Carrega e executa um script de forma assíncrona a partir
+  function loadasync(url) {
+    var head = document.getElementsByTagName('head')[0]; // localiza head do documento
+    var s = document.createElement('script'); // cria um elemento script
+    s.src = url; // configura seu atributo src
+    head.appendChild(s); // insere o script no cabeçalho
+  }
+</script>
