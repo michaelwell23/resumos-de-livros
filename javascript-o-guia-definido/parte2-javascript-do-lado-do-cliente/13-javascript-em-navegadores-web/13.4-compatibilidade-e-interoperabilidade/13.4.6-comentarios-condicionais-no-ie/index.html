@@ -1,0 +1,27 @@
+<!--[if IE 6]>
+  Este conteúdo está na verdade dentro de um comentário HTML. Ele só será
+  exibido no IE 6.
+<![endif]-->
+
+<!--[if lte IE 7]>
+  Este conteúdo só será exibido pelo IE 5, 6, 7 e anteriores. lte significa
+  "menor ou igual a". Você também pode usar "lt", "gt" e "gte".
+<![endif]-->
+
+<!--[if !IE]> <-->
+Este é um conteúdo HTML normal, mas o IE não vai exibi-lo por causa do
+comentário acima e do comentário abaixo.
+<!--> <![endif]-->
+
+Este é um conteúdo normal, exibido por todos os navegadores.
+
+<!--[if IE]><script src="excanvas.js"></script><![endif]-->
+
+/*@cc_on @if (@_jscript) // Este código está dentro de um comentário JS, mas é
+executado no IE. alert("In IE"); @end @*/ /*@cc_on @if (@_jscript) // Este
+código está dentro de um comentário condicional, que também é um // comentário
+normal de JavaScript. O IE o executa, mas outros navegadores o ignoram.
+alert('You are using Internet Explorer); @else*/ // Este código não está mais
+dentro de um comentário JavaScript, mas ainda está // dentro do comentário
+condicional do IE. Isso significa que todos os navegadores, // exceto o IE, vão
+executar este código. alert('You are not using Internet Explorer'); /*@end @*/
