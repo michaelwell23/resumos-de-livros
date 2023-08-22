@@ -1,0 +1,37 @@
+<script>
+  setInterval(updateClock, 60000); // Chama updateClock() a cada 60 segundos
+
+  // Uma função cronômetro utilitária
+  /*
+   * Agenda uma (ou mais) chamada de f() no futuro.
+   * Espera start milissegundos e então chama f() a cada interval milissegundos,
+   * parando após um total de start+end milissegundos.
+   * Se interval for especificado, mas end for omitido, então nunca para de chamar f.
+   * Se interval e end forem omitidos, então chama f apenas uma vez, após start ms.
+   * Se apenas f for especificado, se comporta como se start fosse 0.
+   * Note que a chamada de invoke() não é bloqueada: ela retorna imediatamente.
+   */
+  function invoke(f, start, interval, end) {
+    if (!start) start = 0;
+    // O padrão é 0 ms
+    if (arguments.length <= 2)
+      // Caso de uma só chamada
+      setTimeout(f, start);
+    // Chamada única após start ms.
+    else {
+      // Caso de várias chamadas
+      setTimeout(repeat, start);
+      // As repetições começam em start ms
+      function repeat() {
+        // Chamada pelo tempo-limite acima
+        var h = setInterval(f, interval);
+        // Chama f a cada interval ms.
+        // E para de chamar após end ms, se end for definido
+        if (end)
+          setTimeout(function () {
+            clearInterval(h);
+          }, end);
+      }
+    }
+  }
+</script>
