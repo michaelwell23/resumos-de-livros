@@ -70,3 +70,36 @@ A propriedade onerror de um objeto Window é uma rotina de tratamento de evento 
 ---
 
 ## 14.7 - ELEMENTOS DE DOCUMENTO COMO PROPRIEDADES DE WINDOWS
+
+Se você nomeia um elemento em seu documento HTML usando o atributo id e se o objeto Window ainda não tem uma propriedade com esse nome, o objeto Window recebe uma propriedade não enumerável cujo nome é o valor do atributo id e cujo valor é o objeto HTMLElement que representa esse elemento do documento. Conforme já mencionamos, o objeto Window serve como objeto global no topo do encadeamento de escopo em JavaScript do lado do cliente; portanto, isso significa que os atributos id utilizados em seus documentos HTML se tornam variáveis globais acessíveis para seus scripts. Se seu documento inclui o elemento `<button id="okay"/>` , você pode se referir a esse elemento usando a variável global okay.
+
+---
+
+## 14.8 - VÁRIAS JANELAS E QUADROS
+
+Uma única janela de navegador Web em sua área de trabalho pode conter várias guias (ou abas). Cada guia é um contexto de navegação independente. Cada uma tem seu próprio objeto Window e cada uma é isolada de todas as outras. Os scripts em execução em uma guia normalmente não têm nenhuma maneira nem mesmo de saber que as outras guias existem, muito menos de interagir com seus objetos Window ou manipular o conteúdo de seus documentos. Se você usa um navegador Web que não aceita guias ou se está com as guias desativadas, pode ter muitas janelas de navegador Web abertas simultaneamente em sua área de trabalho. Assim como acontece com as guias, cada janela da área de trabalho tem seu próprio objeto Window e cada uma em geral é independente e isolada de todas as outras. Como Window é o objeto global de JavaScript do lado do cliente, cada janela ou quadro tem um
+contexto de execução JavaScript separado. Contudo, o código JavaScript de uma janela pode (sujeito às restrições da mesma origem) usar os objetos, propriedades e métodos definidos nas outras janelas. Quando a política da mesma origem impede que os scripts de duas janelas distintas interajam diretamente, HTML5 fornece uma API de passagem de mensagens baseada em eventos para comunicação indireta.
+
+### 14.8.1 - Abrindo e fechando janelas
+
+Quando a política da mesma origem impede que os scripts de duas janelas distintas interajam diretamente, HTML5 fornece uma API de passagem de mensagens baseada em eventos para comunicação indireta. O primeiro argumento de open() é o URL do documento a ser exibido na nova janela. Se esse
+argumento for omitido (ou for uma string vazia), será usado o URL de página em branco especial about:blank. O segundo argumento de open() é uma string especificando um nome de janela. O terceiro argumento opcional de open() é uma lista separada por vírgulas de atributos de tamanho e de recursos da nova janela a ser aberta. Se você omitir esse argumento, a nova janela vai receber um tamanho padrão e vai ter um conjunto completo de componentes de interface com o usuário: uma barra de menus, linha de status, barra de ferramentas, etc. Em navegadores com guias, isso normalmente resulta na criação de uma nova guia. O quarto argumento de open() só é útil quando o segundo argumento nomeia uma janela já existente. Esse quarto argumento é um valor booleano que indica se o URL especificado como primeiro argumento deve substituir a entrada atual no histórico de navegação da janela ( true ) ou criar uma nova entrada no histórico de navegação da janela (false). Omitir esse argumento é o mesmo que passar false.
+
+#### 14.8.1.1 - Fechando janelas
+
+Assim como o método open() abre uma nova janela, o método close() fecha. Se você cria um objeto
+Window w , pode fechá-lo com:
+
+```js
+w.close();
+```
+
+O método close() de um objeto Window que representa um quadro, em vez de uma janela ou guia nível superior, não faz nada: não é possível fechar um quadro (em vez disso, você excluiria o iframe de seu documento contêiner). Um objeto Window continua a existir depois que a janela que representa foi fechada. Uma janela fechada vai ter a propriedade closed configurada como true , document vai ser null e seus métodos normalmente não vão mais funcionar.
+
+### 14.8.2 - Relacionamentos entre quadros
+
+Como vimos, o método open() de um objeto Window retorna um novo objeto Window que tem uma propriedade opener se referindo à janela original. Desse modo, as duas janelas podem se referir uma à outra e cada uma pode ler propriedades e chamar métodos da outra. Algo semelhante é possível com quadros. Um código em execução em uma janela ou quadro pode se referir à janela ou quadro contêiner e aos quadros filhos aninhados, usando as propriedades descritas a seguir.
+
+### 14.8.3 - JavaScrio em janelas que interagem
+
+Cada janela ou quadro é seu próprio contexto de execução JavaScript, com um objeto Window como seu objeto global. Mas se o código de uma janela ou quadro pode se referir a outra janela ou quadro (e se a política da mesma origem não impedir isso), os scripts de uma janela ou quadro podem interagir com os scripts da outra (ou outro).

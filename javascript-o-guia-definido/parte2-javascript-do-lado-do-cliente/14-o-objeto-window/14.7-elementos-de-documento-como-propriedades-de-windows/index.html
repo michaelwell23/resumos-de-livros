@@ -1,0 +1,23 @@
+<script>
+  var ui = ['input', 'prompt', 'heading'];
+  // Um array de identificações de elemento
+  ui.forEach(function (id) {
+    // Para cada identificação, pesquisa o elemento
+    ui[id] = document.getElementById(id); // e o armazena em uma propriedade
+  });
+
+  var $ = function (id) {
+    return document.getElementById(id);
+  };
+  ui.prompt = $('prompt');
+</script>
+
+<a>
+  <applet>
+    <area /> <embed />
+    <form>
+      <frame>
+        <frameset>
+          <iframe> <img /> <object></object></iframe></frameset
+      ></frame></form></applet
+></a>
