@@ -1,0 +1,32 @@
+/* // Os elementos podem ser descritos pela identificação, nome de tag ou classe: */
+#nav {
+} /* Um elemento com id="nav"*/
+div {
+} /* Qualquer elemento <div> */
+.warning {
+} /*  Qualquer elemento com "warning" em seu atributo class
+
+/*  De forma mais geral, os elementos podem ser selecionados com base em valores de atributo: */
+p[lang='fr'] {
+} /*  Um parágrafo escrito em francês: <p lang="fr">*/
+*[name='x'] {
+} /*  Qualquer elemento com um atributo name="x"*/
+
+/*  Esses seletores básicos podem ser combinados:*/
+span.fatal.error {
+} /*  Qualquer <span> com "fatal" e "error" em sua classe*/
+span[lang='fr'].warning {
+} /*  Qualquer aviso em francês*/
+
+/*  Os seletores também podem especificar estrutura de documento:*/
+#log span {
+} /*  Qualquer descendente <span> do elemento com id="log"*/
+#log > span {
+} /*  Qualquer filho <span> do elemento com id="log" */
+body > h1:first-child {
+} /*  O primeiro filho <h1> de <body> */
+
+/*  Os seletores podem ser combinados para selecionar vários elementos ou vários conjuntos de elementos */
+div,
+#log {
+} /*  Todos os elementos <div>, mais o elemento com id="log" */
