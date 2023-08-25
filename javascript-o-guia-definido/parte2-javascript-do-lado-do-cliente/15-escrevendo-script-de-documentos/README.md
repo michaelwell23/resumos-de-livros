@@ -62,3 +62,44 @@ Após ter selecionado um Element de um Document, às vezes você precisa encontr
 documentos como árvores de objetos Element.
 
 ### 15.3.1 - Documentos como árvore de Nodes
+
+O objeto Document, seus objetos Element e os objetos Text que representam texto no documento, são todos objetos Node. Node define as seguintes propriedades importantes:
+
+- parentNode: O objeto Node que é o pai desse nó, ou null para nós como o objeto Document, que não têm pai.
+- childNodes: Um objeto semelhante a um array somente para leitura (um NodeList) que é uma representação dinâmica dos nós filhos de um Node.
+- firstChild, lastChild: O primeiro e o último nós filhos de um nó, ou null se o nó não tem filhos.
+- nextSibling, previousSibling: O nó irmão próximo e anterior de um nó. Dois nós com o mesmo pai são irmãos. Sua ordem
+  reflete a ordem na qual aparecem no documento. Essas propriedades conectam nós em uma lista duplamente encadeada.
+- nodeType: O tipo do nó. Os nós Document têm o valor 9. Os nós Element têm o valor 1. Os nós Text têm o valor 3. Os nós Comments são 8 e os nós DocumentFragment são 11.
+- nodeValue: O conteúdo textual de um nó Text ou Comment.
+- nodeName: O nome da marca de um Element, convertido em letras maiúsculas.
+
+### 15.3.2 - Documentos como árvores de Elements
+
+Quando estamos interessados principalmente nos objetos Element de um documento, em vez do texto dentro deles (e o espaço em branco entre eles), é útil usar uma API que nos permita tratar um documento como uma árvore de objetos Element, ignorando os nós Text e Comment que também fazem parte do documento. A primeira parte dessa API é a propriedade children de objetos Element. Assim como childNodes, isso é um NodeList. Ao contrário de childNodes, contudo, a lista de children contém apenas objetos Element. A segunda parte de uma API para percorrer documentos baseada em elemento são propriedades Element análogas às propriedades filho e irmão do objeto Node.
+
+---
+
+## 15.4 - ATRIBUTOS
+
+Os elementos HTML consistem em um nome de tag e um conjunto de pares nome/valor conhecidos como atributos. O elemento `a` que define um hiperlink, por exemplo, utiliza o valor de seu atributo href como destino do link. Os valores de atributo dos elementos HTML estão disponíveis como propriedades dos objetos HTMLElement que representam esses elementos. O DOM também define outras APIs para obter e configurar os valores de atributos XML e atributos HTML não padronizados.
+
+### 15.4.1 - Atributos HTML como propriedades de Element
+
+Os objetos HTMLElement que representam os elementos de um documento HTML definem propriedades de leitura/gravação que espelham os atributos HTML dos elementos. HTMLElement define propriedades para os atributos HTTP universais, como id, title lang e dir, e propriedades de rotina de tratamento de evento, como onclick. Os subtipos específicos dos elementos definem atributos específicos para esses elementos.
+
+### 15.4.2 - Obtendo e configurando atribuitos que não são HTML
+
+Conforme descrito anteriormente, HTMLElement e seus subtipos definem propriedades que correspondem aos atributos padrão de elementos HTML. O tipo Element também define métodos getAttribute() e setAttribute() que podem ser usados para consultar e configurar atributos HTML não padronizados e para consultar e configurar atributos nos elementos de um documento XML. Element também define dois métodos relacionados, hasAttribute() e removeAttribute(), o primeiro dos quais verifica a presença de um atributo nomeado e o outro remove um atributo inteiramente. Esses métodos são especialmente úteis com atributos booleanos: esses são atributos (como o atributo disabled de elementos de formulário HTML) cuja presença ou ausência em um elemento importa, mas cujo valor não é relevante.
+
+### 15.4.3 - Atributos de conjuntos de dados
+
+HTML5 oferece uma solução. Em um documento HTML5, qualquer atributo cujo nome apareça em letras minúsculas e comece com o prefixo “data-” é considerado válido. Esses “atributos de conjunto de dados” não vão afetar a apresentação dos elementos nos quais aparecem e definem uma maneira padronizada de anexar mais dados sem comprometer a validade do documento. HTML5 também define uma propriedade dataset em objetos Element. Essa propriedade se refere a um objeto, o qual tem propriedades que correspondem aos atributos data- com o prefixo removido. Assim, dataset.x conteria o valor do atributo data-x . Os atributos hifenizados são mapeados em nomes de propriedade com maiúsculas no meio: o atributo data-jquery-test se torna a propriedade dataset.jqueryTest.
+
+### 15.4.4 - Atributos como nós Attr
+
+O tipo Node define uma propriedade attributes . Essa propriedade é null para todos os nós que não são objetos Element. Para objetos Element, attributes é um objeto semelhante a um array somente para leitura que representa todos os atributos do elemento. O objeto attributes é dinâmico como os NodeLists. Ele pode ser indexado numericamente, ou seja, é possível enumerar todos os atributos de um elemento.
+
+---
+
+## 15. 5 - CONTEÚDO DE ELEMENTO

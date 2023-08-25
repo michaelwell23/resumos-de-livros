@@ -1,0 +1,26 @@
+<span class="sparkline" data-ymin="0" data-ymax="10">
+  1 1 1 2 2 3 4 5 5 4 3 5 6 7 7 4 2 1
+</span>
+
+<script>
+  // Supõe que o método ES5 Array.map() (ou um de funcionamento igual) esteja definido
+  var sparklines = document.getElementsByClassName('sparkline');
+  for (var i = 0; i < sparklines.length; i++) {
+    var dataset = sparklines[i].dataset;
+    var ymin = parseFloat(dataset.ymin);
+    var ymax = parseFloat(dataset.ymax);
+    var data = sparklines[i].textContent.split(' ').map(parseFloat);
+    drawSparkline(sparklines[i], ymin, ymax, data); // Ainda não implementado
+  }
+
+  var sparklines = document.getElementsByClassName('sparkline');
+  for (var i = 0; i < sparklines.length; i++) {
+    var elt = sparklines[i];
+    var ymin = parseFloat(elt.getAttribute('data-ymin'));
+    var ymin = parseFloat(elt.getAttribute('data-ymax'));
+    var points = elt.getAttribute('data-points');
+    var data = elt.textContent.split(' ').map(parseFloat);
+    drawSparkline(elt, ymin, ymax, data);
+    // Ainda não implementado
+  }
+</script>
