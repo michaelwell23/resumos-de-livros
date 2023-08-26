@@ -103,3 +103,52 @@ O tipo Node define uma propriedade attributes . Essa propriedade é null para to
 ---
 
 ## 15. 5 - CONTEÚDO DE ELEMENTO
+
+Analisando o exemplo 15.1, podemos nos perguntar qual o conteúdo do elemento p. Existem três maneiras de respondermos a essa questão:
+
+- O conteúdo é a string HTML “This is a <i>simple</i> document”.
+- O conteúdo é a string de texto puro “This is a simple document”.
+- O conteúdo é um nó Text, um nó Element que tem um nó filho Text e outro nó Text.
+
+Todas essas são respostas válidas e cada resposta é útil à sua própria maneira.
+
+### 15.5.1 - Conteúdo de elemento como HTML
+
+A leitura da propriedade innerHTML de um Element retorna o conteúdo desse elemento como uma string de marcação. Configurar essa propriedade em um elemento invoca o parser do navegador Web e substitui o conteúdo atual do elemento por uma representação analisada da nova string. A propriedade innerHTML foi introduzida no IE4. Embora seja suportada há tempos por todos os navegadores, somente com o advento de HTML5 foi padronizada. HTML5 diz que innerHTML deve funcionar em nós Document e em nós Element, mas isso ainda não é suportado universalmente. HTML5 também padroniza uma propriedade chamada outerHTML . Quando se consulta outerHTML, a string de marcação HTML ou XML retornada inclui as tags de abertura e fechamento do elemento no qual ela foi consultada. Quando se configura outerHTML em um elemento, o novo conteúdo substitui o elemento em si. outerHTML só é definida para nós Element, não para Documents. Outro recurso introduzido pelo IE e padronizado em HTML5 é o método insertAdjacentHTML(), o qual permite inserir uma string de marcação HTML arbitrária “adjacente” ao elemento especificado. A marcação é passada como segundo argumento para esse método e o significado preciso de “adjacente” depende do valor do primeiro argumento.
+
+### 15.5.2 - Conteúdo de elemento como texto puro
+
+Às vezes você quer consultar o conteúdo de um elemento como texto puro ou inserir texto puro em um documento (sem fazer o escape dos sinais de menor e maior e dos E comerciais utilizados na marcação HTML). O modo padrão de fazer isso é com a propriedade textContent de Node. As propriedades textContent e innerText são semelhantes o bastante para que em geral possam ser utilizadas indistintamente. Tome o cuidado, contudo, para diferenciar elementos vazios (a string “” em JavaScript é falsa) das propriedades indefinidas. A propriedade textContent é uma concatenação simples de todos os descendentes de nó Text do elemento especificado. innerText não tem um comportamento claramente especificado, mas difere de textContent de várias maneiras. innerText não retorna o conteúdo de elementos script, omite espaço em branco irrelevante e tenta preservar formatação de tabela. Além disso, innerText é tratada como uma propriedade somente para leitura em certos elementos de tabela, como table, tbody e tr.
+
+### 15.5.3 - Cnteúdo de elemento como nós text
+
+Outra maneira de trabalhar com o conteúdo de um elemento é como uma lista de nós filhos, cada um dos quais podendo ter seu próprio conjunto de filhos. Quando se pensa em conteúdo de elemento, normalmente são os nós Text que têm interesse. Em documentos XML, você também deve estar preparado para tratar de nós CDATASection – eles são um subtipo de Text e representam o conteúdo de seções CDATA.
+
+---
+
+## 15.6 - CRIANDO, INSERINDO E EXCLUINDO NÓS
+
+Vimos como consultar e alterar conteúdo de documento usando strings HTML e de texto puro. E também vimos que podemos percorrer um objeto Document para examinar os nós Element e Text individuais de que é constituído. Também é possível alterar um documento no nível dos nós individuais. O tipo Document define métodos para criar objetos Element e Text e o tipo Node define métodos para inserir, excluir e substituir nós na árvore.
+
+### 15.6.1 - Crindo nós
+
+Como mostrado no código anterior, é possível criar novos nós Element com o método createElement() do objeto Document. Passe o nome da tag do elemento como argumento do método: esse nome não diferencia letras maiúsculas e minúsculas para documentos HTML e diferencia para documentos XML. Outra maneira de criar novos nós de documento é fazer cópias dos já existentes. Todo nó tem um método cloneNode() que retorna uma nova cópia do nó. Passe true para também copiar todos os descendentes recursivamente, ou false para fazer apenas uma cópia rasa.
+
+### 15.6.2 - Inserindo nós
+
+Uma vez que você tenha um novo nó, pode inseri-lo no documento com os métodos appendChild() ou insertBefore() de Node. appendChild() é chamado no nó Element em que você deseja inserir, sendo que ele insere o nó especificado de modo a se tornar o last Child desse nó. insertBefore() é como appendChild(), mas recebe dois argumentos. O primeiro é o nó a ser inserido. O segundo argumento é o nó antes do qual esse nó vai ser inserido. Esse método é chamado no nó que vai ser o pai do novo nó e o segundo argumento deve ser filho desse nó pai. Se você passa null como segundo argumento, insertBefore() se comporta como appendChild() e insere no final.
+
+### 15.6.3 - Removendo e substituindo nós
+
+O método removeChild() remove um nó da árvore de documentos. Contudo, tome cuidado: esse método não é chamado no nó a ser removido, mas (conforme implica a parte “child” – filho – de seu nome) no pai desse nó. Chame o método a partir do nó pai e passe como argumento o nó filho que deve ser removido. replaceChild() remove um nó filho e o substitui por um novo nó. Chame esse método no nó pai, passando o novo nó como primeiro argumento e o nó a ser substituído como segundo argumento.
+
+### 15.6.4 - Usando DocumentFragments
+
+DocumentFragment é um tipo especial de Node que serve como contêiner temporário para outros nós. Assim como um nó Document, um DocumentFragment é independente e não faz parte de nenhum outro documento. Seu parentNode é sempre null. Contudo, assim como um Element, um DocumentFragment pode ter qualquer número de filhos, os quais podem ser manipulados com appendChild() , insertBefore() , etc. O detalhe especial sobre DocumentFragment é que permite a um conjunto de nós ser tratado como um único nó: se você passa um DocumentFragment para appendChild() , insertBefore() ou
+replaceChild() , são os filhos do fragmento que são inseridos no documento e não o próprio fragmento.
+
+---
+
+## 15.7 - EXEMPLO: GERANDO UM SUMÁRIO
+
+O Exemplo 15-7 mostra como criar um sumário para um documento dinamicamente. Ele demonstra muitos dos conceitos de script de documento descritos nas seções anteriores: seleção de elementos, como percorrer documentos, configuração de atributos do elemento, configuração da propriedade innerHTML e criação de novos nós e sua inserção no documento.
