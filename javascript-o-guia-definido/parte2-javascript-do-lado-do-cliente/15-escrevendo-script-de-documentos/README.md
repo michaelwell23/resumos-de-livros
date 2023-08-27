@@ -152,3 +152,101 @@ replaceChild() , são os filhos do fragmento que são inseridos no documento e n
 ## 15.7 - EXEMPLO: GERANDO UM SUMÁRIO
 
 O Exemplo 15-7 mostra como criar um sumário para um documento dinamicamente. Ele demonstra muitos dos conceitos de script de documento descritos nas seções anteriores: seleção de elementos, como percorrer documentos, configuração de atributos do elemento, configuração da propriedade innerHTML e criação de novos nós e sua inserção no documento.
+
+---
+
+## 15.8 - GEOMETRIA E ROLAGEM DE DOCUMENTOS E ELEMENTOS
+
+Esta seção explica como você pode ir e voltar entre o modelo abstrato baseado em árvore de um documento e o modo de exibição geométrico baseado em coordenadas do documento, conforme é apresentado na janela de um navegador. As propriedades e métodos descritos nesta seção já são implementados nos navegadores há bastante tempo.
+
+### 15.8.1 - Coordenadas de dcumento e coordenadas de janelas de visualização
+
+A posição de um elemento é medida em pixels, com a coordenada X aumentando para a direita e a coordenada Y aumentando à medida que nos deslocamos para baixo. Contudo, existem dois pontos diferentes que podemos usar como origem do sistema de coordenadas: as coordenadas X e Y de um elemento podem ser relativas ao canto superior esquerdo do documento ou ao canto superior esquerdo da janela de visualização em que o documento é exibido. Se o documento é menor do que a janela de visualização ou se não foi rolado, seu canto superior esquerdo é o canto superior esquerdo da janela de visualização e os sistemas de coordenadas do documento e da janela de visualização são os mesmos. Em geral, contudo, para converter entre os dois sistemas de coordenadas devemos adicionar ou subtrair os deslocamentos de rolagem. As coordenadas do documento são mais fundamentais do que as coordenadas da janela de visualização e não mudam quando o usuário rola. Contudo, é muito comum utilizar coordenadas da janela de visualização em programação no lado do cliente. Porém, o modo mais simples de consultar a posição de um elemento (consulte a Seção 15.8.2) retorna a posição em coordenadas da janela de visualização. Da mesma forma, quando registramos funções de tratamento para eventos de mouse, as coordenadas do cursor do mouse se referem às coordenadas da janela de visualização.
+
+### 15.8.2 - Consultando a geometria de um elemento
+
+A maneira mais fácil de determinar o tamanho e a posição de um elemento é chamando seu método getBoundingClientRect(). Esse método foi introduzido no IE5 e agora é implementado por todos os navegadores atuais. Ele não espera argumento algum e retorna um objeto com propriedades left, right, top e bottom. As propriedades left e top fornecem as coordenadas X e Y do canto superior esquerdo do elemento e as propriedades right e bottom fornecem as coordenadas do canto inferior direito. Se quiser consultar os retângulos individuais de elementos em linha, chame o método getClientRects() para obter um objeto semelhante a um array somente para leitura, cujos elementos são objetos retângulo como aqueles retornados por getBoundingClientRect(). Vimos que métodos DOM como getElementsByTagName() retornam resultados “dinâmicos” que são atualizados quando o documento muda. Os objetos retângulo (e as listas de objeto retângulo) retornados por getBoundingClientRect() e getClientRects() não são dinâmicos. São instantâneos estáticos
+do estado visual do documento de quando os métodos são chamados. Eles não são atualizados quando o usuário rola ou redimensiona a janela do navegador.
+
+### 15.8.3 - Determinando o elemento em um ponto
+
+O método getBoundingClientRect() nos permite determinar a posição atual de um elemento em uma janela de visualização. Às vezes, queremos ir na outra direção e determinar qual elemento existe em determinada posição na janela de visualização. Isso pode ser determinado com o método elementFromPoint() do objeto Document. Passe as coordenadas X e Y (usando coordenadas da janela de visualização e não coordenadas do documento) e esse método vai retornar o objeto Element que está na posição especificada. elementFromPoint() parece ser um método muito útil e o caso de uso óbvio é a passagem das coordenadas do cursor do mouse para determinar sobre qual elemento o mouse está.
+
+### 15.8.4 - Rolagem
+
+As propriedades scrollLeft e scrollTop utilizadas nesse exemplo podem ser configuradas para fazer o navegador rolar, mas há um modo mais fácil que é suportado desde os primórdios de JavaScript. O método scrollTo() do objeto Window (e seu sinônimo scroll() ) recebe as coordenadas X e Y de um ponto (em coordenadas do documento) e as configura como deslocamentos da barra de rolagem. O método scrollBy() do objeto Window é semelhante a scroll() e a scrollTo() , mas seus argumentos são relativos e adicionados aos deslocamentos da barra de rolagem atuais.
+
+### 15.8.5 - Mais informações sobre tamanho, posição e overflow de elementos
+
+Todos os elementos HTML têm propriedades offsetLeft e offsetTop que retornam as coordenadas X e Y do elemento. Para muitos elementos, esses valores são coordenadas do documento e especificam a posição do elemento diretamente. Mas para descendentes de elementos posicionados e para alguns outros elementos, como células de tabela, essas propriedades retornam coordenadas relativas a um elemento ascendente, em vez do documento. A propriedade offsetParent especifica a qual elemento as propriedades são relativas. Se offsetParent é nula, as propriedades são coordenadas do documento.
+
+---
+
+## 15.9 - FORMULÁRIOS HTML
+
+Os formulários HTML são o mecanismo existente por trás da primeira geração de aplicativos Web, os quais nem mesmo exigiam JavaScript. A entrada do usuário é obtida em elementos de formulário; o envio do formulário remete essa entrada para o servidor; o servidor processa a entrada e gera uma nova página HTML (normalmente com novos elementos de formulário) para exibição pelo cliente. Os elementos de formulário HTML ainda são uma excelente maneira de obter entrada do usuário, mesmo quando os dados do formulário são inteiramente processados por JavaScript do lado do cliente e nunca são enviados para o servidor. Com programas do lado do servidor, um formulário não tem utilidade, a não ser que possua um botão Submit (Enviar). Na programação no lado do cliente, por outro lado, um botão Submit nunca é necessário (embora ainda possa ser útil). Os programas do lado
+do servidor são baseados em envios de formulário – eles processam dados em trechos do tamanho do formulário – e isso limita sua interatividade. Os programas do lado do cliente são baseados em eventos – eles podem responder a eventos em elementos individuais do formulário – e isso os permite
+ser muito mais responsivos. Um programa do lado do cliente poderia validar a entrada do usuário enquanto ele a digita, por exemplo. Ou então, poderia responder a um clique em uma caixa de seleção, habilitando um conjunto de opções que só têm significado quando essa caixa é marcada.
+
+### 15.9.1 - Selecionando formulário e elementos de formulário
+
+Os formulários e os elementos que eles contêm podem ser selecionados em um documento usando-se métodos padrão, como getElementById() e getElementsByTagName(). Nos navegadores que suportam querySelectorAll(), você poderia selecionar todos os botões de opção ou todos os elementos com o mesmo nome de um formulário com código. O atributo id é a maneira geralmente preferida para nomear elementos específicos do documento. Entretanto, o atributo name tem um propósito especial para envio de formulários HTML e é muito mais usado com formulários do que com outros elementos. É comum para grupos de caixas de seleção relacionadas e obrigatório para grupos de caixas de seleção mutuamente exclusivos compartilhar
+um valor do atributo name.
+
+### 15.9.2 - Propriedades de formulário e elemento
+
+O array elements[] descrito anteriormente é a propriedade mais interessante de um objeto Form. As propriedades restantes do objeto Form têm menos importância. As propriedades action, encoding, method e target correspondem diretamente aos atributos action , encoding , method e target do elemento form. Todas essas propriedades e atributos são utilizados para controlar como os dados do formulário são enviados para o servidor Web e onde os resultados são exibidos. JavaScript do lado do cliente pode configurar o valor dessas propriedades, mas elas só são úteis quando o formulário é realmente enviado para um programa do lado do servidor. O objeto Form de JavaScript suporta dois métodos, submit() e reset(), que têm o mesmo objetivo. Chamar o método submit() de um objeto Form envia o formulário e chamar reset() redefine os elementos do formulário. Todos (ou a maioria) os elementos de formulário têm as seguintes propriedades em comum. Alguns elementos têm outras propriedades de propósito especial que são descritas posteriormente, quando vários tipos de elementos de formulário são considerados individualmente.
+
+### 15.9.3 - Rotinas de tratamento de eventos de formulário e elemento
+
+Cada elemento Form tem uma rotina de tratamento de evento onsubmit para detectar o envio de formulário e uma rotina de tratamento de evento onreset para detectar redefinições de formulário. A rotina de tratamento onsubmit é chamada imediatamente antes que o formulário seja enviado; ela pode cancelar o envio retornando false. Isso oferece uma oportunidade para um programa JavaScript verificar se existem erros na entrada do usuário, a fim de evitar o envio de dados incompletos ou inválidos pela rede, para um programa do lado do servidor. A rotina de tratamento de evento onreset é semelhante à rotina de tratamento onsubmit. Ela é chamada imediatamente antes que o formulário seja redefinido e, retornando false , pode impedir que os elementos do formulário sejam redefinidos. Os elementos de formulário normalmente disparam um evento click ou change quando o usuário
+interage com eles, sendo que você pode tratar desses eventos definindo uma rotina de tratamento de evento onclick ou onchange. Outros elementos de formulário disparam um evento change quando o usuário muda o valor representado pelo elemento. Isso acontece quando o usuário insere texto em um campo de texto ou seleciona uma opção em uma lista suspensa. Note que esse evento não é disparado sempre que o usuário digita uma tecla em um campo de texto. Ele só é disparado quando o usuário altera o valor de um elemento e então move o foco de entrada para algum outro elemento do formulário. Isto é, a chamada dessa rotina de tratamento de evento indica uma alteração concluída.
+
+### 15.9.4 - Botões de pressão
+
+Os botões são um dos elementos de formulário mais comumente usados, pois fornecem uma maneira visual clara de permitir que o usuário dispare alguma ação com script. Um elemento botão não tem um comportamento padrão próprio e não tem utilidade a não ser que possua uma rotina de tratamento de evento onclick . Os botões definidos como elementos input exibem o texto puro do atributo value . Os botões definidos como elementos button exibem o conteúdo do elemento. Os elementos de envio e redefinição são exatamente como os elementos botão, mas têm ações padrão (enviar e redefinir um formulário) associadas. Se a rotina de tratamento de evento onclick retorna false , a ação padrão desses botões não é executada. A rotina de tratamento onclick de um elemento de envio pode ser usada para realizar validação de formulário, mas é mais comum fazer isso com a rotina de tratamento onsubmit do próprio objeto Form.
+
+### 15.9.5 - Botões de alternância
+
+Os elementos “botão de ação” e “caixa de seleção” são “botões de alternância”, ou botões que têm dois estados visualmente distintos: eles podem estar marcados ou desmarcados. O usuário pode mudar o estado de um botão de alternância clicando nele. Os elementos botão de ação são projetados
+para serem usados em grupos de elementos relacionados, todos os quais com o mesmo valor para o atributo HTML name . Os elementos botão de ação criados dessa maneira são mutuamente exclusivos: quando um é marcado, o que estava marcado anteriormente se torna desmarcado. As caixas de seleção também são frequentemente utilizadas em grupos que compartilham um atributo name e, quando você seleciona esses elementos usando o nome como uma propriedade do formulário, deve lembrar que obtém um objeto semelhante a um array, em vez de um único elemento. Os elementos botão de ação e caixa de seleção definem ambos uma propriedade checked. Esse valor booleano de leitura/gravação especifica se o elemento está atualmente marcado. A propriedade defaultChecked é um booleano que tem o valor do atributo HTML checked ; ela especifica se o elemento está marcado quando a página é carregada pela primeira vez.
+
+### 15.9.6 - Campos de texto
+
+Os campos de entrada de texto provavelmente representam o elemento mais usado em formulários HTML e programas JavaScript. Eles permitem que o usuário insira uma string de texto curta, de uma linha. A propriedade value representa o texto digitado pelo usuário. Você pode configurar essa
+propriedade de forma a especificar explicitamente o texto que deve ser exibido no campo. A rotina de tratamento de evento onchange de um campo de texto é disparada quando o usuário digita novo texto ou edita texto existente e então indica que terminou de editar retirando o foco de entrada do campo de texto. O elemento Textarea é como um elemento campo de entrada de texto, exceto que permite ao usuário inserir (e aos seus programas JavaScript exibir) texto de várias linhas. Os elementos Textarea são criados com uma tag textarea, usando uma sintaxe significativamente diferente da tag input que cria um campo de texto. Um elemento `<input type="password">` é um campo de entrada modificado que exibe asteriscos quando o usuário digita nele. Conforme o nome indica, isso é útil para permitir que um usuário digite senhas sem se preocupar com o fato de outras pessoas lerem por cima de seus ombros. Note que o elemento Password protege a entrada do usuário contra curiosos, mas quando o formulário é enviado, essa entrada não é criptografada (a não ser que seja enviada por meio de uma conexão HTTPS segura) e pode ficar visível ao ser transmitida pela rede. Por fim, um elemento `<input type="file">` permite ao usuário digitar o nome de um arquivo a ser carregado no servidor Web. Ele é um campo de texto combinado com um botão que abre uma caixa de diálogo de escolha de arquivo. Esse elemento de seleção de arquivo tem uma rotina de tratamento
+de evento onchange , como um campo de entrada normal.
+
+### 15.9.7 - Elementos Select e Options
+
+O elemento Select representa um conjunto de opções (representadas por elementos Option) que o usuário pode selecionar. Os navegadores normalmente renderizam elementos Select em menus suspensos (ou drop-down), mas se você especificar um atributo size com um valor maior do que 1, eles vão exibir as opções em uma lista (possivelmente com rolagem). O elemento Select pode operar de duas maneiras muito distintas e o valor da propriedade type depende de como é configurado. Se o elemento select tem o atributo multiple , o usuário pode selecionar várias opções e a propriedade type do objeto Select é “select-multiple”. Caso contrário, se o atributo multiple não está presente, apenas um item pode ser selecionado e a propriedade type é “select-one”. De certa forma, um elemento select-multiple é como um conjunto de elementos caixa de seleção e um elemento select-one é como um conjunto de elementos botão de ação. Quando o usuário seleciona ou anula a seleção de uma opção, o elemento Select dispara sua rotina de tratamento de evento onchange . Para elementos Select select-one, a propriedade de leitura/gravação selectedIndex especifica qual das opções está selecionada. Para elementos select-multiple, a propriedade selectedIndex única não é suficiente para representar o conjunto completo de opções selecionadas.
+
+---
+
+## 15.10 - OUTROS RECURSOS DE DOCUMENT
+
+Este capítulo começou com a afirmação de que é um dos mais importantes do livro. Por necessidade, ele também é um dos mais longos. Esta última seção conclui o capítulo, abordando diversos outros recursos do objeto Document.
+
+### 15.10.1- Propriedades de document
+
+Os documentos também definem algumas outras propriedades interessantes:
+`cookie`: Uma propriedade especial que permite aos programas JavaScript ler e gravar cookies HTTP. Essa propriedade é abordada no Capítulo 20.
+`domain`: Uma propriedade que permite a servidores Web mutuamente confiáveis dentro do mesmo domínio Internet abrandar colaborativamente as restrições de segurança da política da mesma origem em interações entre suas páginas Web.
+`lastModified`: Uma string contendo a data de modificação do documento.
+`location`: Esta propriedade se refere ao mesmo objeto Location que a propriedade location do objeto Window.
+`referrer`: O URL do documento contendo o link, se houver, que levou o navegador ao documento atual. Essa propriedade tem o mesmo conteúdo do cabeçalho HTTP Referer, mas é grafada com duplo r.
+`title`; O texto entre as marcações title e title desse documento.
+`URL`: O URL do documento como uma String somente de leitura e não como um objeto Location. O valor dessa propriedade é igual ao valor inicial de location.href, mas não é dinâmico como o objeto Location. Se o usuário navegar para um novo identificador de fragmento dentro do documento, por exemplo, location.href vai mudar, mas document.URL, não.
+
+### 15.10.2- O método document.write()
+
+document.write() concatena seus argumentos de string e insere a string resultante no documento, no local do elemento script que o chamou. Quando o script acaba de executar, o navegador analisa a saída gerada e a exibe. É importante entender que é possível usar o método write() para gerar saída HTML no documento corrente somente enquanto esse documento está sendo analisado. Isto é, você pode chamar document.write() dentro de código de nível superior em elementos script somente porque esses scripts são executados como parte do processo de análise do documento. Se você colocar uma chamada de document.write() dentro de uma definição de função e então chamar essa função a partir de uma rotina de tratamento de evento, ela não vai funcionar conforme o esperado – na verdade, ela vai apagar o documento atual e os scripts que ele contém! (Você vai ver por que em breve.)
+
+### 15.10.3- Consultando texto selecionado
+
+Às vezes é útil determinar o texto selecionado pelo usuário dentro de um documento. O método window.getSelection() padrão retorna um objeto Selection que descreve a seleção atual como uma sequência de um ou mais objetos Range. Selection e Range definem uma API bastante complexa que não costuma ser usada e não está documentada neste livro. A característica mais importante e amplamente implementada (exceto no IE) do objeto Selection é que ele tem um método toString() que retorna o conteúdo de texto puro da seleção.
+
+### 15.10.4- Conteúdo editável
+
+Existem duas maneiras de habilitar essa funcionalidade de edição. Configurar o atributo HTML contenteditable de qualquer tag ou configurar a propriedade JavaScript contenteditable no objeto Element correspondente para tornar possível editar o conteúdo desse elemento. Quando o usuário
+clicar no conteúdo dentro desse elemento, vai aparecer um cursor de inserção e os toques de tecla serão inseridos. Também é possível fazer com que um documento inteiro possa ser editado, configurando a propriedade designMode do objeto Document com a string “on”. (Configure-a como “off ” a fim de reverter para um documento somente de leitura.) A propriedade designMode não tem um atributo HTML correspondente.

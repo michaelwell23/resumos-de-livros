@@ -1,0 +1,21 @@
+<script>
+  function getSelectedText() {
+    if (window.getSelection)
+      // A API HTML5 padrão
+      return window.getSelection().toString();
+    else if (document.selection)
+      // Esta é a técnica específica do IE.
+      return document.selection.createRange().text;
+  }
+
+  <a
+    href="javascript: var q;
+if (window.getSelection) q = window.getSelection().toString();
+else if (document.selection) q = document.selection.createRange().text;
+void window.open('http://en.wikipedia.org/wiki/' + q);"
+  >
+    Look Up Selected Text In Wikipedia
+  </a>;
+
+  elt.value.substring(elt.selectionStart, elt.selectionEnd);
+</script>

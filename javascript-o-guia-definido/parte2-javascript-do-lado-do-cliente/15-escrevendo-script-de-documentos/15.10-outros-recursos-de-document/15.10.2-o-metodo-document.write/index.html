@@ -1,0 +1,27 @@
+<script>
+  document.write('<p>Document title: ' + document.title);
+  document.write('<br>URL: ' + document.URL);
+  document.write('<br>Referred by: ' + document.referrer);
+  document.write('<br>Modified on: ' + document.lastModified);
+  document.write('<br>Accessed on: ' + new Date());
+
+  // Define uma API "de fluxo" simples para configurar o innerHTML de um elemento.
+  function ElementStream(elt) {
+    if (typeof elt === 'string') elt = document.getElementById(elt);
+    this.elt = elt;
+    this.buffer = '';
+  }
+  // Concatena todos os argumentos e anexa no buffer
+  ElementStream.prototype.write = function () {
+    this.buffer += Array.prototype.join.call(arguments, '');
+  };
+  // Como write(), mas adiciona uma nova linha
+  ElementStream.prototype.writeln = function () {
+    this.buffer += Array.prototype.join.call(arguments, '') + '\n';
+  };
+  // Configura o conteúdo do elemento do buffer e esvazia o buffer.
+  ElementStream.prototype.close = function () {
+    this.elt.innerHTML = this.buffer;
+    this.buffer = '';
+  };
+</script>

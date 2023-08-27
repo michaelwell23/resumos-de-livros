@@ -1,0 +1,19 @@
+<div id="editor" contenteditable>Click to edit</div>
+
+<iframe id="editor" src="about:blank"></iframe>
+<script>
+  onLoad(function () {
+    var editor = document.getElementById('editor');
+    editor.contentDocument.designMode = 'on';
+  });
+</script>
+
+<script>
+  function bold() {
+    document.execCommand('bold', false, null);
+  }
+  function link() {
+    var url = prompt('Enter link destination');
+    if (url) document.execCommand('createlink', false, url);
+  }
+</script>
