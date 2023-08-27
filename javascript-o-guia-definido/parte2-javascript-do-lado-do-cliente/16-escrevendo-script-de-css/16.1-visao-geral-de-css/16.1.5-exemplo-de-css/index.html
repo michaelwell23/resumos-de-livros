@@ -1,0 +1,51 @@
+<head>
+  <style type="text/css">
+    /* Especifica que os cabeçalhos aparecem em texto azul e itálico. */
+    h1,
+    h2 {
+      color: blue;
+      font-style: italic;
+    }
+    /*
+  * Qualquer elemento de class="WARNING" aparece em texto negritado grande com margens
+* grandes e fundo amarelo com uma borda vermelha grossa.
+*/
+    .WARNING {
+      font-weight: bold;
+      font-size: 150%;
+      margin: 0 1in 0 1in; /* superior direita inferior esquerda */
+      background-color: yellow;
+      border: solid red 8px;
+      padding: 10px;
+      /* 10 pixels em todos os 4 lados */
+    }
+    /*
+* Texto dentro de um cabeçalho h1 ou h2 dentro de um elemento com class="WARNING"
+* deve ser centralizado, além de aparecer em itálico azul.
+*/
+    .WARNING h1,
+    .WARNING h2 {
+      text-align: center;
+    }
+    /* O único elemento com id="special" aparece em letras maiúsculas e centralizado. */
+    #special {
+      text-align: center;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <h1>Cascading Style Sheets Demo</h1>
+  <div class="WARNING">
+    <h2>Warning</h2>
+    This is a warning! Note how it grabs your attention with its bold text and
+    bright colors. Also notice that the heading is centered and in blue italics.
+  </div>
+  <p id="special">
+    This paragraph is centered<br />
+    and appears in uppercase letters.<br />
+    <span style="text-transform: none">
+      Here we explicitly use an inline style to override the uppercase letters.
+    </span>
+  </p>
+</body>

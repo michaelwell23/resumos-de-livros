@@ -1,0 +1,98 @@
+<style>
+  .attention {
+    /* Estilos para chamar a atenção do usuário */
+    background-color: yellow; /* Cor de fundo amarelo de destaque */
+    font-weight: bold;
+    /* Texto em negrito */
+    border: solid black 2px;
+    /* Caixa preta */
+  }
+</style>
+
+<script>
+  function grabAttention(e) {
+    e.className = 'attention';
+  }
+  function releaseAttention(e) {
+    e.className = '';
+  }
+
+  /*
+        Retorna a propriedade classList de e, caso haja uma.
+        Caso contrário, retorna um objeto que simula a API DOMTokenList para e.
+        O objeto retornado tem métodos contains(), add(), remove(), toggle() e toString()
+        para testar e alterar o conjunto de classes do elemento e.
+        Se a propriedade classList é suportada de forma nativa, o objeto retornado é
+        semelhante a um array e tem comprimento e propriedades de índice de array. O DOMTokenList
+        simulado não é semelhante a um array, mas tem um método toArray() que retorna
+
+        * um instantâneo semelhante a um array com os nomes de classe do elemento.
+      */
+  function classList(e) {
+    if (e.classList) return e.classList;
+    // Retorna e.classList, se existir
+    else return new CSSClassList(e);
+    // Caso contrário, tenta simular
+  }
+  // CSSClassList é uma classe de JavaScript que simula DOMTokenList
+  function CSSClassList(e) {
+    this.e = e;
+  }
+  // Retorna true se e.className contém a classe c; caso contrário, false
+  CSSClassList.prototype.contains = function (c) {
+    // Verifica se c é um nome de classe válido
+    if (c.length === 0 || c.indexOf(' ') != -1)
+      throw new Error("Invalid class name: '" + c + "'");
+    // Verifica primeiro os casos comuns
+    var classes = this.e.className;
+    (!classes) return false;
+    // e não tem uma classe
+    if (classes === c) return true; // e tem uma classe que coincide exatamente
+    // Caso contrário, usa uma RegExp para procurar c como palavra
+    // \b em uma expressão regular exige uma correspondência em um limite de palavra.
+    return classes.search('\\b' + c + '\\b') != -1;
+  };
+  // Adiciona c em e.className se ainda não estiver presente
+  CSSClassList.prototype.add = function (c) {
+    if (this.contains(c)) return;
+    // Não faz nada se já estiver presente
+    var classes = this.e.className;
+    if (classes && classes[classes.length - 1] != ' ') c = ' ' + c;
+    // Adiciona um espaço, se precisarmos de um
+    this.e.className += c;
+    // Adiciona c em className
+  };
+  // Remove todas as ocorrências de c de e.className
+  CSSClassList.prototype.remove = function (c) {
+    // Certifica-se de que c seja um nome de classe válido
+    if (c.length === 0 || c.indexOf(' ') != -1)
+      throw new Error("Invalid class name: '" + c + "'");
+    // Remove todas as ocorrências de c como palavra, mais qualquer espaço à direita
+    var pattern = new RegExp('\\b' + c + '\\b\\s*', 'g');
+    this.e.className = this.e.className.replace(pattern, '');
+  };
+  // Adiciona c em e.className, caso ainda não esteja presente, e retorna true.
+  // Caso contrário, remove todas as ocorrências de c de e.className e retorna false.
+  CSSClassList.prototype.toggle = function (c) {
+    if (this.contains(c)) {
+      // Se e.className contém c
+      this.remove(c);
+      // então o remove.
+      return false;
+    } else {
+      // Caso contrário:
+      this.add(c);
+      // o adiciona.
+      return true;
+    }
+  };
+  // Retorna e.className em si
+  CSSClassList.prototype.toString = function () {
+    return this.e.className;
+  };
+
+  // Retorno dos nomes em e.className
+  CSSClassList.prototype.toArray = function () {
+    return this.e.className.match(/\b\w+\b/g) || [];
+  };
+</script>

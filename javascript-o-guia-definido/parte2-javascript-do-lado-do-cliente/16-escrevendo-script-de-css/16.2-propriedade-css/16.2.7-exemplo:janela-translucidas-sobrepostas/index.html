@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<head>
+  <style type="text/css">
+    /**
+* Esta é uma folha de estilos CSS que define três regras de estilo que usamos
+* no corpo do documento para criar um efeito visual de "janela".
+* As regras usam propriedades de posicionamento para configurar o tamanho global da janela
+* e a posição de seus componentes. Mudar o tamanho da janela
+* exige alterações cuidadosas nas propriedades de posicionamento em todas as três regras.
+**/
+    div.window {
+      /* Especifica o tamanho e a borda da janela */
+      position: absolute;
+      /* A posição é especificada em outro lugar */
+      width: 300px;
+      height: 200px;
+      /* Tamanho da janela, não incluindo as bordas */
+      border: 3px outset gray;
+      /* Note o efeito de borda "outset" em 3D */
+    }
+    div.titlebar {
+      /* Especifica posição, tamanho e estilo da barra de título */
+      position: absolute;
+      /* É um elemento posicionado */
+      top: 0px;
+      height: 18px;
+      /* A barra de título tem 18px + preenchimento e
+/* bordas */
+      width: 290px;
+      /* 290 + 5px de preenchimento à esquerda e à direita
+/* = 300 */
+      background-color: #aaa;
+      /* Cor da barra de título */
+      border-bottom: groove gray 2px; /* A barra de título tem borda somente embaixo */
+      padding: 3px 5px 2px 5px;
+      /* Valores no sentido horário: superior, direita,
+/* inferior, esquerda */
+      font: bold 11pt sans-serif;
+      /* Fonte do título */
+    }
+    div.content {
+      /* Especifica tamanho, posição e rolagem do conteúdo da janela */
+      position: absolute;
+      /* É um elemento posicionado */
+      top: 25px;
+      /* título de 18px + borda de 2px + preenchimento de
+/* 3px+2px */
+      height: 165px;
+      /* total de 200px – 25px da barra de título – 10px de
+/* preenchimento*/
+      width: 290px;
+      /* largura de 300px – 10px de preenchimento */
+      padding: 5px;
+      /* Permite espaço em todos os quatro lados */
+      overflow: auto;
+      /* Fornece barras de rolagem se precisarmos */
+      background-color: #fff;
+      /* Fundo branco por padrão */
+    }
+    div.translucent {
+      /* esta classe torna uma janela parcialmente transparente */
+      opacity: 0.75;
+      /* Estilo padrão para transparência */
+      filter: alpha(opacity=75);
+      /* Transparência para o IE */
+    }
+  </style>
+</head>
+<body>
+  <!-- Aqui está como definimos uma janela: um div "window" com uma barra de título e -->
+  <!-- div content aninhada. Note como a posição é especificada com -->
+  <!-- um atributo style que amplia os estilos da folha de estilo. -->
+  <div class="window" style="left: 10px; top: 10px; z-index: 10">
+    <div class="titlebar">Test Window</div>
+    <div class="content">
+      1<br />2<br />3<br />4<br />5<br />6<br />7<br />8<br />9<br />0<br /><!-- Muitas linhas para -->
+      1<br />2<br />3<br />4<br />5<br />6<br />7<br />8<br />9<br />0<br /><!-- demonstrar a rolagem-->
+    </div>
+  </div>
+  <!-- Aqui está outra janela, com posição, cor e espessura de fonte diferentes -->
+  <div class="window" style="left: 75px; top: 110px; z-index: 20">
+    <div class="titlebar">Another Window</div>
+    <div
+      class="content translucent"
+      style="background-color: #ccc; font-weight: bold"
+    >
+      This is another window. Its <tt>z-index</tt> puts it on top of the other
+      one. CSS styles make its content area translucent, in browsers that
+      support that.
+    </div>
+  </div>
+</body>
