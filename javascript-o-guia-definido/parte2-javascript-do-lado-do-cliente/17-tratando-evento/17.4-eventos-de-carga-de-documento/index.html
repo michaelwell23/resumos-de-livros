@@ -1,0 +1,49 @@
+<script>
+  /*
+   * Passa uma função para whenReady() e ela será chamada (como um método do
+   * documento) quando o documento for analisado e estiver pronto para manipulação. As
+   * funções registradas são disparadas pelo primeiro evento
+   * DOMContentLoaded, readystatechange ou load que ocorrer. Quando o documento estiver
+   * pronto e todas as funções tiverem sido chamadas, qualquer função passada para
+   * whenReady() será chamada imediatamente.
+   */
+
+  var whenReady = (function () {
+    // Esta função retorna a função whenReady()
+    var funcs = [];
+    // As funções a serem executadas quando recebermos um evento
+    var ready = false;
+    // Troca para true quando a rotina de tratamento é disparada
+    // A rotina de tratamento de evento é chamada quando o documento está pronto
+    function handler(e) {
+      // Se já executamos uma vez, apenas retorna
+      if (ready) return;
+      // Se foi um evento readystatechange onde o estado mudou para
+      // algo que não seja "complete", então ainda não estamos prontos
+      if (e.type === 'readystatechange' && document.readyState !== 'complete')
+        return;
+      // Executa todas as funções registradas.
+      // Note que pesquisamos funcs.length a cada vez, no caso de a chamada
+      // de uma dessas funções fazer com que mais funções sejam registradas.
+      for (var i = 0; i < funcs.length; i++) funcs[i].call(document);
+      // Agora configura o flag ready como true e esquece as funções
+      ready = true;
+      funcs = null;
+    }
+    // Registra a rotina de tratamento de qualquer evento que possamos receber
+    if (document.addEventListener) {
+      document.addEventListener('DOMContentLoaded', handler, false);
+      document.addEventListener('readystatechange', handler, false);
+      window.addEventListener('load', handler, false);
+    } else if (document.attachEvent) {
+      document.attachEvent('onreadystatechange', handler);
+      window.attachEvent('onload', handler);
+    }
+    // Retorna a função whenReady
+    return function whenReady(f) {
+      if (ready) f.call(document); // Se já está pronto, apenas a executa
+      else funcs.push(f);
+      // Caso contrário, a enfileira para depois.
+    };
+  })();
+</script>

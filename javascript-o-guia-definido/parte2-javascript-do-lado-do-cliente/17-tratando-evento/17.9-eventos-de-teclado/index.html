@@ -1,0 +1,304 @@
+<script>
+  /*
+      * Keymap.js: vincula eventos de tecla a funções de tratamento.
+      * Este módulo define uma classe Keymap. Uma instância dessa classe representa um
+      * mapeamento de identificadores de tecla (definido abaixo) em funções de tratamento.
+      * Keymap pode ser instalada em um elemento HTML para tratar de eventos keydown. Quando
+      * esse evento ocorre, Keymap utiliza seu mapeamento para chamar a rotina de tratamento
+      * apropriada.
+      * Quando você cria uma Keymap, pode passar um objeto JavaScript representando
+      * o conjunto inicial de vínculos para Keymap. Os nomes de propriedade desse objeto
+      * são identificadores de tecla e os valores de propriedade são as funções de tratamento.
+      * Após uma Keymap ser criada, você pode adicionar novos vínculos, passando um
+      * identificador de tecla e a função de tratamento para o método bind(). Um vínculo pode
+      * ser removido passando-se um identificador de tecla para o método unbind().
+      * Para usar Keymap, chame seu método install(), passando um elemento HTML,
+      * como o objeto documento. install() adiciona uma rotina de tratamento de evento
+      * onkeydown no objeto especificado. Quando essa rotina de tratamento é chamada, ela
+      * determina o identificador de tecla da tecla pressionada e chama a função de tratamento,
+      * se houver, vinculada a esse identificador. Uma única Keymap pode ser instalada em mais
+      * de um elemento HTML.
+      *
+      * Identificadores de tecla
+      *
+      * Um identificador de tecla é uma representação de string que não diferencia letras
+      * maiúsculas e minúsculas de uma tecla, mais quaisquer teclas modificadoras que sejam
+      * pressionadas ao mesmo tempo. Normalmente, o nome da tecla é o texto (sem Shift) que está
+      * na tecla. Nomes de tecla válidos incluem "A", "7", "F2", "PageUp", "Left", "Backspace"
+      * e "Esc".
+      *
+      * Consulte o objeto Keymap.keyCodeToKeyName neste módulo para ver uma lista de nomes.
+      * Esses representam um subconjunto dos nomes definidos pelo padrão Level 3 do DOM e
+      * essa classe usará a propriedade key do objeto evento, quando for implementada.
+      *
+      * Um identificador de tecla também pode incluir prefixos de tecla modificadora. Esses
+      * prefixos são Alt, Ctrl, Meta e Shift. Eles não diferenciam letras maiúsculas e
+      * minúsculas e devem ser separados do nome da tecla e uns dos outros com espaços ou
+      * com um sublinhado, hífen ou +. Por exemplo: "SHIFT+A", "Alt_F2", "meta-v" e "ctrl
+      * alt left".
+      * Em Macs, Meta é a tecla Command e Alt é a tecla Option. Alguns navegadores
+      * mapeiam a tecla Windows na modificadora Meta.
+      *
+      * Funções de rotina de tratamento
+      *
+      * As rotinas de tratamento são chamadas como métodos do documento ou elemento do
+      * documento em que o mapa de teclas está instalado e recebem dois argumentos:
+      *
+      1) o objeto evento para o evento keydown
+      *
+      2) o identificador de tecla da tecla que foi pressionada
+      * O valor de retorno da rotina de tratamento se torna o valor de retorno da rotina de
+      * tratamento de keydown.
+      * Se uma função de tratamento retornar false, o mapa de teclas vai parar de borbulhar e
+      * vai cancelar qualquer ação padrão associada ao evento keydown.
+      *
+      * Limitações
+      *
+      * Não é possível vincular uma função de tratamento a todas as teclas. O sistema
+      * operacional captura algumas sequências de tecla (Alt-F4, por exemplo). E o próprio
+      * navegador pode capturar outras (Ctrl-S, por exemplo). Este código é dependente do
+      * navegador, do sistema operacional e da localidade. As teclas de função e as teclas de
+      * função modificadas funcionam bem, assim como as teclas alfanuméricas não modificadas.
+      * A combinação de Ctrl e Alt com caracteres alfanuméricos é menos robusta.
+      *
+      * A maioria dos caracteres de pontuação que não exigem a tecla Shift (`=[];',./\,
+      * mas não hífen) é suportada nos layouts de teclado US padrão. Mas não é
+      * especialmente portável para outros layouts de teclado e deve ser evitada.
+      */
+
+  // Esta é a função construtora
+  function Keymap(bindings) {
+    this.map = {};
+    // Define o identificador de tecla->mapa da rotina de tratamento
+    if (bindings) {
+      // Copia os vínculos iniciais nele
+      for (name in bindings) this.bind(name, bindings[name]);
+    }
+  }
+
+  // Vincula o identificador de tecla especificado à função de tratamento especificada
+  Keymap.prototype.bind = function (key, func) {
+    this.map[Keymap.normalize(key)] = func;
+  };
+
+  // Exclui o vínculo do identificador de tecla especificado
+  Keymap.prototype.unbind = function (key) {
+    delete this.map[Keymap.normalize(key)];
+  };
+  // Instala essa Keymap no elemento HTML especificado
+  Keymap.prototype.install = function (element) {
+    // Esta é a função de tratamento de evento
+    var keymap = this;
+    function handler(event) {
+      return keymap.dispatch(event, element);
+    }
+    // Agora a instala
+    if (element.addEventListener)
+      element.addEventListener('keydown', handler, false);
+    else if (element.attachEvent) element.attachEvent('onkeydown', handler);
+  };
+
+  // Este método envia eventos de tecla baseados nos vínculos de mapa de teclas.
+  Keymap.prototype.dispatch = function (event, element) {
+    // Começamos sem modificadoras e sem nome de tecla
+    var modifiers = '';
+    var keyname = null;
+    //
+
+    // Constrói a string modificadora em ordem alfabética minúscula canônica.
+    if (event.altKey) modifiers += 'alt_';
+    if (event.ctrlKey) modifiers += 'ctrl_';
+    if (event.metaKey) modifiers += 'meta_';
+    if (event.shiftKey) modifiers += 'shift_';
+    // O nome da tecla é fácil, se a propriedade key do Level 3 do DOM estiver
+    // implementada:
+    if (event.key) keyname = event.key;
+    // Usa keyIdentifier no Safari e no Chrome para nomes de tecla de função
+    else if (
+      event.keyIdentifier &&
+      event.keyIdentifier.substring(0, 2) !== 'U+'
+    )
+      keyname = event.keyIdentifier;
+    // Caso contrário, usa a propriedade keyCode e o mapa de relacionamento código-nome
+    // abaixo
+    else keyname = Keymap.keyCodeToKeyName[event.keyCode];
+    // Se não conseguimos encontrar um nome de tecla, apenas retorna e ignora o evento.
+    if (!keyname) return;
+    // A identificação de tecla canônica é modifiers mais o nome da tecla em minúsculas
+    var keyid = modifiers + keyname.toLowerCase();
+    // Agora vê se o identificador de tecla está vinculado a alguma coisa
+    var handler = this.map[keyid];
+    if (handler) {
+      // Se existe uma rotina de tratamento para essa tecla, trata dela
+      // Chama a função de tratamento
+      var retval = handler.call(element, event, keyid);
+      // Se a rotina de tratamento retorna false, cancela o padrão e impede que borbulhe
+      if (retval === false) {
+        if (event.stopPropagation) event.stopPropagation(); // Modelo DOM
+        else event.cancelBubble = true;
+        // Modelo IE
+        if (event.preventDefault) event.preventDefault();
+        // DOM
+        else event.returnValue = false;
+        // IE
+      }
+      // Retorna o que a rotina de tratamento retornou
+      return retval;
+    }
+  };
+  // Função utilitária para converter um identificador de tecla para a forma canônica.
+  // Em hardware não Macintosh, poderíamos mapear "meta" em "ctrl" aqui, para que
+  // Meta-C fosse "Command-C" no Mac e "Ctrl-C" em outros lugares.
+  Keymap.normalize = function (keyid) {
+    keyid = keyid.toLowerCase();
+    // Tudo em minúsculas
+    var words = keyid.split(/\s+|[\-+_]/);
+    // Separa as modificadoras do nome
+    var keyname = words.pop();
+    // keyname é a última palavra
+    keyname = Keymap.aliases[keyname] || keyname; // É um apelido?
+    words.sort();
+    // Classifica as modificadoras restantes
+    words.push(keyname);
+    // Adiciona novamente o nome normalizado
+    return words.join('_');
+    // Concatena tudo
+  };
+  Keymap.aliases = {
+    escape: 'esc',
+    delete: 'del',
+    return: 'enter',
+
+    // Mapeia apelidos de tecla comuns em seus nomes
+    // de tecla "oficiais" usados pelo Level 3 do DOM e pelo
+    // código de tecla no mapa de nomes de tecla abaixo.
+    // Tanto as teclas como os valores devem estar em letra minúsculas aqui.
+    ctrl: 'control',
+    space: 'spacebar',
+    ins: 'insert',
+  };
+  // A propriedade legada keyCode do objeto evento keydown não é padronizada
+  // Mas os valores a seguir parecem funcionar para a maioria dos navegadores e sistemas
+  // operacionais.
+  Keymap.keyCodeToKeyName = {
+    // Teclas contendo palavras ou setas
+    8: 'Backspace',
+    9: 'Tab',
+    13: 'Enter',
+    16: 'Shift',
+    17: 'Control',
+    18: 'Alt',
+    19: 'Pause',
+    20: 'CapsLock',
+    27: 'Esc',
+    32: 'Spacebar',
+    33: 'PageUp',
+    34: 'PageDown',
+    35: 'End',
+    36: 'Home',
+    37: 'Left',
+    38: 'Up',
+    39: 'Right',
+    40: 'Down',
+    45: 'Insert',
+    46: 'Del',
+
+    // Teclas numéricas no teclado principal (não no teclado numérico)
+    48: '0',
+    49: '1',
+    50: '2',
+    51: '3',
+    52: '4',
+    53: '5',
+    54: '6',
+    55: '7',
+    56: '8',
+    57: '9',
+
+    // Teclas de letra. Note que não distinguimos maiúsculas e minúsculas
+    65: 'A',
+    66: 'B',
+    67: 'C',
+    68: 'D',
+    69: 'E',
+    70: 'F',
+    71: 'G',
+    72: 'H',
+    73: 'I',
+    74: 'J',
+    75: 'K',
+    76: 'L',
+    77: 'M',
+    78: 'N',
+    79: 'O',
+    80: 'P',
+    81: 'Q',
+    82: 'R',
+    83: 'S',
+    84: 'T',
+    85: 'U',
+    86: 'V',
+    87: 'W',
+    88: 'X',
+    89: 'Y',
+    90: 'Z',
+
+    // Números do teclado numérico e teclas de pontuação. (O Opera não suporta isso.)
+    96: '0',
+    97: '1',
+    98: '2',
+    99: '3',
+    100: '4',
+    101: '5',
+    102: '6',
+    103: '7',
+    104: '8',
+    105: '9',
+    106: 'Multiply',
+    107: 'Add',
+    109: 'Subtract',
+    110: 'Decimal',
+    111: 'Divide',
+
+    // Teclas de função
+    112: 'F1',
+    113: 'F2',
+    114: 'F3',
+    115: 'F4',
+    116: 'F5',
+    117: 'F6',
+    118: 'F7',
+    119: 'F8',
+    120: 'F9',
+    121: 'F10',
+    122: 'F11',
+    123: 'F12',
+    124: 'F13',
+    125: 'F14',
+    126: 'F15',
+    127: 'F16',
+    128: 'F17',
+    129: 'F18',
+    130: 'F19',
+    131: 'F20',
+    132: 'F21',
+    133: 'F22',
+    134: 'F23',
+    135: 'F24',
+
+    // Teclas de pontuação que não exigem manter a tecla Shift pressionada
+    // O hífen não é portável: FF retorna o mesmo código que Subtract
+    59: ';',
+    61: '=',
+    186: ';',
+    187: '=', // O Firefox e o Opera retornam 59,61
+    188: ',',
+    190: '.',
+    191: '/',
+    192: '`',
+    219: '[',
+    220: '\\',
+    221: ']',
+    222: "'",
+  };
+</script>

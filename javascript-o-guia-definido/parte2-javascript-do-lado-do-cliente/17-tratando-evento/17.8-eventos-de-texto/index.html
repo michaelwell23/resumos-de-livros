@@ -1,0 +1,128 @@
+<script>
+  /**
+  * InputFilter.js: filtragem discreta de toques de tecla para elementos <input>
+  *
+  * Este módulo localiza todos os elementos <input type="text"> no documento que
+  * tenham um atributo "data-allowed-chars". Ele registra rotinas de
+  * tratamento de evento keypress, textInput e textinput para esse elemento a fim de
+  * restringir a entrada do usuário de modo que apenas os caracteres que aparecem no valor
+  * do atributo possam ser inseridos. Se o elemento <input> também tem um atributo chamado
+  * "data-messageid", o valor desse atributo é considerado a identificação de outro
+  * elemento do documento. Se o usuário digita um caractere que não é permitido, o
+  * elemento mensagem se torna visível. Se o usuário digita um caractere permitido, o
+  * elemento mensagem é oculto. Esse elemento identificação de mensagem se destina a oferecer
+  * uma explicação para o usuário sobre o motivo de seu toque de tecla ser rejeitado.
+  * Normalmente, ele deve ser estilizado com CSS para que seja inicialmente invisível.
+  *
+  * Aqui está um exemplo de HTML que utiliza esse módulo.
+  *
+  Zipcode: <input id="zip" type="text"
+  *
+  data-allowed-chars="0123456789" data-messageid="zipwarn">
+  *
+  <span id="zipwarn" style="color:red;visibility:hidden">Digits only</span>
+  *
+  * Este módulo é puramente discreto: ele não define quaisquer símbolos
+  * no namespace global.
+  */
+  whenReady(function () {
+    // Executa esta função quando o documento é carregado
+    // Localiza todos os elementos <input>
+    var inputelts = document.getElementsByTagName('input');
+    // Itera por todos eles
+    for (var i = 0; i < inputelts.length; i++) {
+      var elt = inputelts[i];
+      // Pula aqueles que não são campos de texto ou que não têm
+      // um atributo data-allowed-chars.
+      if (elt.type != 'text' || !elt.getAttribute('data-allowed-chars'))
+        continue;
+
+      // Registra nossa função de tratamento de evento nesse elemento de entrada
+      // keypress é uma rotina de tratamento de evento legada que funciona em toda parte.
+      // textInput (caixa mista) é suportado pelo Safari e Chrome, em 2010.
+      // textinput (caixa baixa) é a versão draft Level 3 Events do DOM.
+
+      if (elt.addEventListener) {
+        elt.addEventListener('keypress', filter, false);
+        elt.addEventListener('textInput', filter, false);
+        elt.addEventListener('textinput', filter, false);
+      } else {
+        // textinput não suportava versões do IE sem addEventListener()
+        elt.attachEvent('onkeypress', filter);
+      }
+    }
+    // Esta é a rotina de tratamento de keypress e textInput que filtra a entrada do usuário
+    function filter(event) {
+      // Obtém o objeto evento e o alvo do alvo target
+      var e = event || window.event;
+      // Modelo padrão ou IE
+      var target = e.target || e.srcElement; // Modelo padrão ou IE
+      var text = null;
+      // O texto que foi inserido
+
+      // Obtém o caractere ou texto que foi inserido
+      if (e.type === 'textinput' || e.type === 'textInput') text = e.data;
+      else {
+        // Esse era um evento keypress legado
+        // O Firefox usa charCode para eventos key press imprimíveis
+        var code = e.charCode || e.keyCode;
+
+        // Se esse toque de tecla é
+        if (code < 32 || e.charCode == 0 || e.ctrlKey || e.altKey) return;
+        //uma tecla de função de qualquer tipo, não o filtra
+        // Caractere de controle ASCII
+        // Tecla de função (somente para Firefox)
+        // Tecla modificadora pressionada
+        // Não filtra esse evento
+        // Converte código de caractere em uma string
+        var text = String.fromCharCode(code);
+      }
+      // Agora pesquisa as informações que precisamos a partir desse elemento de entrada
+      var allowed = target.getAttribute('data-allowed-chars'); // Caracteres válidos
+      var messageid = target.getAttribute('data-messageid');
+      // Identificação de
+      // mensagem
+      if (messageid)
+        // Se existe uma identificação de mensagem, obtém o elemento
+        var messageElement = document.getElementById(messageid);
+      // Itera pelos caracteres do texto de entrada
+      for (var i = 0; i < text.length; i++) {
+        var c = text.charAt(i);
+        if (allowed.indexOf(c) == -1) {
+          // Esse é um caractere proibido?
+          // Exibe o elemento da mensagem, se existir um
+          if (messageElement) messageElement.style.visibility = 'visible';
+          // Cancela a ação padrão para que o texto não seja inserido
+          if (e.preventDefault) e.preventDefault();
+          if (e.returnValue) e.returnValue = false;
+          return false;
+        }
+      }
+      // Se todos os caracteres eram válidos, oculta a mensagem, caso exista uma.
+      if (messageElement) messageElement.style.visibility = 'hidden';
+    }
+  });
+
+  function forceToUpperCase(element) {
+    if (typeof element === 'string') element = document.getElementById(element);
+    element.oninput = upcase;
+    element.onpropertychange = upcaseOnPropertyChange;
+    // Caso fácil: a rotina de tratamento do evento de entrada
+    function upcase(event) {
+      this.value = this.value.toUpperCase();
+    }
+    // Caso difícil: a rotina de tratamento do evento propertychange
+    function upcaseOnPropertyChange(event) {
+      var e = event || window.event;
+      // Se a propriedade value mudou
+      if (e.propertyName === 'value') {
+        // Remove a rotina de tratamento de onpropertychange para evitar recursividade
+        this.onpropertychange = null;
+        // Muda o valor para todas as letras em maiúsculas
+        this.value = this.value.toUpperCase();
+        // E restaura a rotina de tratamento de propertychange original
+        this.onpropertychange = upcaseOnPropertyChange;
+      }
+    }
+  }
+</script>

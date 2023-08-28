@@ -1,0 +1,16 @@
+<script>
+  /*
+   * Registra a função de tratamento especificada para tratar de eventos do tipo
+   * especificado no alvo especificado. Garante que a rotina de tratamento seja sempre
+   * chamada como um método do alvo.
+   */
+  function addEvent(target, type, handler) {
+    if (target.addEventListener) target.addEventListener(type, handler, false);
+    else
+      target.attachEvent('on' + type, function (event) {
+        // Chama a rotina de tratamento como um método do alvo,
+        // passando o objeto evento
+        return handler.call(target, event);
+      });
+  }
+</script>

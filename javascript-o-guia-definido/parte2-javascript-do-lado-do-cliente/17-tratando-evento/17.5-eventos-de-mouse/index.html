@@ -1,0 +1,150 @@
+<img
+  src="draggable.gif"
+  style="position: absolute; left: 100px; top: 100px"
+  onmousedown="if (event.shiftKey) drag(this, event);"
+/>
+<script>
+  /**
+      * Drag.js: arrasta elementos HTML posicionados de forma absoluta.
+      *
+      * Este módulo define uma única função drag() projetada para ser chamada
+      * a partir de uma rotina de tratamento de evento onmousedown. Os eventos mousemove
+      * subsequentes vão mover o elemento especificado. Um evento mouseup termina o arrasto.
+      * Esta implementação funciona com os modelos de evento padrão e do IE.
+      * Ela exige a função getScrollOffsets() de outra parte deste livro.
+      *
+      * Argumentos:
+      *
+      * elementToDrag: o elemento que recebeu o evento mousedown ou
+      *
+      algum elemento contêiner. Deve estar posicionado de forma absoluta. Seus
+      *
+      valores de style.left e style.top vão mudar com base no arrasto
+      *
+      do usuário.
+      *
+      * evento: o objeto Event do evento mousedown.
+      *
+      **/
+
+  function drag(elementToDrag, event) {
+    // A posição inicial do mouse, convertida para coordenadas do documento
+    var scroll = getScrollOffsets(); // Uma função utilitária de outro lugar
+    var startX = event.clientX + scroll.x;
+    var startY = event.clientY + scroll.y;
+
+    // A posição original (em coordenadas do documento) do elemento
+    // que será arrastado. Como elementToDrag está posicionado de
+    // forma absoluta, supomos que seu offsetParent é o corpo do documento.
+    var origX = elementToDrag.offsetLeft;
+    var origY = elementToDrag.offsetTop;
+
+    // Calcula a distância entre o evento mousedown e o canto
+    // superior esquerdo do elemento. Vamos manter essa distância quando o mouse se mover.
+    var deltaX = startX - origX;
+    var deltaY = startY - origY;
+    // Registra as rotinas de tratamento de evento que vão responder aos eventos mousemove
+    // e ao evento mouseup que vem após esse evento mousedown.
+    if (document.addEventListener) {
+      // Modelo de evento padrão
+      // Registra rotinas de captura de evento no documento
+      document.addEventListener('mousemove', moveHandler, true);
+      document.addEventListener('mouseup', upHandler, true);
+    } else if (document.attachEvent) {
+      // Modelo de evento do IE para IE5-8
+      // No modelo de evento do IE, capturamos eventos chamando
+      // setCapture() no elemento para capturá-los.
+      elementToDrag.setCapture();
+      elementToDrag.attachEvent('onmousemove', moveHandler);
+      elementToDrag.attachEvent('onmouseup', upHandler);
+      // Trata a perda da captura do mouse como um evento mouseup.
+      elementToDrag.attachEvent('onlosecapture', upHandler);
+    }
+    // Tratamos desse evento. Não permite que mais ninguém o veja.
+    if (event.stopPropagation) event.stopPropagation(); // Modelo padrão
+    else event.cancelBubble = true;
+    // IE
+    // Agora impede qualquer ação padrão.
+    if (event.preventDefault) event.preventDefault();
+    else event.returnValue = false;
+    // Modelo padrão
+    // IE
+    /**
+     * Esta é a rotina de tratamento que captura eventos mousemove quando um elemento
+     * está sendo arrastado. Ela é responsável por mover o elemento.
+     **/
+    function moveHandler(e) {
+      if (!e) e = window.event;
+      // Modelo de evento do IE
+      // Move o elemento para a posição atual do mouse, ajustada pela
+      // posição das barras de rolagem e do deslocamento do clique inicial.
+      var scroll = getScrollOffsets();
+      elementToDrag.style.left = e.clientX + scroll.x - deltaX + 'px';
+      elementToDrag.style.top = e.clientY + scroll.y - deltaY + 'px';
+
+      // E não permite que mais ninguém veja esse evento.
+      if (e.stopPropagation) e.stopPropagation();
+      // Padrão
+      else e.cancelBubble = true;
+      // IE
+    }
+    /**
+     * Esta é a rotina de tratamento que captura o último evento mouseup que
+     * ocorre no final de um arrasto.
+     **/
+    function upHandler(e) {
+      if (!e) e = window.event; // Modelo de evento do IE
+      // Anula o registro das rotinas de captura de evento.
+      if (document.removeEventListener) {
+        // Modelo de evento do DOM
+        document.removeEventListener('mouseup', upHandler, true);
+        document.removeEventListener('mousemove', moveHandler, true);
+      } else if (document.detachEvent) {
+        // Modelo de evento do IE 5+
+        elementToDrag.detachEvent('onlosecapture', upHandler);
+        elementToDrag.detachEvent('onmouseup', upHandler);
+        elementToDrag.detachEvent('onmousemove', moveHandler);
+        elementToDrag.releaseCapture();
+      }
+      // E não permite que o evento se propague mais.
+      if (e.stopPropagation) e.stopPropagation();
+      else e.cancelBubble = true;
+      // Modelo padrão
+      // IE
+    }
+  }
+</script>
+<script src="getScrollOffsets.js"></script>
+<!-- drag() exige isso -->
+<script src="Drag.js"></script>
+<!-- define drag() -->
+<!-- O elemento a ser arrastado -->
+<div
+  style="
+    position: absolute;
+    left: 100px;
+    top: 100px;
+    width: 250px;
+    background-color: white;
+    border: solid black;
+  "
+>
+  <!-- A "barra de título" a arrastar junto. Observe o atributo onmousedown. -->
+  <div
+    style="
+      background-color: gray;
+      border-bottom: dotted black;
+      padding: 3px;
+      font-family: sans-serif;
+      font-weight: bold;
+    "
+    onmousedown="drag(this.parentNode, event);"
+  >
+    Drag Me
+    <!-- O conteúdo da barra de título -->
+  </div>
+  <!-- Conteúdo do elemento que pode ser arrastado -->
+  <p>This is a test. Testing, testing, testing.</p>
+  <p>Test</p>
+  <p>Test</p>
+</div>

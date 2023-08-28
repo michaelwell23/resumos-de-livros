@@ -1,0 +1,12 @@
+<script>
+  function cancelHandler(event) {
+    var event = event || window.event; // Para IE
+    /* Faz algo para tratar do evento aqui */
+    // Agora cancela a ação padrão associada ao evento
+    if (event.preventDefault) event.preventDefault();
+    // Técnica padrão
+    if (event.returnValue) event.returnValue = false;
+    // IE
+    return false; // Para rotinas de tratamento registradas como propriedades do objeto
+  }
+</script>

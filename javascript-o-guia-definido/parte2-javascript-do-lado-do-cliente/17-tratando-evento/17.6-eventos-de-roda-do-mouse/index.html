@@ -1,0 +1,169 @@
+<script src="whenReady.js"></script>
+<script src="Enclose.js"></script>
+<script>
+  whenReady(function () {
+    enclose(document.getElementById('content'), 400, 200, -200, -300);
+  });
+</script>
+<style>
+  div.enclosure {
+    border: solid black 10px;
+    margin: 10px;
+  }
+</style>
+<img
+  id="content"
+  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLrC1wJORhjBI7hHmCBJWBwinpnjfVwxlyvlwIhIWKTpdn1X62aOD6U6VUUoCn1k7YhZM&usqp=CAU"
+/>
+
+<script>
+  // Engloba o elemento conteúdo em um quadro ou em uma porta de visualização da largura e
+  // altura especificadas (mínimo 50x50). Os argumentos contentX e contentY opcionais
+  // especificam o deslocamento inicial do conteúdo em relação ao quadro. (Se
+  // especificados, devem ser <= 0.) O quadro tem rotinas de tratamento de evento
+  // mousewheel que permite ao usuário dar uma panorâmica no elemento e reduzir ou
+  // ampliar o quadro.
+  function enclose(content, framewidth, frameheight, contentX, contentY) {
+    // Esses argumentos não são apenas os valores iniciais: eles mantêm o
+    // estado atual e são utilizados e modificados pela rotina de tratamento de mousewheel.
+    framewidth = Math.max(framewidth, 50);
+    frameheight = Math.max(frameheight, 50);
+    contentX = Math.min(contentX, 0) || 0;
+    contentY = Math.min(contentY, 0) || 0;
+    // Cria o elemento frame e configura um nome de classe e estilo CSS
+    var frame = document.createElement('div');
+    frame.className = 'enclosure';
+    // Para que possamos definir estilos em
+    // uma folha de estilo
+    frame.style.width = framewidth + 'px';
+    // Configura o tamanho do quadro.
+    frame.style.height = frameheight + 'px';
+    frame.style.overflow = 'hidden';
+    // Sem barras de rolagem, sem
+    // transbordamento
+    frame.style.boxSizing = 'border-box';
+    // Border-box simplifica os
+    frame.style.webkitBoxSizing = 'border-box'; // cálculos para redimensionar
+    frame.style.MozBoxSizing = 'border-box';
+    // o quadro.
+    // Coloca o quadro no documento e move o elemento conteúdo para o quadro.
+    content.parentNode.insertBefore(frame, content);
+    frame.appendChild(content);
+    // Posiciona o elemento em relação ao quadro
+    content.style.position = 'relative';
+    content.style.left = contentX + 'px';
+    content.style.top = contentY + 'px';
+    // Precisaremos contornar algumas peculiaridades específicas dos navegadores a seguir
+    var isMacWebkit =
+      navigator.userAgent.indexOf('Macintosh') !== -1 &&
+      navigator.userAgent.indexOf('WebKit') !== -1;
+    var isFirefox = navigator.userAgent.indexOf('Gecko') !== -1;
+
+    // Registra rotinas de tratamento de evento roda do mouse.
+    frame.onwheel = wheelHandler;
+    // Navegadores futuros
+    frame.onmousewheel = wheelHandler; // A maioria dos navegadores atuais
+    if (isFirefox)
+      // Somente Firefox
+      frame.addEventListener('DOMMouseScroll', wheelHandler, false);
+
+    function wheelHandler(event) {
+      var e = event || window.event; // Evento de objeto padrão ou IE
+      // Extrai a quantidade de rotação do objeto evento, procurando
+      // propriedades de um objeto evento wheel, de um objeto evento mousewheel
+      // (tanto na forma 2D como 1D) e do evento DOMMouseScroll do Firefox.
+      // Muda a escala dos deltas de modo que um "clique" em direção à tela tenha 30
+      // pixels.
+      // Se futuros navegadores dispararem "wheel" e "mousewheel" para o mesmo
+      // evento, acabaremos contando duplamente aqui. Esperamos, contudo,
+      // que cancelar o evento wheel evite a geração de roda do mouse.
+      var deltaX =
+        e.deltaX * -30 ||
+        // evento wheel
+        e.wheelDeltaX / 4 ||
+        // mousewheel
+        0;
+      // propriedade não definida
+      var deltaY =
+        e.deltaY * -30 ||
+        // evento wheel
+        e.wheelDeltaY / 4 ||
+        // evento mousewheel no Webkit
+        (e.wheelDeltaY === undefined &&
+          // se não houver propriedade 2D, então
+          e.wheelDelta / 4) ||
+        // usa a propriedade wheel 1D
+        e.detail * -10 ||
+        // evento DOMMouseScroll do Firefox
+        0;
+      // propriedade não definida
+
+      // A maioria dos navegadores gera um evento com delta 120 por clique de mousewheel.
+      // Nos Macs, entretanto, os mousewheels parecem ser sensíveis à velocidade e
+      // os valores de delta são frequentemente múltiplos de 120, pelo menos com o
+      // mouse da Apple. Usa teste de navegador para anular isso.
+      if (isMacWebkit) {
+        deltaX /= 30;
+        deltaY /= 30;
+      }
+      // Se obtivermos um evento mousewheel ou wheel no (em uma futura versão do)
+      // Firefox, então não precisamos mais de DOMMouseScroll.
+      if (isFirefox && e.type !== 'DOMMouseScroll')
+        frame.removeEventListener('DOMMouseScroll', wheelHandler, false);
+      // Obtém as dimensões atuais do elemento conteúdo
+      var contentbox = content.getBoundingClientRect();
+      var contentwidth = contentbox.right - contentbox.left;
+      var contentheight = contentbox.bottom - contentbox.top;
+      if (e.altKey) {
+        // Se a tecla Alt estiver pressionada, redimensiona o quadro
+        if (deltaX) {
+          framewidth -= deltaX; // Nova largura, mas não maior do que o
+          framewidth = Math.min(framwidth, contentwidth); // conteúdo
+          framewidth = Math.max(framewidth, 50);
+          // e não menor do que 50.
+          frame.style.width = framewidth + 'px';
+          // Configura-o no quadro
+        }
+        if (deltaY) {
+          frameheight -= deltaY; // Faz o mesmo para a altura do quadro
+          frameheight = Math.min(frameheight, contentheight);
+          frameheight = Math.max(frameheight - deltaY, 50);
+          frame.style.height = frameheight + 'px';
+        }
+      } else {
+        // Sem a modificadora Alt, dá uma panorâmica no conteúdo dentro do quadro
+        if (deltaX) {
+          // Não rola mais do que isso
+          var minoffset = Math.min(framewidth - contentwidth, 0);
+          // Soma deltaX a contentX, mas não deixa menor do que minoffset
+          contentX = Math.max(contentX + deltaX, minoffset);
+          contentX = Math.min(contentX, 0);
+          // nem maior do que 0
+          content.style.left = contentX + 'px';
+          // Configura o novo
+          // deslocamento
+        }
+        if (deltaY) {
+          var minoffset = Math.min(frameheight - contentheight, 0);
+          // Soma deltaY a contentY, mas não deixa menor do que minoffset
+          contentY = Math.max(contentY + deltaY, minoffset);
+          contentY = Math.min(contentY, 0);
+          // Nem maior do que 0
+          content.style.top = contentY + 'px';
+          // Configura o novo
+          // deslocamento.
+        }
+      }
+      // Não permite que esse evento borbulhe. Impede qualquer ação padrão.
+      // Isso impede o navegador de usar o evento mousewheel para rolar
+      // o documento. Espera-se que chamar preventDefault() em um evento wheel
+      // também impeça a geração de um evento mousewheel para a
+      // mesma rotação.
+      if (e.preventDefault) e.preventDefault();
+      if (e.stopPropagation) e.stopPropagation();
+      e.cancelBubble = true; // eventos do IE
+      e.returnValue = false; // eventos do IE
+      return false;
+    }
+  }
+</script>

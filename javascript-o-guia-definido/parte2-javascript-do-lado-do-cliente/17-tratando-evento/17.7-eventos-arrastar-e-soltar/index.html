@@ -1,0 +1,57 @@
+<script src="whenReady.js"></script>
+<script>
+  whenReady(function () {
+    var clock = document.getElementById('clock');
+    var icon = new Image();
+    icon.src = 'clock-icon.png';
+    // O elemento relógio
+    // Uma imagem para arrastar
+    // URL da imagem
+    // Exibe a hora a cada minuto
+    function displayTime() {
+      var now = new Date();
+      // Obtém a hora atual
+      var hrs = now.getHours(),
+        mins = now.getMinutes();
+      if (mins < 10) mins = '0' + mins;
+      clock.innerHTML = hrs + ':' + mins;
+      // Exibe a hora atual
+      setTimeout(displayTime, 60000);
+      // Executa novamente em 1 minuto
+    }
+    displayTime();
+    // Torna possível arrastar o relógio
+    // Também podemos fazer isso com um atributo HTML: <span draggable="true">...
+    clock.draggable = true;
+    // Configura rotinas de tratamento de evento drag
+    clock.ondragstart = function (event) {
+      var event = event || window.event;
+      // Para compatibilidade com IE
+      // A propriedade dataTransfer é fundamental para a API de arrastar e soltar
+      var dt = event.dataTransfer;
+      // Informa ao navegador o que está sendo arrastado.
+      // A construtora Date() usada como função retorna uma string de timestamp
+      dt.setData('Text', Date() + '\n');
+
+      // Diz ao navegador para arrastar nosso ícone a fim de representar o timestamp, em
+      // navegadores que suportam isso. Sem essa linha, o navegador pode
+      // usar uma imagem do texto do relógio como valor a arrastar.
+      if (dt.setDragImage) dt.setDragImage(icon, 0, 0);
+    };
+  });
+</script>
+<style>
+  #clock {
+    /* Faz o relógio ficar bonito */
+    font: bold 24pt sans;
+    background: #ddf;
+    padding: 10px;
+    border: solid black 2px;
+    border-radius: 10px;
+  }
+</style>
+<h1>Drag timestamps from the clock</h1>
+<span id="clock"></span>
+<!-- A hora é exibida aqui -->
+<textarea cols="60" rows="20"></textarea>
+<!-- Você pode soltar timestamps aqui -->
