@@ -1,0 +1,50 @@
+<script>
+  window.onload = function () {
+    // Cuida de alguns detalhes da interface do usuário
+    var nick = prompt('Enter your nickname');
+    var input = document.getElementById('input');
+    input.focus();
+    // Obtém o apelido do usuário
+    // Localiza o campo de entrada
+    // Configura o foco do teclado
+    // Registra para notificação de novas mensagens usando EventSource
+    var chat = new EventSource('/chat');
+    chat.onmessage = function (event) {
+      // Quando uma nova mensagem chega
+      var msg = event.data;
+      // Obtém o texto do objeto evento
+      var node = document.createTextNode(msg); // O transforma em um nó de texto
+      var div = document.createElement('div'); // Cria um <div>
+      div.appendChild(node);
+      // Adiciona o nó de texto em div
+      document.body.insertBefore(div, input);
+      // E adiciona div antes de input
+      input.scrollIntoView();
+      // Garante que o elemento input seja
+      // visível
+    };
+    // Posta as mensagens do usuário no servidor usando XMLHttpRequest
+    input.onchange = function () {
+      // Quando o usuário pressiona return
+
+      var msg = nick + ': ' + input.value;
+      // Nome de usuário mais entrada do usuário
+      var xhr = new XMLHttpRequest();
+      // Cria novo XHR
+      xhr.open('POST', '/chat');
+      // para postar (com POST) em /chat.
+      xhr.setRequestHeader(
+        'Content-Type',
+        // Especifica texto UTF-8 puro
+        'text/plain;charset=UTF-8'
+      );
+      xhr.send(msg);
+      // Envia a mensagem
+      input.value = '';
+      // Apronta-se para mais entrada
+    };
+  };
+</script>
+<!-- A interface com o usuário para chat é apenas um campo de entrada de texto -->
+<!-- Novas mensagens de chat serão inseridas antes desse campo de entrada -->
+<input id="input" style="width: 100%" />
