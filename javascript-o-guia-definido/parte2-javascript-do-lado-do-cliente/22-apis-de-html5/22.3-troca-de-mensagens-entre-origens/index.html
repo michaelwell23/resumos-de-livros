@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<!--
+Este é um gadget de busca no Twitter. Inclua-o em qualquer página Web, dentro de um
+iframe, e peça a ele para que procure coisas, enviando uma string de consulta com
+postMessage(). Como ele está em um <iframe> e não em um <script>, não pode
+mexer no documento que o contém.
+-->
+<html>
+  <head>
+    <style>
+      body {
+        font: 9pt sans-serif;
+      }
+    </style>
+    <!-- Usa jQuery para seu utilitário jQuery.getJSON() -->
+    <script src="http://code.jquery.com/jquery-1.4.4.min.js"/></script>
+    <script>
+      // Devemos usar apenas window.onmessage, mas alguns navegadores mais antigos
+      // (por exemplo, o Firefox 3) não suportam isso; portanto, fazemos desta maneira.
+      if (window.addEventListener)
+        window.addEventListener('message', handleMessage, false);
+      else window.attachEvent('onmessage', handleMessage);
+      // Para o IE8
+      function handleMessage(e) {
+        // Não estamos preocupados com a origem dessa mensagem: queremos
+        // procurar no Twitter alguém que nos responda. No entanto, esperamos
+        // que a mensagem venha da janela que nos contém.
+        if (e.source !== window.parent) return;
+        var searchterm = e.data;
+        // Isso é o que foi solicitado a procurarmos
+        // Usa utilitários Ajax da jQuery e a API de busca do Twitter para encontrar
+        // tweets correspondentes à mensagem.
+        jQuery.getJSON(
+          'http://search.twitter.com/search.json?callback=?',
+          { q: searchterm },
+          function (data) {
+            // Chamada com resultados do pedido
+            var tweets = data.results;
+            // Constrói um documento HTML para exibir esses resultados
+            var escaped = searchterm.replace('<', '&lt;');
+            var html = '<h2>' + escaped + '</h2>';
+            if (tweets.length == 0) {
+              html += 'No tweets found';
+            } else {
+              html += '<dl>';
+              // lista de resultados <dl>
+              for (var i = 0; i < tweets.length; i++) {
+                var tweet = tweets[i];
+                var text = tweet.text;
+                var from = tweet.from_user;
+                var tweeturl =
+                  'http://twitter.com/#!/' + from + '/status/' + tweet.id_str;
+                html +=
+                  "<dt><a target='_blank' href='" +
+                  tweeturl +
+                  "'>" +
+                  tweet.from_user +
+                  '</a></dt><dd>' +
+                  tweet.text +
+                  '</dd>';
+              }
+              html += '</dl>';
+            }
+            // Configura o documento <iframe>
+            document.body.innerHTML = html;
+          }
+        );
+      }
+      $(function () {
+        // Permite que nosso contêiner saiba que estamos aqui e prontos para pesquisar.
+        // O contêiner não pode no enviar quaisquer mensagens antes de obter esta mensagem
+        // nossa, pois ainda não estaremos aqui para recebê-la.
+        // Normalmente, os contêineres só podem esperar um evento onload para saber que todos os
+        // seus <iframe>s foram carregados. Enviamos esta mensagem para os contêineres que
+        // queremos, para começar a pesquisar o Twitter mesmo antes de obterem o evento
+        // onload.
+        // Não sabemos a origem de nosso contêiner; portanto, usamos * para que o navegador
+        // a envie para qualquer um.
+        window.parent.postMessage('Twitter Search v0.1', '*');
+      });
+    </script>
+  </head>
+  <body></body>
+</html>

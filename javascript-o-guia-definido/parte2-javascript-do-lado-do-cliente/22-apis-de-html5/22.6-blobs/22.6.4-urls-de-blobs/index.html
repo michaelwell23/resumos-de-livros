@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      // Quando este livro estava sendo escrito, o Firefox e o Webkit discordavam quanto ao
+      // nome da função createObjectURL()
+      var getBlobURL =
+        (window.URL && URL.createObjectURL.bind(URL)) ||
+        (window.webkitURL && webkitURL.createObjectURL.bind(webkitURL)) ||
+        window.createObjectURL;
+      var revokeBlobURL =
+        (window.URL && URL.revokeObjectURL.bind(URL)) ||
+        (window.webkitURL && webkitURL.revokeObjectURL.bind(webkitURL)) ||
+        window.revokeObjectURL;
+
+      // Quando o documento é carregado, adiciona rotinas de tratamento de evento no elemento
+      // droptarget para que ele possa tratar de solturas de arquivos
+      window.onload = function () {
+        // Localiza o elemento em que queremos adicionar rotinas de tratamento.
+        var droptarget = document.getElementById('droptarget');
+
+        // Quando o usuário começa a arrastar arquivos sobre o droptarget, realça-o.
+        droptarget.ondragenter = function (e) {
+          // Se o arrasto é de algo que não sejam arquivos, ignora-o.
+          // O atributo dropzone de HTML5 vai simplificar isso, quando for implementado.
+          var types = e.dataTransfer.types;
+          if (
+            !types ||
+            (types.contains && types.contains('Files')) ||
+            (types.indexOf && types.indexOf('Files') != -1)
+          ) {
+            droptarget.classList.add('active'); // Realça droptarget
+            return false;
+            // Estamos interessados no arrasto
+          }
+        };
+        // Retira o realce da zona de soltura, caso o usuário saia dela
+        droptarget.ondragleave = function () {
+          droptarget.classList.remove('active');
+        };
+        // Esta rotina de tratamento apenas diz ao navegador para que continue a enviar
+        // notificações
+        droptarget.ondragover = function (e) {
+          return false;
+        };
+
+        // Quando o usuário solta arquivos em nós, obtemos seus URLs e exibimos miniaturas.
+        droptarget.ondrop = function (e) {
+          var files = e.dataTransfer.files;
+          // Os arquivos soltos
+          for (var i = 0; i < files.length; i++) {
+            // Itera por todos eles
+            var type = files[i].type;
+            if (type.substring(0, 6) !== 'image/')
+              // Pula o que não for imagem
+              continue;
+            var img = document.createElement('img');
+            // Cria um elemento <img>
+            img.src = getBlobURL(files[i]);
+            // Usa URL de Blob com <img>
+            img.onload = function () {
+              // Quando ele for carregado
+              this.width = 100;
+              // ajusta seu tamanho e
+              document.body.appendChild(this);
+              // insere no documento.
+              revokeBlobURL(this.src);
+              // Mas não vaza memória!
+            };
+          }
+          droptarget.classList.remove('active');
+          return false;
+          // Retira o realce de
+          // droptarget
+          // Tratamos da soltura
+        };
+      };
+    </script>
+    <style>
+      /* Estilos simples para o alvo de soltura de arquivo */
+      #droptarget {
+        border: solid black 2px;
+        width: 200px;
+        height: 200px;
+      }
+      #droptarget.active {
+        border: solid red 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- O documento começa apenas com o alvo de soltura de arquivo -->
+    <div id="droptarget">Drop Image Files Here</div>
+  </body>
+</html>

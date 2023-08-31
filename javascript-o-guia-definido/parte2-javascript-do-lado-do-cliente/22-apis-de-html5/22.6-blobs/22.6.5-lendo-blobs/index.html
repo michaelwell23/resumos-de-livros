@@ -1,0 +1,65 @@
+<script>
+  // Lê o arquivo de texto especificado e o exibe no elemento <pre> a seguir
+
+  function readfile(f) {
+    var reader = new FileReader(); // Cria um objeto FileReader
+    reader.readAsText(f);
+    // Lê o arquivo
+    reader.onload = function () {
+      // Define uma rotina de tratamento de evento
+      var text = reader.result;
+      // Este é o conteúdo do arquivo
+      var out = document.getElementById('output');
+      // Localiza o elemento de saída
+      out.innerHTML = '';
+      // Limpa-o
+      out.appendChild(document.createTextNode(text)); // Exibe o conteúdo do arquivo
+    };
+    reader.onerror = function (e) {
+      // Se algo der errado
+      console.log('Error', e);
+      // Apenas registra
+    };
+  }
+</script>
+Select the file to display:
+<!-- <input type="file" onchange="readfile(this.files[0])"></input> -->
+<pre id="output"></pre>
+
+<script>
+  // Examina os 4 primeiros bytes do blob especificado. Se esse "número mágico"
+  // identifica o tipo do arquivo, configura uma propriedade no Blob de forma assíncrona.
+  function typefile(file) {
+    var slice = file.slice(0, 4);
+    // Lê apenas o início do arquivo
+    var reader = new FileReader();
+    // Cria um FileReader assíncrono
+    reader.readAsArrayBuffer(slice);
+    // Lê a fatia do arquivo
+    reader.onload = function (e) {
+      var buffer = reader.result;
+      // O ArrayBuffer resultante
+      var view = new DataView(buffer);
+      // Obtém acesso aos bytes resultantes
+      var magic = view.getUint32(0, false);
+      // Lê 4 bytes, big-endian
+      switch (magic) {
+        // Determina o tipo de arquivo a partir deles
+        case 0x89504e47:
+          file.verified_type = 'image/png';
+          break;
+        case 0x47494638:
+          file.verified_type = 'image/gif';
+          break;
+        case 0x25504446:
+          file.verified_type = 'application/pdf';
+          break;
+        case 0x504b0304:
+          file.verified_type = 'application/zip';
+          break;
+      }
+      console.log(file.name, file.verified_type);
+    };
+  }
+</script>
+<!-- <input type="file" onchange="typefile(this.files[0])"></input> -->

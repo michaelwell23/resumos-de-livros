@@ -1,0 +1,33 @@
+<script>
+  window.onload = function () {
+    // Cuida de alguns detalhes da interface do usuário
+    var nick = prompt('Enter your nickname');
+    var input = document.getElementById('input');
+    input.focus();
+
+    // do protocolo http:// para ws://
+    var socket = new WebSocket('ws://' + location.host + '/');
+    // É assim que recebemos mensagens do servidor por meio do soquete web
+    socket.onmessage = function (event) {
+      // Quando chega uma nova mensagem
+      var msg = event.data;
+      // Obtém o texto do objeto evento
+      var node = document.createTextNode(msg); // O transforma em um nó de texto
+      var div = document.createElement('div'); // Cria um <div>
+      div.appendChild(node);
+      // Adiciona nó de texto no div
+      document.body.insertBefore(div, input); // E adiciona div antes da entrada
+      input.scrollIntoView(); // Garante que o elemento de entrada esteja visível
+    };
+
+    // É assim que enviamos mensagens para o servidor por meio do soquete web
+    input.onchange = function () {
+      var msg = nick + ': ' + input.value;
+      socket.send(msg);
+      input.value = '';
+    };
+  };
+</script>
+<!-- A interface com o usuário de chat é apenas um grande campo de entrada de texto -->
+<!-- As novas mensagens de chat vão ser inseridas antes desse elemento -->
+<input id="input" style="width: 100%" />

@@ -1,0 +1,26 @@
+<audio src="background_music.mp3" />
+<video src="news.mov" width="320" height="240" />
+
+<audio id="music">
+  <source src="music.mp3" type="audio/mpeg" />
+  <source src=”music.ogg” type=’audio/ogg; codec=”vorbis”’>
+</audio>
+
+<video id="news" width="640" height="480" controls preload>
+  <!-- Formato WebM para Firefox e Chrome -->
+  <source src="news.webm" type='video/webm; codecs="vp8, vorbis"' />
+  <!-- Formato H.264 para IE e Safari -->
+  <source src="news.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+  <!-- Recorre ao plugin Flash -->
+  <object
+    width="640"
+    height="480"
+    type="application/x-shockwave-flash"
+    data="flash_movie_player.swf"
+  >
+    <!-- Os elementos Param aqui configuram o reprodutor de filmes Flash que você está
+  usando -->
+    <!-- Texto é o último conteúdo de apoio -->
+    <div>video element not supported and Flash plugin not installed.</div>
+  </object>
+</video>

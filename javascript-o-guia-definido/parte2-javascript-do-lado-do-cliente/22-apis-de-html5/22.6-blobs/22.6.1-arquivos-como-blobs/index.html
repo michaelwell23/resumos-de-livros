@@ -1,0 +1,20 @@
+<script>
+  // Registra informações sobre uma lista de arquivos selecionados
+  function fileinfo(files) {
+    for (var i = 0; i < files.length; i++) {
+      // files é um objeto semelhante a um array
+      var f = files[i];
+      console.log(
+        f.name,
+        // Somente nome: sem caminho
+        f.size,
+        f.type,
+        // size e type são propriedades do Blob
+        f.lastModifiedDate
+      );
+      // outra propriedade de File
+    }
+  }
+</script>
+<!-- Permite a seleção de vários arquivos de imagem, bem como passá-los para fileinfo()-->
+<input type="file" accept="image/*" multiple onchange="fileinfo(this.files)" />

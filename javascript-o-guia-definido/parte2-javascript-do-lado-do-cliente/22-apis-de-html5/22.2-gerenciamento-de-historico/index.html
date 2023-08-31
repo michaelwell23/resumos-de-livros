@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>I'm thinking of a number...</title>
+    <script>
+      window.onload = newgame;
+      window.onpopstate = popState;
+      var state, ui;
+
+      function newgame(playagain) {
+        // Inicia um novo jogo de adivinhação de números
+        // Configura um objeto para conter elementos do documento que nos interessam
+        ui = {
+          heading: null,
+          // O <h1> no topo do documento.
+          prompt: null,
+          // Pede para o usuário digitar um palpite.
+          input: null,
+          // Onde o usuário digita o palpite.
+          low: null,
+          // Três células de tabela para a representação visual
+          mid: null,
+          // ...do intervalo de números a adivinhar.
+          high: null,
+        };
+        // Pesquisa cada uma dessas identificações de elemento
+        for (var id in ui) ui[id] = document.getElementById(id);
+
+        // Define uma rotina de tratamento de evento para o campo de entrada
+        ui.input.onchange = handleGuess;
+        // Escolhe um número aleatório e inicializa o estado do jogo
+        state = {
+          n: Math.floor(99 * Math.random()) + 1, // Um inteiro: 0 < n < 100
+          low: 0,
+          // O limite inferior (exclusivo) nos palpites
+          high: 100,
+          // O limite superior (exclusivo) nos palpites
+          guessnum: 0,
+          // Quantos palpites foram dados
+          guess: undefined,
+          // Qual foi o último palpite
+        };
+        // Modifica o conteúdo do documento para exibir este estado inicial
+        display(state);
+        if (playagain === true) save(state);
+      }
+      // Salva o estado do jogo no histórico do navegador com pushState(), se for suportado
+      function save(state) {
+        if (!history.pushState) return; // Não faz nada se pushState() não estiver definido
+        // Vamos associar um URL ao estado salvo. Esse URL exibe o
+        // número a adivinhar, mas não codifica o estado do jogo, de modo que não é útil
+        // para marcação. Não podemos colocar o estado do jogo no URL facilmente, pois isso
+
+        // tornaria o número secreto visível na barra de endereços.
+        var url = '#guess' + state.guessnum;
+        // Agora salva o objeto com o estado e o URL
+        history.pushState(
+          state,
+          // Objeto estado a salvar
+          '',
+          // Título do estado: os navegadores atuais ignoram isso
+          url
+        );
+        // URL do estado: não é útil para marcação
+      }
+      // Esta é a rotina de tratamento de evento onpopstate que restaura estados do histórico.
+      function popState(event) {
+        if (event.state) {
+          // Se o evento tem um objeto estado, restaura esse estado
+          // Note que event.state é uma cópia profunda do objeto estado salvo;
+          // portanto, podemos modificá-la sem alterar o valor salvo.
+          state = event.state;
+          // Restaura o estado do histórico
+          display(state);
+          // Exibe o estado restaurado
+        } else {
+          // Quando carregarmos a página pela primeira vez, vamos obter um evento popstate
+          // sem nenhum estado. Substitua esse estado nulo por nosso estado real: consulte o
+          // comentário em newgame(). Não há necessidade de chamar display() aqui.
+          history.replaceState(state, '', '#guess' + state.guessnum);
+        }
+      }
+      // Esta rotina de tratamento de evento é chamada sempre que o usuário adivinha um número.
+      // Ela atualiza o estado do jogo, salva-o e o exibe.
+      function handleGuess() {
+        // Obtém o palpite do usuário a partir do campo de entrada
+        var g = parseInt(this.value);
+        // Se é um número e está no intervalo correto
+        if (g > state.low && g < state.high) {
+          // Atualiza o objeto estado com base nesse palpite
+          if (g < state.n) state.low = g;
+          else if (g > state.n) state.high = g;
+          state.guess = g;
+          state.guessnum++;
+          // Agora salva o novo estado no histórico do navegador
+          save(state);
+          // Modifica o documento para responder ao palpite do usuário
+          display(state);
+        } else {
+          // Um palpite inválido: não coloca um novo estado de histórico
+          alert(
+            'Please enter a number greater than ' +
+              state.low +
+              ' and less than ' +
+              state.high
+          );
+        }
+      }
+      // Modifica o documento para exibir o estado atual do jogo.
+      function display(state) {
+        // Exibe o cabeçalho e o título do documento
+        ui.heading.innerHTML = document.title =
+          "I'm thinking of a number between " +
+          state.low +
+          ' and ' +
+          state.high +
+          '.';
+        // Exibe uma representação visual do intervalo de números usando uma tabela
+        ui.low.style.width = state.low + '%';
+
+        ui.mid.style.width = state.high - state.low + '%';
+        ui.high.style.width = 100 - state.high + '%';
+        // Certifica-se de que o campo de entrada esteja visível, vazio e com o foco
+        ui.input.style.visibility = 'visible';
+        ui.input.value = '';
+        ui.input.focus();
+
+        // Configura o prompt com base no palpite mais recente do usuário
+        if (state.guess === undefined)
+          ui.prompt.innerHTML = 'Type your guess and hit Enter: ';
+        else if (state.guess < state.n)
+          ui.prompt.innerHTML = state.guess + ' is too low. Guess again: ';
+        else if (state.guess > state.n)
+          ui.prompt.innerHTML = state.guess + ' is too high. Guess again: ';
+        else {
+          // Quando for correto, oculta o campo de entrada e mostra novamente um botão Play
+          // Again.
+          ui.input.style.visibility = 'hidden';
+          // Sem mais palpites agora
+          ui.heading.innerHTML = document.title = state.guess + ' is correct! ';
+          ui.prompt.innerHTML =
+            "You Win! <button onclick='newgame(true)'>Play Again</button>";
+        }
+      }
+    </script>
+    <style>
+      /* estilos CSS para que o jogo tenha boa aparência */
+      #prompt {
+        font-size: 16pt;
+      }
+      table {
+        width: 90%;
+        margin: 10px;
+        margin-left: 5%;
+      }
+      #low,
+      #high {
+        background-color: lightgray;
+        height: 1em;
+      }
+      #mid {
+        background-color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Os elementos HTML a seguir são a interface com o usuário do jogo -->
+    <!-- Título do jogo e representação textual do intervalo de números -->
+    <h1 id="heading">I'm thinking of a number...</h1>
+    <!-- uma representação visual dos números que não foram rejeitados -->
+    <table>
+      <tr>
+        <td id="low"></td>
+        <td id="mid"></td>
+        <td id="high"></td>
+      </tr>
+    </table>
+    <!-- Onde o usuário digita seus palpites -->
+    <label id="prompt"></label><input id="input" type="text" />
+  </body>
+</html>
